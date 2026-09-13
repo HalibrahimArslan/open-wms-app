@@ -6,7 +6,6 @@ const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : theme.palette.background.paper,
   textAlign: 'left',
   color: theme.palette.text.primary,
-  borderRadius: 0,
   minHeight: `calc(100vh - 130px)`,
   padding: theme.spacing(2),
   maxWidth: '2000px',
@@ -15,7 +14,7 @@ const Item = styled(Paper)(({ theme }) => ({
   marginRight: 'auto',
   boxSizing: 'border-box',
   boxShadow: 'none',
-  borderRadius: '24px',
+  borderRadius: theme.radius.section,
 }))
 
 export default function Itemv1(props) {

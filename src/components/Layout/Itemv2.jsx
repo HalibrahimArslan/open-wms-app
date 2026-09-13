@@ -5,7 +5,7 @@ const StyledDiv = styled('div')(({ theme }) => ({
   ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: theme.radius.section,
   minHeight: `calc(100vh - 100px)`,
   padding: theme.spacing(2),
 }))

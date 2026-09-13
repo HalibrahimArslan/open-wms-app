@@ -2,6 +2,25 @@ import { green, red } from '@mui/material/colors'
 import { trTR } from '@mui/material/locale'
 import { createTheme } from '@mui/material/styles'
 
+/**
+ * Kose yariçapi olcegi.
+ *
+ * Degerler string ("12px") olarak tutulur, cunku MUI'nin sx prop'u
+ * borderRadius'a verilen SAYIYI theme.shape.borderRadius ile carpar:
+ * `borderRadius: theme.shape.borderRadius` yazmak 5 degil 25 piksel verir ve
+ * ic kutular dis kutulardan daha oval gorunur. String deger oldugu gibi
+ * gectigi icin ayni token hem sx hem styled() icinde ayni sonucu uretir.
+ *
+ * Ic ice kutularda yariçap disaridan iceri dogru azalmali; esit ya da artan
+ * yariçap koseleri orantisiz gosterir.
+ */
+const radius = {
+  panel: '24px', // sayfa govdesi (en distaki cerceve)
+  section: '16px', // govde icindeki panel
+  card: '12px', // panel icindeki kart
+  control: '8px', // buton, input, chip
+}
+
 const lightMode = createTheme(
   {
     palette: {
@@ -140,6 +159,8 @@ const lightMode = createTheme(
     shape: {
       borderRadius: 5,
     },
+
+    radius,
   },
   trTR
 )
@@ -200,6 +221,8 @@ const darkMode = createTheme({
   shape: {
     borderRadius: 6,
   },
+
+  radius,
 })
 
 export default lightMode

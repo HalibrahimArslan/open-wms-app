@@ -35,7 +35,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette.secondary.light,
   display: 'flex',
   alignItems: 'center',
-  borderRadius: 5,
+  borderRadius: theme.radius.card,
   flexDirection: 'column',
 }))
 

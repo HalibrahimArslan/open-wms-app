@@ -80,7 +80,7 @@ export default function PalletBarcodeContainer() {
   }, [])
 
   return (
-    <Box backgroundColor={theme.palette.secondary.light} pl={1} borderRadius={theme.shape.borderRadius}>
+    <Box backgroundColor={theme.palette.secondary.light} pl={1} borderRadius={theme.radius.card}>
       <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} pr={1} pb={1} pt={1}>
         <Typography variant="h6" fontWeight={theme.typography.fontWeightMedium} align="left">
           Palet Barkodları

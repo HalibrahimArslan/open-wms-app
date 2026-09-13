@@ -20,7 +20,7 @@ const Home = () => {
         marginBottom: '8px',
         marginLeft: isMobile ? '4px' : dock ? '241px' : '4px',
         backgroundColor: theme.palette.background.default,
-        borderRadius: '24px',
+        borderRadius: theme.radius.panel,
         height: 'calc(100vh - 70px)',
         overflowY: 'auto',
         overflowX: 'hidden',

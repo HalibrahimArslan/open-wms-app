@@ -37,7 +37,7 @@ export default function Dashboard() {
               textAlign: 'left',
               backgroundColor: theme.palette.secondary.main,
               boxShadow: ' rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
-              borderRadius: theme.shape.borderRadius,
+              borderRadius: theme.radius.card,
             }}
           >
             {displayName ? (
