@@ -1,0 +1,158 @@
+import { useEffect, useState } from 'react'
+import useAuthHeader from '../../../hooks/useAuthHeader'
+import { useContainer } from 'unstated-next'
+import { DataStore } from '../../../store/DataStore'
+import useDepoCode from '../../../hooks/useDepoCode'
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
+import * as yup from 'yup'
+import produce, { Draft } from 'immer'
+import Iconify from '../../../components/Iconify'
+import { Chip } from '@mui/material'
+import { deleteAddressFlat, getAddressFlats, saveAddressFlat, updateAddressFlat } from '../../../services/AddressComponentService'
+import AddressComponentForm from '../../../components/Form/AddressComponentForm'
+import { notifyError } from '../../../layout/Layout'
+import { generatePayload } from '../../../utils/Utils'
+import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
+import DynamicTable from '../../../shared/components/Table/DynamicTable'
+import ActionHeader from '../../../shared/components/ActionHeader'
+
+const validationSchema = yup.object({
+  code: yup.string().max(2).required('Kat boş bırakılamaz'),
+  description: yup.string().required('Açıklama boş bırakılamaz'),
+})
+
+const AddressFlatContainer = () => {
+  const [flats, setFlats] = useState([])
+  const headers = useAuthHeader()
+  const { account } = useContainer(DataStore)
+  const depoCode = useDepoCode()
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const [selectedFlat, setSelectedFlat] = useState({})
+
+  const columns = [
+    {
+      field: 'code',
+      headerName: 'Kat',
+      visible: true,
+    },
+    {
+      field: 'description',
+      headerName: 'Açıklama',
+      visible: true,
+    },
+    {
+      field: 'status',
+      headerName: 'Durum',
+      visible: true,
+      render: (value, row) => <Chip sx={{ borderRadius: 1 }} label={row.status ? 'Aktif' : 'Pasif'} color={row.status ? 'success' : 'error'} />,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Aksiyonlar',
+      visible: true,
+      getActions: (row) => [
+        {
+          id: row,
+          name: 'Hareketler',
+          onClick: (row) => {
+            setOpen(true)
+            setSelectedFlat(row)
+          },
+          icon: <EditOutlinedIcon />,
+        },
+        {
+          id: row,
+          name: 'Delete',
+          onClick: (row) => {
+            fetchDeleteFlat(row.id)
+          },
+          icon: <Iconify icon={'ic:baseline-delete'} />,
+        },
+      ],
+    },
+  ]
+
+  const fetchDeleteFlat = async (id) => {
+    try {
+      await deleteAddressFlat(id, headers)
+      setFlats((prevFlats) => [...prevFlats.filter((flat) => flat.id !== id)])
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
+
+  const fetchFlats = async () => {
+    try {
+      if (account && depoCode) {
+        setLoading(true)
+        const res = await getAddressFlats(headers, account.companyCode, depoCode)
+        res && setFlats(res)
+      }
+    } catch (error) {
+      notifyError(error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchSaveFlat = async (payload) => {
+    try {
+      const res = await saveAddressFlat(payload)
+      res && setFlats((prevFlats) => [...flats, res])
+      res && setOpen(false)
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
+
+  const fetchUpdateFlat = async (payload) => {
+    try {
+      const res = await updateAddressFlat(headers, payload)
+      res &&
+        setFlats(
+          produce((draft) => {
+            let currentFlat = draft.find((flat) => flat.id === res.id)
+            if (currentFlat) {
+              currentFlat.code = res.code
+              currentFlat.description = res.description
+              currentFlat.status = res.status
+            }
+          })
+        )
+      res && setSelectedFlat({})
+      res && setOpen(false)
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
+
+  const handleSubmit = (values) => {
+    if (Object.keys(selectedFlat).length > 0) {
+      fetchUpdateFlat({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return
+    }
+    fetchSaveFlat(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+  }
+
+  useEffect(() => {
+    fetchFlats()
+  }, [depoCode, account])
+
+  return (
+    <>
+      <ActionHeader title="Katlar" handleClick={() => setOpen(true)} />
+      <DynamicTable data={flats} columns={columns} loading={loading} />
+      <ExtendedDialog
+        open={open}
+        handleClose={() => setOpen(false)}
+        dialogContent={<AddressComponentForm handleSubmit={handleSubmit} initialValues={selectedFlat} validationSchema={validationSchema} />}
+        dialogHeader={'Kat Oluşturma'}
+      />
+    </>
+  )
+}
+
+export default AddressFlatContainer

@@ -1,0 +1,39 @@
+.kabul {
+  border-radius: 3ch;
+  background-color: rgb(194, 92, 92);
+  margin-top: 25ch;
+  margin-block: 15ch;
+  align-self: flex-start;
+}
+
+.notReceived {
+  background-color: #faebd7;
+}
+
+.kabul2 {
+  position: static;
+  background-attachment: fixed;
+  background-color: rgb(167, 247, 223);
+}
+
+.barkodOkut {
+  margin-left: auto;
+  padding: auto;
+  width: max-content;
+}
+
+.typoPalet {
+  background-color: rgb(151, 140, 126);
+}
+
+.Palet {
+  align-items: center;
+  padding: 2%;
+  background-attachment: fixed;
+  background-color: rgb(252, 244, 233);
+}
+
+.gridBarkod {
+  padding-bottom: 25%;
+  padding-top: 1%;
+}

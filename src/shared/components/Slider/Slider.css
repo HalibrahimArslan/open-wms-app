@@ -1,0 +1,29 @@
+.container {
+  display: grid;
+  grid-auto-flow: column;
+  overflow: auto;
+  gap: 20px;
+  position: relative;
+  scroll-behavior: smooth;
+  overflow-y: hidden;
+  padding: 1rem;
+}
+
+.inner {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  height: 74px;
+  border-radius: 2px;
+}
+
+.main {
+  position: relative;
+  display: grid;
+  overflow: auto;
+}
+
+.children {
+  display: flex;
+  gap: 2rem;
+}

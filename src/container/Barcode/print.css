@@ -1,0 +1,20 @@
+.ean13 {
+  width: 10cm;
+  height: 5cm;
+  border: 2px solid black;
+  box-sizing: border-box;
+  page-break-after: always;
+}
+
+@media print {
+  @page {
+    margin: auto;
+    width: 10cm;
+    height: 5cm;
+  }
+
+  html,
+  body {
+    margin: auto;
+  }
+}

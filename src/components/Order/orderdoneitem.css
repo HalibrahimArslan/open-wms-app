@@ -1,0 +1,9 @@
+.palet-barcode {
+  position: sticky;
+  left: 0;
+  background-color: white;
+  opacity: 0.8;
+  text-align: center;
+  text-decoration-line: underline;
+  writing-mode: vertical-rl;
+}
