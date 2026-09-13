@@ -118,7 +118,10 @@ export const useStore = () => {
         const res = await getWarehouses(headers, `companyCode.equals=${companyCode}`)
         res && setDepoList(res)
         cache.set('depoList', res)
-      } catch (e) {}
+      } catch (e) {
+        // Sessizce yutulursa depo listesi bos kalir ve sebebi gorunmez
+        console.error('Depo listesi alinamadi:', e)
+      }
     }
   }
 
@@ -130,7 +133,9 @@ export const useStore = () => {
         const res = await getWarehouses(headers, `companyCode.equals=${companyCode}`)
         res && handleDepoAllList(res)
         cache.set('depoListWithTypes', res)
-      } catch (e) {}
+      } catch (e) {
+        console.error('Depo listesi (tum tipler) alinamadi:', e)
+      }
     }
   }
 

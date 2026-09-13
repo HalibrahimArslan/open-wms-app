@@ -13,19 +13,20 @@ import HomeIcon from '@mui/icons-material/Home'
 import LogoutIcon from '@mui/icons-material/Logout'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import CheckIcon from '@mui/icons-material/Check'
+import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import AccountMenu from '../../components/MenuWrapper/AccountMenu'
 import { GridSearchIcon } from '@mui/x-data-grid'
 import { DepoContainer } from '../../store/DepoContainer'
 import { AuthContainer } from '../../store/AuthContainer'
 import { useSWRConfig } from 'swr'
-import { Avatar, Button, Divider, Stack, useMediaQuery, alpha } from '@mui/material'
+import { Avatar, Button, Divider, ListItemText, useMediaQuery, alpha } from '@mui/material'
 import { ThemeContainer } from '../../store/ThemeContainer'
 import { useTheme } from '@mui/system'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
 import './header.css'
-import DepoCombo from '../../components/Combobox/DepoCombo'
 import FeedbackContainer from '../../container/Feedback/FeedbackContainer'
 import { FcCustomerSupport } from 'react-icons/fc'
 import { notifyError } from '../Layout'
@@ -35,7 +36,7 @@ import { NotificationProvider } from '../../context/NotificationProvider'
 import { NotificationDisplay } from '../../container/Dashboard/NotificationDisplay'
 
 export default function Header() {
-  const { depoCode, depoName, depoCombo, allDepoList, handleDepoCode, handleDepoName, handleDepoMenu } = useContainer(DepoContainer)
+  const { depoCode, depoName, allDepoList, handleDepoCode, handleDepoName, handleDepoCombo, handleDepoMenu } = useContainer(DepoContainer)
   const { account, dock, handleChangeDock } = useContainer(DataStore)
   const { cache } = useSWRConfig()
   const { handleChangeMode } = ThemeContainer.useContainer()
@@ -93,14 +94,14 @@ export default function Header() {
     }
   }
 
-  const handleChangeDepo = () => {
-    let selectedDepo = depoCombo
-    let selectedDepoName = allDepoList.filter((depo) => depo.code === selectedDepo)[0]?.name
-
-    handleDepoCode(depoCombo)
-    handleDepoName(selectedDepoName)
-    navigate(`/d:${selectedDepo}`)
-    setDepoAnchorEl(null)
+  const handleChangeDepo = (depo) => {
+    handleDepoCode(depo.code)
+    handleDepoName(depo.name)
+    // Sayim tanimlama gibi ekranlar secili depoyu depoCombo uzerinden okuyor,
+    // bu yuzden iki deger birlikte guncelleniyor.
+    handleDepoCombo(depo.code)
+    navigate(`/d:${depo.code}`)
+    handleDepoMenuClose()
   }
 
   function handleLogout() {
@@ -139,30 +140,68 @@ export default function Header() {
   const depoMenuId = 'depo-menu'
   const renderDepoMenu = (
     <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
       id={depoMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
+      anchorEl={depoAnchorEl}
       open={isDepoMenuOpen}
       onClose={handleDepoMenuClose}
-      sx={{ padding: '5px' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      slotProps={{
+        paper: {
+          sx: {
+            marginTop: 1,
+            minWidth: 280,
+            maxHeight: 400,
+            borderRadius: theme.radius.card,
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.12)',
+          },
+        },
+      }}
     >
-      <Typography align="center"> Depo Seçiniz </Typography>
-      <MenuItem onClick={handleDepoMenuOpen} divider={true}>
-        <DepoCombo />
-      </MenuItem>
-      <Stack>
-        <Button variant="contained" onClick={handleChangeDepo}>
-          DEĞİŞTİR
-        </Button>
-      </Stack>
+      <Typography
+        variant="overline"
+        sx={{
+          display: 'block',
+          paddingX: 2,
+          paddingTop: 1,
+          paddingBottom: 0.5,
+          color: 'text.secondary',
+          letterSpacing: '0.12em',
+        }}
+      >
+        Depo Seçin
+      </Typography>
+      <Divider />
+
+      {allDepoList.length === 0 ? (
+        <Box sx={{ paddingX: 2, paddingY: 2.5, maxWidth: 280 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Görüntüleyebileceğiniz bir depo bulunamadı.
+          </Typography>
+        </Box>
+      ) : (
+        allDepoList.map((depo) => {
+          const isSelected = depo.code === depoCode
+
+          return (
+            <MenuItem
+              key={depo.code}
+              selected={isSelected}
+              onClick={() => handleChangeDepo(depo)}
+              sx={{ gap: 1.5, paddingY: 1.2, paddingX: 2, borderRadius: theme.radius.control, marginX: 0.5 }}
+            >
+              <WarehouseOutlinedIcon fontSize="small" sx={{ color: isSelected ? 'primary.main' : 'text.disabled' }} />
+              <ListItemText
+                primary={depo.name}
+                secondary={`Depo kodu: ${depo.code}`}
+                primaryTypographyProps={{ fontWeight: isSelected ? 700 : 500, variant: 'body2' }}
+                secondaryTypographyProps={{ variant: 'caption' }}
+              />
+              {isSelected && <CheckIcon fontSize="small" color="primary" />}
+            </MenuItem>
+          )
+        })
+      )}
     </Menu>
   )
 
@@ -383,7 +422,7 @@ export default function Header() {
                 },
               }}
             >
-              <Typography variant="body2" sx={{ fontWeight: 700 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
                 {depoName || 'Depo Seçin'}
               </Typography>
             </Button>
