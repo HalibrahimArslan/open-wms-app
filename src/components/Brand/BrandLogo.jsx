@@ -6,7 +6,9 @@ import BrandMark from './BrandMark'
  * Urun logosu. Kurulumda REACT_APP_BRAND_LOGO_URL tanimliysa musterinin kendi
  * gorseli basilir, aksi halde vektorel marka isareti ve marka adi cizilir.
  *
- * variant: 'full' isaret + yazi, 'mark' yalnizca isaret.
+ * variant: 'full'    isaret + ayrac + yazi (yatay kilit)
+ *          'stacked' isaret ustte, marka adi altta (dar kolonlar icin)
+ *          'mark'    yalnizca isaret
  */
 const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
   const theme = useTheme()
@@ -22,6 +24,28 @@ const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
       <Box sx={{ display: 'flex', ...sx }}>
         <BrandMark size={size} />
       </Box>
+    )
+  }
+
+  // Dikey kilit: sol menu gibi dar kolonlarda yatay kilit sigmadigi icin
+  // marka adi isaretin altina alinir, alt baslik ise tamamen birakilir.
+  if (variant === 'stacked') {
+    return (
+      <Stack alignItems={'center'} spacing={0.6} sx={sx}>
+        <BrandMark size={size} />
+        <Typography
+          component="span"
+          sx={{
+            fontSize: Math.max(size * 0.3, 11),
+            lineHeight: 1,
+            fontWeight: 700,
+            letterSpacing: '0.12em',
+            color: nameColor,
+          }}
+        >
+          {BRAND.name}
+        </Typography>
+      </Stack>
     )
   }
 

@@ -87,7 +87,7 @@ const LeftBar = ({ menus }) => {
                 }
               }}
             >
-              <BrandLogo variant="mark" size={40} />
+              <BrandLogo variant="stacked" size={36} />
             </Box>
             <Box
               sx={{

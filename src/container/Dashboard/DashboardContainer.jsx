@@ -1,8 +1,6 @@
-import { Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
+import { Grid, Paper, Typography, useTheme } from '@mui/material'
 import { useEffect, useMemo } from 'react'
 import { Outlet, useSearchParams } from 'react-router-dom'
-import BrandLogo from '../../components/Brand/BrandLogo'
-import useIsMobile from '../../hooks/useIsMobile'
 import PalletBarcodeContainer from '../Pallet-Barcode/PalletBarcodeContainer'
 import WaybillChartContainer from './WaybillChartContainer'
 import StorageRateContainer from './StorageRateContainer'
@@ -15,7 +13,6 @@ import { getAccountDisplayName } from '../../utils/Utils'
 
 export default function Dashboard() {
   const theme = useTheme()
-  const isMobile = useIsMobile()
   const [searchParams, setSearchParams] = useSearchParams()
   const { account } = useContainer(DataStore)
 
@@ -35,17 +32,29 @@ export default function Dashboard() {
           <Paper
             sx={{
               padding: 2,
+              // Dashboard'un sarmalayicisi (Layout/Itemv2) icerigi ortaliyor;
+              // karsilama blogu sola hizali olmali.
+              textAlign: 'left',
               backgroundColor: theme.palette.secondary.main,
               boxShadow: ' rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
               borderRadius: theme.shape.borderRadius,
             }}
           >
-            <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
-              <Typography variant="h4" fontWeight={theme.typography.fontWeightMedium} align="right">
-                {displayName ? `${BRAND.greeting}, ${displayName}` : BRAND.greeting}
+            {displayName ? (
+              <>
+                <Typography variant="body1" sx={{ color: 'text.secondary', lineHeight: 1.2 }}>
+                  {BRAND.greeting},
+                </Typography>
+                <Typography variant="h4" fontWeight={theme.typography.fontWeightMedium} sx={{ marginTop: 0.5 }}>
+                  {displayName}
+                </Typography>
+              </>
+            ) : (
+              // Hesap istegi donene kadar iki satirlik duzen bos gorunmesin
+              <Typography variant="h4" fontWeight={theme.typography.fontWeightMedium}>
+                {BRAND.greeting}
               </Typography>
-              {!isMobile && <BrandLogo size={48} />}
-            </Stack>
+            )}
           </Paper>
         </Grid>
         <Grid container item spacing={2}>
