@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Stack, Typography, useTheme } from '@mui/material'
 import BRAND from '../../config/brand'
 import BrandMark from './BrandMark'
 
@@ -9,6 +9,10 @@ import BrandMark from './BrandMark'
  * variant: 'full' isaret + yazi, 'mark' yalnizca isaret.
  */
 const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
+  const theme = useTheme()
+  const isDark = theme.palette.mode === 'dark'
+  const nameColor = isDark ? theme.palette.secondary.contrastText : theme.palette.primary.main
+
   if (BRAND.logoUrl) {
     return <Box component="img" src={BRAND.logoUrl} alt={BRAND.name} sx={{ height: size, width: 'auto', maxWidth: '100%', ...sx }} />
   }
@@ -21,35 +25,51 @@ const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
     )
   }
 
+  const withTagline = showTagline && Boolean(BRAND.tagline)
+
   return (
-    <Stack direction={'row'} alignItems={'center'} spacing={1.5} sx={sx}>
+    <Stack direction={'row'} alignItems={'center'} spacing={1.25} sx={sx}>
       <BrandMark size={size} />
+
+      {/* Isaret ile yaziyi ayiran ince kural: kilidi kurumsal bir butun yapar. */}
+      {withTagline && (
+        <Box
+          sx={{
+            width: '1px',
+            height: size * 0.72,
+            backgroundColor: isDark ? theme.palette.secondary.light : theme.palette.divider,
+            flexShrink: 0,
+          }}
+        />
+      )}
+
       <Box>
         <Typography
           component="span"
           sx={{
             display: 'block',
-            fontSize: size * 0.62,
-            lineHeight: 1.1,
+            fontSize: size * 0.58,
+            lineHeight: 1,
             fontWeight: 700,
-            letterSpacing: '0.08em',
-            color: 'primary.main',
+            letterSpacing: '0.1em',
+            color: nameColor,
           }}
         >
           {BRAND.name}
         </Typography>
-        {showTagline && BRAND.tagline && (
+        {withTagline && (
           <Typography
             component="span"
             sx={{
               display: 'block',
-              fontSize: Math.max(size * 0.22, 10),
+              fontSize: Math.max(size * 0.2, 9.5),
               lineHeight: 1.3,
               fontWeight: 500,
-              letterSpacing: '0.14em',
+              letterSpacing: '0.19em',
               textTransform: 'uppercase',
               color: 'text.secondary',
               whiteSpace: 'nowrap',
+              marginTop: '4px',
             }}
           >
             {BRAND.tagline}
