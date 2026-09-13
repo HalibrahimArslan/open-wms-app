@@ -185,6 +185,7 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
                       <TableCell align="left">{row.siparisMiktar / row.pieceAmount}</TableCell>
                       <TableCell align="left"></TableCell>
                       <TableCell align="left"></TableCell>
+                      {opType === 'FMK' && pieceSize > 0 ? <TableCell align="left"></TableCell> : null}
                     </StyledTableRow>
                   ) : (
                     <></>
@@ -223,19 +224,15 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
                     <TableCell sx={{ fontWeight: 'bold' }} align="left">
                       {(row.siparisMiktar - row.teslimMiktar).toFixed(2)}
                     </TableCell>
-                    {opType === 'FMK' && row.hasPiece && pieceSize > 0 ? (
-                      <>
-                        <StyledTableCell align="left">
+                    {opType === 'FMK' && pieceSize > 0 ? (
+                      <StyledTableCell align="left">
+                        {row.hasPiece ? (
                           <Button variant="contained" onClick={() => handleStart(row.barkod)}>
                             Miktar Gir
                           </Button>
-                        </StyledTableCell>
-                      </>
-                    ) : (
-                      <>
-                        <TableCell></TableCell>
-                      </>
-                    )}
+                        ) : null}
+                      </StyledTableCell>
+                    ) : null}
                   </StyledTableRow>
                 </>
               ))}
