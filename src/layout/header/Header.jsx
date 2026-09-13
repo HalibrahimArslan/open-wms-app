@@ -266,7 +266,7 @@ export default function Header() {
         }}
         className={scrollDirection === 'down' && isMobile ? 'hidden' : ''}
       >
-        <Toolbar sx={{ gap: 1, px: { xs: 1, md: 2 }, position: 'relative' }}>
+        <Toolbar sx={{ gap: 1, px: { xs: 1, md: 2 } }}>
           {/* Mobile hamburger — opens global search */}
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton size="large" edge="start" color="inherit" aria-label="aramayı aç" onClick={handleOpenSearch}>
@@ -274,12 +274,15 @@ export default function Header() {
             </IconButton>
           </Box>
 
+          {/* Sol bosluk: aramanin ortalanmasini saglar, yer daralinca once bu kaybolur */}
+          <Box sx={{ flex: 1, minWidth: 0, display: { xs: 'none', md: 'block' } }} />
+
+          {/* Arama kutusu akis icinde durur: mutlak konumlandirilirsa dar
+              ekranlarda sagdaki butonlarin altina girer. */}
           <Box
             sx={{
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '100%',
+              flex: '1 1 560px',
+              minWidth: 0,
               maxWidth: '560px',
               display: { xs: 'none', md: 'flex' },
               justifyContent: 'center',
@@ -340,7 +343,7 @@ export default function Header() {
             </Button>
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, ml: 'auto' }}>
+          <Box sx={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 1, ml: 'auto', flexShrink: 0 }}>
             <IconButton
               size="medium"
               onClick={() => navigate(`/d:${depoCode}`)}

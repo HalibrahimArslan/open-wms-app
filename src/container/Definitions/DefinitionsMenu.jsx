@@ -1,38 +1,70 @@
-import { Divider, ListItemButton, Paper } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Box, Divider, ListItemButton, Paper, Skeleton, Typography } from '@mui/material'
+import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useSWRConfig } from 'swr'
-import { getMenuTree, getMenuTreeView } from '../../services/MenuService'
+import { getMenuTree } from '../../services/MenuService'
 import { notifyError } from '../../layout/Layout'
 import usePersistedToken from '../../hooks/usePersistedToken'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'
 
+/**
+ * Bu panel, tanimlamalar rotasina karsilik gelen menu dugumunun alt
+ * kalemlerini listeler. Dugum, veritabani id'siyle degil yoluyla bulunur:
+ * id'ler kuruluma gore degistigi icin sabit bir id (eskiden menuId=97)
+ * baska bir veritabaninda hicbir seye karsilik gelmez ve panel sessizce bos
+ * kalir. Yol ise rota tanimiyla ayni oldugu icin her kurulumda gecerlidir.
+ */
+const DEFINITIONS_MENU_PATH = 'definitions'
+
+/** Menu agacinda verilen yola sahip dugumu derinlemesine arar. */
+const findMenuByPath = (nodes, path) => {
+  if (!Array.isArray(nodes)) return null
+
+  for (const node of nodes) {
+    if (node?.path === path) return node
+
+    const found = findMenuByPath(node?.children, path)
+    if (found) return found
+  }
+
+  return null
+}
+
 export default function DefinationsMenu() {
   const token = usePersistedToken()
   const nav = useNavigate()
-  const [menuList, setMenuList] = useState()
+  // null: henuz yuklenmedi, []: yuklendi ama gosterilecek kalem yok
+  const [items, setItems] = useState(null)
   const { cache } = useSWRConfig()
   const header = useAuthHeader()
   const depoCode = useDepoCode()
 
   const fetchMenuList = async () => {
-    if (cache.get('tree-menu')) {
-      setMenuList(cache.get('tree-menu'))
-    } else {
-      let query = 'menuId=97'
-      const res = await getMenuTree(header, query)
-      res && setMenuList(res)
-      cache.set('tree-menu', res)
+    try {
+      // Sol menu ayni agaci zaten cekiyor; onbellekteki veriyi yeniden
+      // kullanarak ikinci bir istek atmiyoruz.
+      let tree = cache.get('sideBarMenuTree')
+
+      if (!tree) {
+        tree = await getMenuTree(header)
+        cache.set('sideBarMenuTree', tree)
+      }
+
+      setItems(findMenuByPath(tree, DEFINITIONS_MENU_PATH)?.children ?? [])
+    } catch (error) {
+      notifyError(error.message)
+      setItems([])
     }
   }
 
   const handleListItemClick = (item) => {
     if (depoCode === undefined) {
       notifyError('Lütfen Depo Seçiniz :)')
+      return
     }
 
-    if (item.path !== null && item.path != '') {
+    if (item.path !== null && item.path !== '') {
       nav(`/d:${depoCode}/${item.path}`)
     }
   }
@@ -45,18 +77,27 @@ export default function DefinationsMenu() {
 
   return (
     <Paper elevation={3}>
-      {menuList && menuList.length > 0 && (
-        <>
-          {menuList[0].children.map((item) => {
-            return (
-              <>
-                <ListItemButton onClick={() => handleListItemClick(item)}>{item.name}</ListItemButton>
-                <Divider />
-              </>
-            )
-          })}
-        </>
+      {items === null && (
+        <Box sx={{ padding: 2 }}>
+          <Skeleton height={32} />
+          <Skeleton height={32} />
+          <Skeleton height={32} />
+        </Box>
       )}
+
+      {items !== null && items.length === 0 && (
+        <Typography variant="body2" sx={{ padding: 2, color: 'text.secondary' }}>
+          Görüntüleyebileceğiniz bir tanımlama bulunamadı.
+        </Typography>
+      )}
+
+      {items !== null &&
+        items.map((item, index) => (
+          <Fragment key={item.id ?? item.path ?? index}>
+            <ListItemButton onClick={() => handleListItemClick(item)}>{item.name}</ListItemButton>
+            {index < items.length - 1 && <Divider />}
+          </Fragment>
+        ))}
     </Paper>
   )
 }

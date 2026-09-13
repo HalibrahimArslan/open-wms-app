@@ -26,6 +26,10 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 const LeftBar = ({ menus }) => {
+  // Menu servisi beklenmedik bir sey dondurdugunde (ornegin dizi yerine hata
+  // govdesi) menus.find cagrisi tum uygulamayi cokertiyordu; sol menunun bos
+  // kalmasi, beyaz ekrana dusmekten iyidir.
+  const menuList = Array.isArray(menus) ? menus : []
   const [open, setOpen] = useState(false)
   const [selectedMenu, setSelectedMenu] = useState(null)
   const [selectedSubMenu, setSelectedSubMenu] = useState(null)
@@ -35,8 +39,8 @@ const LeftBar = ({ menus }) => {
   const theme = useTheme()
   const { dock, handleChangeDock } = useContainer(DataStore)
 
-  const selectedMenuData = menus.find((menu) => menu.id === selectedMenu)?.children || []
-  const selectedMenuName = menus.find((menu) => menu.id === selectedMenu)?.name || ''
+  const selectedMenuData = menuList.find((menu) => menu.id === selectedMenu)?.children || []
+  const selectedMenuName = menuList.find((menu) => menu.id === selectedMenu)?.name || ''
 
   const handleClickAway = () => {
     if (open && !dock) {
@@ -93,7 +97,7 @@ const LeftBar = ({ menus }) => {
                 gap: 3,
               }}
             >
-              {menus.map((menu) => {
+              {menuList.map((menu) => {
                 const isSelected = selectedMenu === menu.id
                 return (
                   <Box
