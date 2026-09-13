@@ -1,4 +1,4 @@
-import { Box, Divider, ListItemButton, Paper, Skeleton, Typography } from '@mui/material'
+import { Box, Divider, ListItemButton, Paper, Skeleton } from '@mui/material'
 import { Fragment, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useSWRConfig } from 'swr'
@@ -7,6 +7,7 @@ import { notifyError } from '../../layout/Layout'
 import usePersistedToken from '../../hooks/usePersistedToken'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 
 /**
  * Bu panel, tanimlamalar rotasina karsilik gelen menu dugumunun alt
@@ -85,11 +86,7 @@ export default function DefinationsMenu() {
         </Box>
       )}
 
-      {items !== null && items.length === 0 && (
-        <Typography variant="body2" sx={{ padding: 2, color: 'text.secondary' }}>
-          Görüntüleyebileceğiniz bir tanımlama bulunamadı.
-        </Typography>
-      )}
+      {items !== null && items.length === 0 && <EmptyState title="Tanımlama bulunamadı" dense />}
 
       {items !== null &&
         items.map((item, index) => (

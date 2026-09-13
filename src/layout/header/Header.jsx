@@ -15,6 +15,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import CheckIcon from '@mui/icons-material/Check'
 import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import AccountMenu from '../../components/MenuWrapper/AccountMenu'
 import { GridSearchIcon } from '@mui/x-data-grid'
@@ -174,11 +175,7 @@ export default function Header() {
       <Divider />
 
       {allDepoList.length === 0 ? (
-        <Box sx={{ paddingX: 2, paddingY: 2.5, maxWidth: 280 }}>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Görüntüleyebileceğiniz bir depo bulunamadı.
-          </Typography>
-        </Box>
+        <EmptyState title="Depo bulunamadı" icon={<WarehouseOutlinedIcon />} dense sx={{ maxWidth: 280 }} />
       ) : (
         allDepoList.map((depo) => {
           const isSelected = depo.code === depoCode

@@ -7,9 +7,10 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import WarehouseIcon from '@mui/icons-material/Warehouse'
+import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 import Divider from '@mui/material/Divider'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
-import { Typography } from '@mui/material'
 import useDepoCode from '../../hooks/useDepoCode'
 import { DepoContainer } from '../../store/DepoContainer'
 import { getTransferDepoCode } from '../../utils/Utils'
@@ -57,7 +58,11 @@ export default function KontrolAdres() {
           </ListItemButton>
         ))
       ) : controlAddressList && controlAddressList.length === 0 ? (
-        <Typography>Bu depoda kontrol adresi bulunmamaktadır.</Typography>
+        <EmptyState
+          title="Kontrol adresi bulunamadı"
+          description="Bu depoda tanımlı bir kontrol adresi yok. Adres tanımlarından ekledikten sonra burada listelenir."
+          icon={<WarehouseOutlinedIcon />}
+        />
       ) : (
         <LoadingSpinner />
       )}
