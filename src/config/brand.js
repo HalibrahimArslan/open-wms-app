@@ -22,8 +22,11 @@ const BRAND = {
   /** Urun adinin altinda gosterilen aciklama. */
   tagline: readEnv('REACT_APP_BRAND_TAGLINE', 'Depo Yönetim Sistemi'),
 
-  /** Dashboard'da gosterilen karsilama basligi. */
-  welcomeTitle: readEnv('REACT_APP_BRAND_WELCOME_TITLE', 'Depo Yönetim Sistemine Hoş Geldiniz'),
+  /**
+   * Dashboard'da kullanici adinin onunde gosterilen selamlama. Ad henuz
+   * yuklenmediyse ya da hic yoksa tek basina gosterilir.
+   */
+  greeting: readEnv('REACT_APP_BRAND_GREETING', 'Merhaba'),
 
   /** <title> ve meta description icin kullanilan uzun ad. */
   productName: readEnv('REACT_APP_BRAND_PRODUCT_NAME', 'WMS · Depo Yönetim Sistemi'),

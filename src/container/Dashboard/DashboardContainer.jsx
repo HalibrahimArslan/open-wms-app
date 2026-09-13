@@ -1,5 +1,5 @@
 import { Grid, Paper, Stack, Typography, useTheme } from '@mui/material'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { Outlet, useSearchParams } from 'react-router-dom'
 import BrandLogo from '../../components/Brand/BrandLogo'
 import useIsMobile from '../../hooks/useIsMobile'
@@ -9,11 +9,19 @@ import StorageRateContainer from './StorageRateContainer'
 import RayonStorageRateContainer from './RayonStorageRateContainer'
 import Seo from '../../shared/components/Seo'
 import BRAND from '../../config/brand'
+import { useContainer } from 'unstated-next'
+import { DataStore } from '../../store/DataStore'
+import { getAccountDisplayName } from '../../utils/Utils'
 
 export default function Dashboard() {
   const theme = useTheme()
   const isMobile = useIsMobile()
   const [searchParams, setSearchParams] = useSearchParams()
+  const { account } = useContainer(DataStore)
+
+  // Hesap istegi donene kadar ad bos kalir; bu durumda yalnizca selamlama
+  // gosterilir, boylece basligin icerigi sonradan yerine oturur.
+  const displayName = useMemo(() => getAccountDisplayName(account), [account])
 
   useEffect(() => {
     setSearchParams({ 'free-view': false })
@@ -34,7 +42,7 @@ export default function Dashboard() {
           >
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
               <Typography variant="h4" fontWeight={theme.typography.fontWeightMedium} align="right">
-                {BRAND.welcomeTitle}
+                {displayName ? `${BRAND.greeting}, ${displayName}` : BRAND.greeting}
               </Typography>
               {!isMobile && <BrandLogo size={48} />}
             </Stack>

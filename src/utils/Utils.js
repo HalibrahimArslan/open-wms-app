@@ -221,3 +221,30 @@ export function getTransferDepoCode(depoCode, depoList) {
   const depo = depoList.find((item) => item.code === depoCode)
   return depo ? depo.transferCode : ''
 }
+
+/**
+ * Metni Turkce kurallarina gore ad-soyad bicimine getirir.
+ *
+ * Varsayilan toUpperCase "i" harfini "I" yaptigi icin veritabaninda kucuk
+ * yazilmis adlar "Ismail" gibi hatali gorunur; locale'i acikca vererek dogru
+ * sonucu ("İsmail") aliyoruz.
+ */
+export function toTitleCaseTr(value) {
+  if (!value) return ''
+
+  return value
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0).toLocaleUpperCase('tr-TR') + word.slice(1).toLocaleLowerCase('tr-TR'))
+    .join(' ')
+}
+
+/**
+ * Hesap bilgisinden gosterilecek kullanici adini uretir: once ad soyad, yoksa
+ * kullanici adi. Hesap henuz yuklenmediyse bos doner.
+ */
+export function getAccountDisplayName(account) {
+  const fullName = [account?.firstName, account?.lastName].filter(Boolean).join(' ')
+
+  return toTitleCaseTr(fullName || account?.login || '')
+}
