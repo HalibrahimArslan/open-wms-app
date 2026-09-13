@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Chip, CircularProgress, Divider, Drawer, Grid, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { DataGrid, GridToolbar, trTR } from '@mui/x-data-grid'
+import TablePanel, { dataGridSx } from '../../../shared/components/Table/TablePanel'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { executeServiceMikro, getFirmOrderBulkList } from '../../../services/MikroService'
@@ -19,6 +20,8 @@ import { useContainer } from 'unstated-next'
 import { DepoContainer } from '../../../store/DepoContainer'
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  // Cerceve ve baslik gorunumu TablePanel ile ortak
+  ...dataGridSx(theme),
   '& .sticky-actions-column': {
     position: 'sticky',
     left: 0,
@@ -593,91 +596,93 @@ export default function OrderProgressSevkiyat() {
       </Drawer>
 
       <Grid item xs={12}>
-        <StyledDataGrid
-          rows={filteredBulkList}
-          columns={columns}
-          sx={{ height: 'calc(100vh - 440px)', minHeight: 500 }}
-          getRowId={(row) => row.id}
-          getRowClassName={(params) => {
-            const row = params.row
-            return isRowSelectableData(row) ? '' : 'not-selectable-row'
-          }}
-          checkboxSelection
-          selectionModel={selectionModel}
-          onRowSelectionModelChange={(newSelection) => {
-            const beforeFilterCount = newSelection.length
-            let selectedOrders = bulkList.filter((item) => newSelection.includes(item.id))
-            selectedOrders = selectedOrders.filter(isRowSelectableData)
-            const droppedBySelectability = beforeFilterCount - selectedOrders.length
-            newSelection = selectedOrders.map((o) => o.id)
+        <TablePanel title="Sipariş Listesi" meta={<Chip size="small" variant="outlined" label={`${filteredBulkList.length} sipariş`} />}>
+          <StyledDataGrid
+            rows={filteredBulkList}
+            columns={columns}
+            sx={{ height: 'calc(100vh - 440px)', minHeight: 500 }}
+            getRowId={(row) => row.id}
+            getRowClassName={(params) => {
+              const row = params.row
+              return isRowSelectableData(row) ? '' : 'not-selectable-row'
+            }}
+            checkboxSelection
+            selectionModel={selectionModel}
+            onRowSelectionModelChange={(newSelection) => {
+              const beforeFilterCount = newSelection.length
+              let selectedOrders = bulkList.filter((item) => newSelection.includes(item.id))
+              selectedOrders = selectedOrders.filter(isRowSelectableData)
+              const droppedBySelectability = beforeFilterCount - selectedOrders.length
+              newSelection = selectedOrders.map((o) => o.id)
 
-            const hasMG = selectedOrders.some((o) => isMGOrder(o.orderNo))
-            const hasOthers = selectedOrders.some((o) => isOtherOrder(o.orderNo))
+              const hasMG = selectedOrders.some((o) => isMGOrder(o.orderNo))
+              const hasOthers = selectedOrders.some((o) => isOtherOrder(o.orderNo))
 
-            if (hasMG && hasOthers) {
-              const keepMG = selectedOrders.filter((o) => isMGOrder(o.orderNo))
-              const keepOthers = selectedOrders.filter((o) => isOtherOrder(o.orderNo))
+              if (hasMG && hasOthers) {
+                const keepMG = selectedOrders.filter((o) => isMGOrder(o.orderNo))
+                const keepOthers = selectedOrders.filter((o) => isOtherOrder(o.orderNo))
 
-              const previousType = selectionModel.length > 0 ? (isMGOrder(bulkList.find((o) => o.id === selectionModel[0])?.orderNo) ? 'MG' : 'Other') : null
+                const previousType = selectionModel.length > 0 ? (isMGOrder(bulkList.find((o) => o.id === selectionModel[0])?.orderNo) ? 'MG' : 'Other') : null
 
-              const lastSelectedId = newSelection[newSelection.length - 1]
-              const lastSelectedOrder = bulkList.find((o) => o.id === lastSelectedId)
-              const fallbackType = isMGOrder(lastSelectedOrder?.orderNo) ? 'MG' : 'Other'
+                const lastSelectedId = newSelection[newSelection.length - 1]
+                const lastSelectedOrder = bulkList.find((o) => o.id === lastSelectedId)
+                const fallbackType = isMGOrder(lastSelectedOrder?.orderNo) ? 'MG' : 'Other'
 
-              const preferredType = previousType || fallbackType
-              const finalOrders = preferredType === 'MG' ? keepMG : keepOthers
-              const droppedLabel = preferredType === 'MG' ? 'Diğer' : 'MG'
+                const preferredType = previousType || fallbackType
+                const finalOrders = preferredType === 'MG' ? keepMG : keepOthers
+                const droppedLabel = preferredType === 'MG' ? 'Diğer' : 'MG'
 
-              notify(`MG ile diğer tipler birlikte seçilemez. ${preferredType === 'MG' ? 'MG' : 'Diğer'} siparişler korundu, ${droppedLabel} siparişler kaldırıldı.`)
+                notify(`MG ile diğer tipler birlikte seçilemez. ${preferredType === 'MG' ? 'MG' : 'Diğer'} siparişler korundu, ${droppedLabel} siparişler kaldırıldı.`)
 
-              setSelectionModel(finalOrders.map((o) => o.id))
-              setSelectedOrderList(finalOrders)
-              return
-            }
+                setSelectionModel(finalOrders.map((o) => o.id))
+                setSelectedOrderList(finalOrders)
+                return
+              }
 
-            if (droppedBySelectability > 0) {
-              notify(`${droppedBySelectability} sipariş seçilemediği için seçimden çıkarıldı.`)
-            }
+              if (droppedBySelectability > 0) {
+                notify(`${droppedBySelectability} sipariş seçilemediği için seçimden çıkarıldı.`)
+              }
 
-            setSelectionModel(newSelection)
-            setSelectedOrderList(selectedOrders)
-          }}
-          disableSelectionOnClick
-          isRowSelectable={(params) => {
-            const row = params.row
+              setSelectionModel(newSelection)
+              setSelectedOrderList(selectedOrders)
+            }}
+            disableSelectionOnClick
+            isRowSelectable={(params) => {
+              const row = params.row
 
-            if (!isRowSelectableData(row)) return false
+              if (!isRowSelectableData(row)) return false
 
-            const rowIsMG = isMGOrder(row.orderNo)
+              const rowIsMG = isMGOrder(row.orderNo)
 
-            const selectionHasMG = selectionModel.some((id) => {
-              const order = bulkList.find((o) => o.id === id)
-              return isMGOrder(order?.orderNo)
-            })
+              const selectionHasMG = selectionModel.some((id) => {
+                const order = bulkList.find((o) => o.id === id)
+                return isMGOrder(order?.orderNo)
+              })
 
-            const selectionHasOthers = selectionModel.some((id) => {
-              const order = bulkList.find((o) => o.id === id)
-              return isOtherOrder(order?.orderNo)
-            })
+              const selectionHasOthers = selectionModel.some((id) => {
+                const order = bulkList.find((o) => o.id === id)
+                return isOtherOrder(order?.orderNo)
+              })
 
-            if (selectionHasMG) return rowIsMG
-            if (selectionHasOthers) return !rowIsMG
+              if (selectionHasMG) return rowIsMG
+              if (selectionHasOthers) return !rowIsMG
 
-            return true
-          }}
-          localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-          loading={loading}
-          slots={{
-            loadingOverlay: GridLoadingOverlay,
-          }}
-          components={{ Toolbar: GridToolbar }}
-          componentsProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-        />
+              return true
+            }}
+            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
+            loading={loading}
+            slots={{
+              loadingOverlay: GridLoadingOverlay,
+            }}
+            components={{ Toolbar: GridToolbar }}
+            componentsProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
+          />
+        </TablePanel>
       </Grid>
 
       <Button

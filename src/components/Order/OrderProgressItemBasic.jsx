@@ -1,5 +1,7 @@
-import { Table, TableContainer, TableHead, TableCell, TableBody, TableRow, Box, useMediaQuery, TextField, Paper, IconButton } from '@mui/material'
+import { Table, TableContainer, TableHead, TableCell, TableBody, TableRow, Box, useMediaQuery, Chip, Tooltip } from '@mui/material'
 import { Button, Stack, Typography } from '@mui/material'
+import TablePanel, { tableHeadSx } from '../../shared/components/Table/TablePanel'
+import TableSearchField from '../../shared/components/Table/TableSearchField'
 import React, { useCallback, useMemo } from 'react'
 import { useEffect } from 'react'
 import { useState } from 'react'
@@ -124,115 +126,123 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
 
   return (
     <Box p={2}>
-      <Stack
-        sx={{ bgcolor: theme.palette.secondary.main, borderRadius: theme.shape.borderRadius }}
-        direction={'row'}
-        justifyContent={'flex-end'}
-        alignItems={'center'}
-        spacing={2}
-        p={2}
+      <TablePanel
+        title="Sipariş Kalemleri"
+        meta={<Chip size="small" variant="outlined" label={`${list.length} kalem`} />}
+        actions={
+          <>
+            <TableSearchField placeholder="Stok adı ara" onChange={handleChange} />
+            <Tooltip title="Excel'e aktar">
+              <Button
+                onClick={handleExportListExcel}
+                variant="outlined"
+                color="success"
+                startIcon={<img src={excelimg} alt="" width={18} height={18} />}
+                sx={{ whiteSpace: 'nowrap', borderRadius: 2 }}
+              >
+                Excel
+              </Button>
+            </Tooltip>
+          </>
+        }
       >
-        <TextField size="small" variant="outlined" placeholder="Stok Adı Giriniz" id="outlined-search" onChange={handleChange} />
-        <IconButton>
-          <img src={excelimg} alt="Excel indir" width={30} height={30} onClick={handleExportListExcel} />
-        </IconButton>
-      </Stack>
-      <TableContainer sx={{ display: 'flex' }}>
-        <Table aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              {opType !== 'FMK' ? (
-                <>
-                  <TableCell align="left">Adresler</TableCell>
-                </>
-              ) : (
-                <></>
-              )}
-
-              <TableCell align="left">Stok Kodu</TableCell>
-              <TableCell align="left">Ürün Adı</TableCell>
-              <TableCell align="left">Barkod</TableCell>
-              <TableCell align="left">Siparis Miktar</TableCell>
-              <TableCell align="left">Teslim Miktar</TableCell>
-              <TableCell align="left">Kalan Miktar</TableCell>
-              {opType === 'FMK' && pieceSize > 0 ? (
-                <>
-                  <StyledTableCell align="left">Miktar Gir</StyledTableCell>
-                </>
-              ) : (
-                <></>
-              )}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {data.map((row) => (
-              <>
-                {row.isPiece ? (
-                  <StyledTableRow>
-                    <TableCell align="left">Parça Sahibi</TableCell>
-                    <TableCell align="left">{row.pieceMaster.stokKodu}</TableCell>
-                    <TableCell align="left">{row.pieceMaster.stokAdi}</TableCell>
-                    <TableCell align="left"></TableCell>
-                    <TableCell align="left">{row.siparisMiktar / row.pieceAmount}</TableCell>
-                    <TableCell align="left"></TableCell>
-                    <TableCell align="left"></TableCell>
-                  </StyledTableRow>
+        <TableContainer sx={{ display: 'flex' }}>
+          <Table aria-label="simple table">
+            <TableHead sx={tableHeadSx}>
+              <TableRow>
+                {opType !== 'FMK' ? (
+                  <>
+                    <TableCell align="left">Adresler</TableCell>
+                  </>
                 ) : (
                   <></>
                 )}
 
-                <StyledTableRow siparisMiktar={row.siparisMiktar} teslimMiktar={row.teslimMiktar} key={row.stokKodu} isPiece={row.hasPiece}>
-                  {opType !== 'FMK' ? (
-                    <TableCell align="right">
-                      <Stack sx={{ overflow: 'auto', height: '100px' }}>
-                        {adresList && adresList.length > 0 ? (
-                          adresList.filter((todo) => todo.stockCode === row.stokKodu).map((cycle) => <Typography align="left">{cycle.address}</Typography>)
-                        ) : (
-                          <></>
-                        )}
-                      </Stack>
-                    </TableCell>
+                <TableCell align="left">Stok Kodu</TableCell>
+                <TableCell align="left">Ürün Adı</TableCell>
+                <TableCell align="left">Barkod</TableCell>
+                <TableCell align="left">Siparis Miktar</TableCell>
+                <TableCell align="left">Teslim Miktar</TableCell>
+                <TableCell align="left">Kalan Miktar</TableCell>
+                {opType === 'FMK' && pieceSize > 0 ? (
+                  <>
+                    <StyledTableCell align="left">Miktar Gir</StyledTableCell>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row) => (
+                <>
+                  {row.isPiece ? (
+                    <StyledTableRow>
+                      <TableCell align="left">Parça Sahibi</TableCell>
+                      <TableCell align="left">{row.pieceMaster.stokKodu}</TableCell>
+                      <TableCell align="left">{row.pieceMaster.stokAdi}</TableCell>
+                      <TableCell align="left"></TableCell>
+                      <TableCell align="left">{row.siparisMiktar / row.pieceAmount}</TableCell>
+                      <TableCell align="left"></TableCell>
+                      <TableCell align="left"></TableCell>
+                    </StyledTableRow>
                   ) : (
                     <></>
                   )}
 
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {row.stokKodu}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {row.stokAdi}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {row.barkod}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {row.siparisMiktar}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {row.teslimMiktar}
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                    {(row.siparisMiktar - row.teslimMiktar).toFixed(2)}
-                  </TableCell>
-                  {opType === 'FMK' && row.hasPiece && pieceSize > 0 ? (
-                    <>
-                      <StyledTableCell align="left">
-                        <Button variant="contained" onClick={() => handleStart(row.barkod)}>
-                          Miktar Gir
-                        </Button>
-                      </StyledTableCell>
-                    </>
-                  ) : (
-                    <>
-                      <TableCell></TableCell>
-                    </>
-                  )}
-                </StyledTableRow>
-              </>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                  <StyledTableRow siparisMiktar={row.siparisMiktar} teslimMiktar={row.teslimMiktar} key={row.stokKodu} isPiece={row.hasPiece}>
+                    {opType !== 'FMK' ? (
+                      <TableCell align="right">
+                        <Stack sx={{ overflow: 'auto', height: '100px' }}>
+                          {adresList && adresList.length > 0 ? (
+                            adresList.filter((todo) => todo.stockCode === row.stokKodu).map((cycle) => <Typography align="left">{cycle.address}</Typography>)
+                          ) : (
+                            <></>
+                          )}
+                        </Stack>
+                      </TableCell>
+                    ) : (
+                      <></>
+                    )}
+
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {row.stokKodu}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {row.stokAdi}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {row.barkod}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {row.siparisMiktar}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {row.teslimMiktar}
+                    </TableCell>
+                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      {(row.siparisMiktar - row.teslimMiktar).toFixed(2)}
+                    </TableCell>
+                    {opType === 'FMK' && row.hasPiece && pieceSize > 0 ? (
+                      <>
+                        <StyledTableCell align="left">
+                          <Button variant="contained" onClick={() => handleStart(row.barkod)}>
+                            Miktar Gir
+                          </Button>
+                        </StyledTableCell>
+                      </>
+                    ) : (
+                      <>
+                        <TableCell></TableCell>
+                      </>
+                    )}
+                  </StyledTableRow>
+                </>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </TablePanel>
     </Box>
   )
 }

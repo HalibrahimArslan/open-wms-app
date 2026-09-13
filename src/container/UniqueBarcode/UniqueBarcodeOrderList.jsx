@@ -14,6 +14,8 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import ViewInArIcon from '@mui/icons-material/ViewInAr'
 import excelimg from '../../assets/images/cards/excel.png'
 import * as XLSX from 'xlsx'
+import TablePanel, { tableHeadSx } from '../../shared/components/Table/TablePanel'
+import TableSearchField from '../../shared/components/Table/TableSearchField'
 
 // Parçalı bir ürünün partialList'inden düz parça listesi çıkarır.
 // partialList: [{ packageCode, packageDetail: [{ stockCode, stockName, barcode, quantity }] }]
@@ -211,37 +213,17 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
 
   return (
     <Box p={2}>
-      <Paper variant="outlined" sx={{ borderRadius: 2, overflow: 'hidden' }}>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          justifyContent="space-between"
-          alignItems={{ xs: 'stretch', sm: 'center' }}
-          spacing={1.5}
-          sx={{ px: 2, py: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}
-        >
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography variant="subtitle1" fontWeight={700}>
-              Sipariş Kalemleri
-            </Typography>
+      <TablePanel
+        title="Sipariş Kalemleri"
+        meta={
+          <>
             <Chip size="small" variant="outlined" label={`${list.length} kalem`} />
             <Chip size="small" color="primary" label={`${scannedTotal} okutuldu`} />
-          </Stack>
-          <Stack direction="row" spacing={1} alignItems="center">
-            <TextField
-              size="small"
-              variant="outlined"
-              placeholder="Stok adı ara"
-              id="outlined-search"
-              onChange={handleChange}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" color="action" />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ width: { xs: '100%', sm: 240 }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
-            />
+          </>
+        }
+        actions={
+          <>
+            <TableSearchField placeholder="Stok adı ara" onChange={handleChange} />
             <Tooltip title="Excel'e aktar">
               <Button
                 onClick={handleExportListExcel}
@@ -253,11 +235,12 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                 Excel
               </Button>
             </Tooltip>
-          </Stack>
-        </Stack>
+          </>
+        }
+      >
         <TableContainer sx={{ display: 'flex' }}>
           <Table aria-label="simple table">
-            <TableHead>
+            <TableHead sx={tableHeadSx}>
               <TableRow>
                 {opType !== 'FMK' ? (
                   <>
@@ -543,7 +526,7 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
             </TableBody>
           </Table>
         </TableContainer>
-      </Paper>
+      </TablePanel>
     </Box>
   )
 }
