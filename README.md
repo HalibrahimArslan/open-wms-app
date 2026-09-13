@@ -22,8 +22,19 @@ npm start
 ```
 
 Uygulama http://localhost:3000 adresinde açılır. `npm start` sırasında `/api` ve
-`/ws` istekleri [src/setupProxy.js](src/setupProxy.js) üzerinden `.env.local`
-içindeki `API_PROXY_TARGET` adresine yönlendirilir.
+WebSocket istekleri [src/setupProxy.js](src/setupProxy.js) üzerinden `.env.local`
+içindeki `API_PROXY_TARGET` / `WS_PROXY_TARGET` adreslerine yönlendirilir.
+
+### WebSocket yolu hakkında
+
+webpack-dev-server kendi hot-reload soketini `/ws` yolunda açar ve upgrade
+isteklerini proxy'den **önce** yakalar. Bu yüzden geliştirmede uygulamanın
+bildirim soketi `/ws` üzerinden backend'e ulaşamaz; sessizce hot-reload
+soketine bağlanır. Çözüm olarak yol yapılandırılabilir yapılmıştır:
+`.env.local` içine `REACT_APP_WS_PATH=/wsapi` yazıldığında hem tarayıcı tarafı
+([src/config/api.js](src/config/api.js)) hem de proxy aynı yolu kullanır.
+Üretimde dev-server olmadığı için değişken tanımlanmaz ve varsayılan `/ws`
+geçerlidir.
 
 ## Komutlar
 

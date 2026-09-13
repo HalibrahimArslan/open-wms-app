@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState, useRef } from 'react'
+import { getWebSocketUrl } from '../config/api'
 
 const NotificationContext = createContext()
 
@@ -10,7 +11,7 @@ export const NotificationProvider = ({ children }) => {
 
   const connectWebSocket = () => {
     try {
-      const ws = new WebSocket(`${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${window.location.host}/ws`)
+      const ws = new WebSocket(getWebSocketUrl())
       wsRef.current = ws
 
       ws.onopen = () => {
