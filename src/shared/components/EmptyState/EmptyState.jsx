@@ -9,10 +9,14 @@ import InboxRoundedIcon from '@mui/icons-material/InboxRounded'
  * Butun bu anlatimlar buraya baglandi ki her ekranda ayni dili konussun.
  *
  * dense: menu, panel, cekmece gibi dar alanlar icin daha az bosluk birakir.
+ * image: ikon balonunun yerine gecen illustrasyon. Bazi bos ekranlar bir cizim
+ * gosteriyordu; anlatimi ortaklastirirken cizimi atmamak icin ayri bir prop
+ * olarak durur, ikonla birlikte degil onun yerine kullanilir.
  */
-export default function EmptyState({ title, description, icon, action, dense = false, sx }) {
+export default function EmptyState({ title, description, icon, image, imageAlt = '', action, dense = false, sx }) {
   const theme = useTheme()
   const iconSize = dense ? 36 : 52
+  const imageSize = dense ? 120 : 168
 
   return (
     <Box
@@ -29,21 +33,36 @@ export default function EmptyState({ title, description, icon, action, dense = f
         ...sx,
       }}
     >
-      <Box
-        sx={{
-          width: iconSize,
-          height: iconSize,
-          borderRadius: '50%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: theme.palette.secondary.main,
-          color: 'text.disabled',
-          '& > *': { fontSize: iconSize * 0.52 },
-        }}
-      >
-        {icon || <InboxRoundedIcon />}
-      </Box>
+      {image ? (
+        <Box
+          component="img"
+          src={image}
+          alt={imageAlt}
+          sx={{
+            width: imageSize,
+            height: imageSize,
+            maxWidth: '100%',
+            borderRadius: '50%',
+            objectFit: 'cover',
+          }}
+        />
+      ) : (
+        <Box
+          sx={{
+            width: iconSize,
+            height: iconSize,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: theme.palette.secondary.main,
+            color: 'text.disabled',
+            '& > *': { fontSize: iconSize * 0.52 },
+          }}
+        >
+          {icon || <InboxRoundedIcon />}
+        </Box>
+      )}
 
       <Box>
         <Typography variant={dense ? 'body2' : 'subtitle1'} sx={{ fontWeight: 600, color: 'text.secondary' }}>
