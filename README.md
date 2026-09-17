@@ -103,13 +103,44 @@ yeterlidir.
 
 ## Dağıtım
 
-[Dockerfile](Dockerfile) çok aşamalı derleme yapar ve çıktıyı
-[nginx.conf](nginx.conf) ile Nginx üzerinden sunar:
+[Dockerfile](Dockerfile) çok aşamalı derleme yapar: React çıktısı Nginx imajına
+kopyalanır ve [nginx.conf.template](nginx.conf.template) ile sunulur.
+
+Bu Nginx yalnızca statik dosya sunmaz, **aynı zamanda ters vekildir**. Uygulama
+`/api` ve `/ws` çağrılarını sayfayla aynı origin'e relative yapar
+([src/config/api.js](src/config/api.js)), dolayısıyla bu yolların backend'e
+iletilmesi gerekir. Yönlendirme tablosu geliştirmedeki
+[src/setupProxy.js](src/setupProxy.js) ile birebir aynıdır:
+
+| Yol | Hedef |
+| --- | --- |
+| `/api/print` | Döküman (print) servisi — `PRINT_UPSTREAM` |
+| `/api` | WMS API — `API_UPSTREAM` |
+| `/ws` | WMS API, WebSocket upgrade ile — `API_UPSTREAM` |
+| `/` | Statik build, SPA fallback ile |
+| `/healthz` | Container'ın kendi sağlık yanıtı (backend'e dokunmaz) |
+
+Hedefler **çalışma anında** verilir; `REACT_APP_*` değişkenlerinden farkı budur,
+değiştirmek için imaj yeniden derlenmez:
+
+| Değişken | Varsayılan | Açıklama |
+| --- | --- | --- |
+| `API_UPSTREAM` | `backend:3000` | WMS API adresi (`host:port`) |
+| `PRINT_UPSTREAM` | `print:3200` | Döküman servisi adresi |
+| `DNS_RESOLVER` | `127.0.0.11` | Docker'ın gömülü DNS'i; upstream adresleri periyodik yeniden çözülür, böylece backend yeniden başlayıp IP değiştirdiğinde 502 oluşmaz |
+| `MAX_UPLOAD_SIZE` | `50m` | `client_max_body_size` (dosya yükleme uçları) |
 
 ```bash
 docker build -t wms-web:latest .
-docker run -p 8080:80 wms-web:latest
+docker run -p 8080:80 \
+  -e API_UPSTREAM=backend:3000 \
+  -e PRINT_UPSTREAM=print:3200 \
+  wms-web:latest
 ```
+
+Aynı ağdaki servis adlarıyla çalışır; Compose kullanılıyorsa `API_UPSTREAM`
+değeri backend servisinin adı olur. TLS bu container'da sonlanmaz: önde bir
+vekil varsa `X-Forwarded-Proto` başlığı olduğu gibi backend'e geçirilir.
 
 Kubernetes'e dağıtım henüz pipeline'a bağlı değildir; imaj GHCR'dan çekilerek
 hedef ortama elle ya da ayrı bir deploy workflow'u ile uygulanır.

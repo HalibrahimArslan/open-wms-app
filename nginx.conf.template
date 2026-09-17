@@ -1,0 +1,92 @@
+# Üretimde tüm istekler tek origin üzerinden gelir: uygulama /api ve /ws
+# yollarını sayfayla aynı host'a relative çağırır (src/config/api.js). Bu yüzden
+# statik dosyaları sunan bu nginx aynı zamanda ters vekildir ve yönlendirme
+# tablosu geliştirmedeki src/setupProxy.js ile birebir aynıdır:
+#
+#   /api/print -> döküman (print) servisi
+#   /api       -> WMS API
+#   /ws        -> WMS API (WebSocket)
+#
+# Hedefler çalışma anında verilir: nginx:alpine imajı /etc/nginx/templates
+# altındaki bu dosyada envsubst çalıştırır, varsayılanları Dockerfile tutar.
+
+# Docker'ın gömülü DNS'i. Upstream adresleri değişken üzerinden çözülür; aksi
+# halde nginx adresi yalnızca açılışta çözer ve backend yeniden başlayıp IP
+# değiştirdiğinde eski adrese takılıp 502 vermeye başlar.
+resolver ${DNS_RESOLVER} valid=10s ipv6=off;
+
+# TLS önde bir vekilde sonlanıyorsa şema bilgisi X-Forwarded-Proto ile gelir;
+# gelmiyorsa isteğin kendi şemasına düşülür.
+map $http_x_forwarded_proto $forwarded_proto {
+  default $scheme;
+  ~.      $http_x_forwarded_proto;
+}
+
+server {
+  listen 80;
+  error_log /var/log/nginx/error.log;
+  access_log /var/log/nginx/access.log;
+
+  # /api/multiple-file-upload ile dosya yüklenir (src/services/MinioService.js).
+  client_max_body_size ${MAX_UPLOAD_SIZE};
+
+  gzip on;
+  gzip_types text/css application/javascript application/json image/svg+xml;
+  gzip_min_length 1024;
+
+  # Geçiş sırasında ve compose healthcheck'inde container'ın kendi sağlığını
+  # backend'e dokunmadan ölçmek için.
+  location = /healthz {
+    access_log off;
+    return 200 "ok\n";
+  }
+
+  # Yazdırma ayrı serviste. Konum sırası önemli değil; nginx en uzun eşleşen
+  # prefix'i seçer, bu blok /api'den önce gelmese de kazanır.
+  location /api/print {
+    set $print_upstream ${PRINT_UPSTREAM};
+    proxy_pass http://$print_upstream$request_uri;
+    include /etc/nginx/proxy-common.conf;
+    # PDF üretimi uzun sürebilir.
+    proxy_read_timeout 300s;
+  }
+
+  location /api {
+    set $api_upstream ${API_UPSTREAM};
+    proxy_pass http://$api_upstream$request_uri;
+    include /etc/nginx/proxy-common.conf;
+  }
+
+  location /ws {
+    set $ws_upstream ${API_UPSTREAM};
+    proxy_pass http://$ws_upstream$request_uri;
+    include /etc/nginx/proxy-common.conf;
+    # Upgrade başlıkları olmadan soket hata vermez, sessizce bağlanamaz.
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    # Bildirim soketi sessiz kaldığında düşmesin.
+    proxy_read_timeout 3600s;
+    proxy_send_timeout 3600s;
+  }
+
+  # CRA çıktısındaki dosya adları hash'lidir, sonsuza dek önbelleklenebilir.
+  location /static/ {
+    root /usr/share/nginx/html;
+    expires 1y;
+    add_header Cache-Control "public, immutable";
+  }
+
+  location / {
+    root   /usr/share/nginx/html;
+    index  index.html index.htm;
+    try_files $uri $uri/ /index.html;
+    # index.html önbelleğe alınırsa yeni sürümden sonra tarayıcı silinmiş
+    # bundle'ları istemeye devam eder.
+    add_header Cache-Control "no-store";
+  }
+
+  error_page 500 502 503 504 /50x.html;
+  location = /50x.html {
+    root  /usr/share/nginx/html;
+  }
+}
