@@ -1,13 +1,27 @@
-/* Giris ekrani arka plani. Renkler tema paletiyle (primary / warning) uyumlu
-   tutulur; markalama degistiginde tema uzerinden guncellenir. */
+/* Giris ekrani: sol tarafta canli marka paneli, sagda form paneli.
+   Renkler tema paletiyle (primary / warning / error) uyumlu tutulur;
+   markalama degistiginde tema uzerinden guncellenir. */
 .login {
   display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.login-visual {
+  position: relative;
+  flex: 1 1 55%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: linear-gradient(-45deg, #3d1b22, #582931, #7a3d47, #d4845a);
+  overflow: hidden;
+  isolation: isolate;
+  /* Degrade yalnizca primary ailesinde kalir. Warning (#d4845a) tonu degrade
+     duragi olarak kullanilirsa primary ile karisip camurlu bir kahveye doner;
+     bu yuzden sicak vurgu sadece isik kurelerinde yasar. */
+  background: linear-gradient(-45deg, #2a1519, #3d1b22, #582931, #7a3d47);
   background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  animation: gradient 18s ease infinite;
 }
 
 @keyframes gradient {
@@ -21,5 +35,293 @@
 
   100% {
     background-position: 0% 50%;
+  }
+}
+
+/* Surukleneren isik kureleri: derinlik ve canlilik katar. */
+.login-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.login-orb--warm {
+  width: 440px;
+  height: 440px;
+  top: -130px;
+  right: -120px;
+  background: rgba(212, 132, 90, 0.75);
+  animation: drift-warm 16s ease-in-out infinite;
+}
+
+.login-orb--coral {
+  width: 360px;
+  height: 360px;
+  bottom: -120px;
+  left: -90px;
+  background: rgba(248, 131, 121, 0.5);
+  animation: drift-coral 20s ease-in-out infinite;
+}
+
+.login-orb--rose {
+  width: 300px;
+  height: 300px;
+  top: 45%;
+  right: 18%;
+  background: rgba(242, 228, 230, 0.35);
+  animation: drift-rose 24s ease-in-out infinite;
+}
+
+@keyframes drift-warm {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.85;
+  }
+
+  33% {
+    transform: translate(-70px, 80px) scale(1.15);
+    opacity: 1;
+  }
+
+  66% {
+    transform: translate(40px, 140px) scale(0.95);
+    opacity: 0.7;
+  }
+}
+
+@keyframes drift-coral {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.7;
+  }
+
+  40% {
+    transform: translate(120px, -110px) scale(1.2);
+    opacity: 1;
+  }
+
+  70% {
+    transform: translate(60px, -40px) scale(0.9);
+    opacity: 0.6;
+  }
+}
+
+@keyframes drift-rose {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(0.9);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translate(-160px, -120px) scale(1.25);
+    opacity: 0.9;
+  }
+}
+
+/* Panelden gecen ince isik huzmesi. */
+.login-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, 0.14) 50%, transparent 62%);
+  background-size: 300% 100%;
+  animation: shine 9s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 180% 0;
+  }
+
+  55%,
+  100% {
+    background-position: -80% 0;
+  }
+}
+
+.login-brand {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.login-brand > * {
+  opacity: 0;
+  animation: rise-in 0.7s ease forwards;
+}
+
+.login-brand > *:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.login-brand > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.login-brand > *:nth-child(3) {
+  animation-delay: 0.35s;
+}
+
+/* Marka isareti: once yerine oturur, sonra yavasca suzulmeye baslar.
+   Iki animasyon da transform kullandigi icin float, rise-in bittikten sonra
+   basliyacak sekilde geciktirilir; aksi halde ikisi birbirini ezer. */
+.login-mark {
+  animation: rise-in 0.7s ease 0.05s forwards, float-mark 6s ease-in-out 0.75s infinite;
+  filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.35));
+}
+
+@keyframes float-mark {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(2deg);
+  }
+}
+
+/* Memnuniyet yorumlari: marka kilidinin altinda, panelin dibine yaslanir. */
+.login-quotes {
+  position: absolute;
+  bottom: 3rem;
+  /* Ortalama margin ile yapilir: rise-in animasyonu transform'u kullandigi
+     icin translateX(-50%) ile ortalamak animasyon bitince kaymaya yol acar. */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  z-index: 1;
+  width: min(440px, 78%);
+  text-align: center;
+  opacity: 0;
+  animation: rise-in 0.7s ease 0.5s forwards;
+}
+
+/* Isik kureleri zemini yer yer acikttigi icin beyaz yazilar golgeyle ayrilir. */
+.login-title {
+  text-shadow: 0 2px 18px rgba(28, 11, 14, 0.55);
+}
+
+.login-quote {
+  min-height: 118px;
+  animation: quote-in 0.6s ease;
+}
+
+@keyframes quote-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.login-dot {
+  width: 22px;
+  height: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.3);
+  transition: background 0.25s ease, width 0.25s ease;
+}
+
+.login-dot:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.login-dot--active {
+  width: 34px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Alcak ekranlarda yorumlar marka kilidiyle cakisir; gizlenir. */
+@media (max-height: 680px) {
+  .login-quotes {
+    display: none;
+  }
+}
+
+.login-panel {
+  flex: 1 1 45%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.login-form-wrap {
+  width: 380px;
+  max-width: calc(100vw - 3rem);
+}
+
+.login-form-wrap > * {
+  opacity: 0;
+  animation: rise-in 0.6s ease forwards;
+}
+
+.login-form-wrap > *:nth-child(1) {
+  animation-delay: 0.15s;
+}
+
+.login-form-wrap > *:nth-child(2) {
+  animation-delay: 0.28s;
+}
+
+.login-form-wrap > *:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.login-form-wrap > *:nth-child(4) {
+  animation-delay: 0.52s;
+}
+
+.login-form-wrap > *:nth-child(5) {
+  animation-delay: 0.62s;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 899px) {
+  .login-visual {
+    display: none;
+  }
+
+  .login-panel {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-visual,
+  .login-orb,
+  .login-shine,
+  .login-mark,
+  .login-brand > *,
+  .login-form-wrap > *,
+  .login-quotes,
+  .login-quote {
+    animation: none;
+    opacity: 1;
   }
 }

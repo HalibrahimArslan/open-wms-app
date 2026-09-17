@@ -4,7 +4,7 @@ import AuthView from './AuthView'
 
 const ResetPasswordView = () => {
   return (
-    <AuthView>
+    <AuthView title="Şifre sıfırla" subtitle="Hesabınız için yeni bir şifre belirleyin.">
       <Seo title={'Şifre Sıfırla'} />
       <ResetPasswordContainer />
     </AuthView>

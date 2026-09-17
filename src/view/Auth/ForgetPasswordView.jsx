@@ -4,7 +4,7 @@ import AuthView from './AuthView'
 
 const ForgetPasswordView = () => {
   return (
-    <AuthView>
+    <AuthView title="Şifremi unuttum" subtitle="Sıfırlama bağlantısı için e-posta adresinizi girin.">
       <Seo title={'Şifremi Unuttum'} />
       <ForgetPasswordContainer />
     </AuthView>
