@@ -12,7 +12,7 @@ import useDepoCode from '../../hooks/useDepoCode'
 import usePayload from '../../hooks/usePayload'
 import { getDepoUrunStockAddressByDepoAndBarcode } from '../../services/AdressService'
 import { getProductAddresses } from '../../services/ProductAddressService'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getProductInfo } from '../../services/MikroService'
 import { DataStore } from '../../store/DataStore'
 
 export default function ProductAddressSearchContainer({ processType }) {
@@ -31,19 +31,16 @@ export default function ProductAddressSearchContainer({ processType }) {
   }
 
   const payload = usePayload({
-    data: {
-      stokKodu: '',
-      stokAdi: '',
-      barkod: barcode,
-      barkodList: [''],
-      depoNo: depoCode,
-    },
-    serviceName: 'stokService.stokDetaySorgula',
+    stokKodu: '',
+    stokAdi: '',
+    barkod: barcode,
+    barkodList: [''],
+    depoNo: depoCode,
   })
 
   const fetchExecuteData = async () => {
     try {
-      const res = await executeServiceMikro(payload)
+      const res = await getProductInfo(payload)
       if (res && res.length > 0) {
         handleProduct(res[0])
         return 'success'

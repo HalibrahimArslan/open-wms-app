@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getWaybillList } from '../../services/MikroService'
 import usePayload from '../../hooks/usePayload'
 import { notifyError } from '../../layout/Layout'
 import { Avatar, Box, Divider, Grid, Skeleton, styled, Typography, useTheme } from '@mui/material'
@@ -93,29 +93,23 @@ const WaybillChartContainer = () => {
 
   const theme = useTheme()
   const receivingPayload = usePayload({
-    data: {
-      firmCode: '',
-      evrakTip: 13,
-      beginDate: startDate.toISOString().split('T')[0].concat(' 00:00:00'),
-      endDate: endDate.toISOString().split('T')[0].concat(' 23:59:00'),
-    },
-    serviceName: 'irsaliyeService.irsaliyeSorgula',
+    firmCode: '',
+    evrakTip: 13,
+    beginDate: startDate.toISOString().split('T')[0].concat(' 00:00:00'),
+    endDate: endDate.toISOString().split('T')[0].concat(' 23:59:00'),
   })
 
   const dispatchmentPayload = usePayload({
-    data: {
-      firmCode: '',
-      evrakTip: 1,
-      beginDate: startDate.toISOString().split('T')[0].concat(' 00:00:00'),
-      endDate: endDate.toISOString().split('T')[0].concat(' 23:59:00'),
-    },
-    serviceName: 'irsaliyeService.irsaliyeSorgula',
+    firmCode: '',
+    evrakTip: 1,
+    beginDate: startDate.toISOString().split('T')[0].concat(' 00:00:00'),
+    endDate: endDate.toISOString().split('T')[0].concat(' 23:59:00'),
   })
 
   const fetchExecuteData = async () => {
     try {
       setLoading(true)
-      const [receivingRes, dispatcmentRes] = await Promise.all([executeServiceMikro(receivingPayload), executeServiceMikro(dispatchmentPayload)])
+      const [receivingRes, dispatcmentRes] = await Promise.all([getWaybillList(receivingPayload), getWaybillList(dispatchmentPayload)])
       if (receivingRes && dispatcmentRes) {
         setReceivingDocuments(receivingRes)
         setDispatchmentDocuments(dispatcmentRes)

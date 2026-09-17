@@ -5,7 +5,7 @@ import Box from '@mui/material/Box'
 import { Fab, IconButton, Paper, useMediaQuery } from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
 import usePayload from '../../hooks/usePayload'
-import { executeServiceMikro, getFirmOrderBulkList } from '../../services/MikroService'
+import { getFirmOrderBulkList, getFirmStockOrderList } from '../../services/MikroService'
 import { reformOrders, reformDispatchOrders, getOrderMasterList } from '../../services/OrderDetailService'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { OrderJustifyContainer } from '../../store/OrderJustifyContainer'
@@ -68,12 +68,9 @@ export default function OrderEditContainer() {
   const payload = usePayload(generateRequest(orderNo, orderSituation ? 'SUSPENDED' : orderStatus, deleteItems, addedList))
 
   const executeReq = usePayload({
-    data: {
-      depoNo: Number(depoCode),
-      firmCode: firmCode,
-      sipTip: orderType === 'FMK' ? 1 : 0,
-    },
-    serviceName: 'depoService.getFirmStockOrderList',
+    depoNo: Number(depoCode),
+    firmCode: firmCode,
+    sipTip: orderType === 'FMK' ? 1 : 0,
   })
 
   const params = usePayload({
@@ -86,7 +83,7 @@ export default function OrderEditContainer() {
   const fetchExecuteData = async () => {
     try {
       setMicroLoading(true)
-      const res = await executeServiceMikro(executeReq)
+      const res = await getFirmStockOrderList(executeReq)
       res && setFilteredList(res)
     } catch (err) {
       notifyError(err.message)

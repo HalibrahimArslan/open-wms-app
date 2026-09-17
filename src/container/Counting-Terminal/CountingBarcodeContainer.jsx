@@ -2,7 +2,7 @@ import { Alert } from '@mui/material'
 import PlacementBox from '../../components/Stepper/PlacementBox'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import usePayload from '../../hooks/usePayload'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getProductInfo } from '../../services/MikroService'
 import { getEnableCountingDetails, saveCountingDetailByPalletBarcode } from '../../services/CountingDetailService'
 import { notify, notifyError } from '../../layout/Layout'
 import { useContainer } from 'unstated-next'
@@ -29,18 +29,15 @@ export default function CountingBarcodeContainer({
   const { account } = useContainer(DataStore)
 
   const searchProductPayload = usePayload({
-    data: {
-      stokKodu: '',
-      stokAdi: '',
-      barkod: barcode,
-      barkodList: [''],
-      depoNo: 0,
-    },
-    serviceName: 'stokService.stokDetaySorgula',
+    stokKodu: '',
+    stokAdi: '',
+    barkod: barcode,
+    barkodList: [''],
+    depoNo: 0,
   })
 
   const fetchExecuteData = async () => {
-    const res = await executeServiceMikro(searchProductPayload)
+    const res = await getProductInfo(searchProductPayload)
     res && handleProduct(res)
     return res
   }

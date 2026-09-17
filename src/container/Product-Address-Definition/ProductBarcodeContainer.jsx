@@ -2,7 +2,7 @@ import { useContainer } from 'unstated-next'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import usePayload from '../../hooks/usePayload'
 import { getProductAddresses } from '../../services/ProductAddressService'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getProductInfo } from '../../services/MikroService'
 import PlacementBox from '../../components/Stepper/PlacementBox'
 import { notifyError } from '../../layout/Layout'
 import { DataStore } from '../../store/DataStore'
@@ -12,18 +12,15 @@ export default function ProductBarcodeContainer({ addressId, barcode, disable, d
   const { account } = useContainer(DataStore)
 
   const searchProductPayload = usePayload({
-    data: {
-      stokKodu: '',
-      stokAdi: '',
-      barkod: barcode,
-      barkodList: [''],
-      depoNo: depoCode,
-    },
-    serviceName: 'stokService.stokDetaySorgula',
+    stokKodu: '',
+    stokAdi: '',
+    barkod: barcode,
+    barkodList: [''],
+    depoNo: depoCode,
   })
 
   const fetchExecuteData = async () => {
-    const res = await executeServiceMikro(searchProductPayload)
+    const res = await getProductInfo(searchProductPayload)
     return res
   }
 

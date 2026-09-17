@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState, useEffect } from 'react'
 import MultiSelectItem from '../MultiSelectItem'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getOrderDetailListByOrderNos } from '../../services/MikroService'
 import usePayload from '../../hooks/usePayload'
 import { useSearchParams } from 'react-router-dom'
 import useDepoCode from '../../hooks/useDepoCode'
@@ -18,12 +18,9 @@ export default function OrderDialog({ open, handleClose, handleBulkList, handleS
   let depoCode = useDepoCode()
 
   const executeReq = usePayload({
-    data: {
-      orderNoList: selectedList,
-      sipTip: 0,
-      depoList: [Number(depoCode)],
-    },
-    serviceName: 'depoService.getOrderDetailList',
+    orderNoList: selectedList,
+    sipTip: 0,
+    depoList: [Number(depoCode)],
   })
 
   const handleChangeSelectedList = (value) => {
@@ -34,7 +31,7 @@ export default function OrderDialog({ open, handleClose, handleBulkList, handleS
     try {
       setLoading(true)
 
-      const res = await executeServiceMikro(executeReq)
+      const res = await getOrderDetailListByOrderNos(executeReq)
       if (res) {
         setSevkAddressInfo({
           sevkAddressId: res[0].addressNo,

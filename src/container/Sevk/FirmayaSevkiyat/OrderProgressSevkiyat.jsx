@@ -3,7 +3,7 @@ import { DataGrid, GridToolbar, trTR } from '@mui/x-data-grid'
 import TablePanel, { dataGridSx } from '../../../shared/components/Table/TablePanel'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { executeServiceMikro, getFirmOrderBulkList } from '../../../services/MikroService'
+import { getFirmOrderBulkList, getFirmOrdersByCariKod, getOrderDetailListByOrderNos } from '../../../services/MikroService'
 import DispatchAssignDialog from '../../../components/Dialog/DispatchAssignDialog'
 import useDepoCode from '../../../hooks/useDepoCode'
 import usePayload from '../../../hooks/usePayload'
@@ -214,13 +214,10 @@ export default function OrderProgressSevkiyat() {
   })
 
   const directCariReq = usePayload({
-    serviceName: 'depoService.getFirmListOrderExists',
-    data: {
-      sipTip: 0,
-      depoNo: depoCode,
-      cbt: 2,
-      cariKod: cariCode,
-    },
+    depoNo: depoCode,
+    sipTip: 0,
+    cbt: 2,
+    cariKod: cariCode,
   })
 
   const selectedRowOrderNos = useMemo(() => {
@@ -285,27 +282,21 @@ export default function OrderProgressSevkiyat() {
   const handleAssignedProduct = () => setPressed(true)
 
   const executeReq = usePayload({
-    data: {
-      orderNoList: orderPickerNos,
-      sipTip: 0,
-      depoList: [Number(depoCode)],
-    },
-    serviceName: 'depoService.getOrderDetailList',
+    orderNoList: orderPickerNos,
+    sipTip: 0,
+    depoList: [Number(depoCode)],
   })
 
   const initialLoadReq = usePayload({
-    data: {
-      orderNoList: initialOrderNosForFetch,
-      sipTip: 0,
-      depoList: [Number(depoCode)],
-    },
-    serviceName: 'depoService.getOrderDetailList',
+    orderNoList: initialOrderNosForFetch,
+    sipTip: 0,
+    depoList: [Number(depoCode)],
   })
 
   const fetchExecuteData = async () => {
     try {
       setLoading(true)
-      const res = await executeServiceMikro(executeReq)
+      const res = await getOrderDetailListByOrderNos(executeReq)
       if (res) {
         setSevkAddressInfo({
           sevkAddressId: res[0].addressNo,
@@ -377,7 +368,7 @@ export default function OrderProgressSevkiyat() {
       const fetchDirectCariData = async () => {
         try {
           setLoading(true)
-          const res = await executeServiceMikro(directCariReq)
+          const res = await getFirmOrdersByCariKod(directCariReq)
           const selectedCari = Array.isArray(res) && res.length > 0 ? res[0] : null
           if (!selectedCari) {
             setBulkList([])
@@ -464,7 +455,7 @@ export default function OrderProgressSevkiyat() {
     const fetchInitialOrders = async () => {
       try {
         setLoading(true)
-        const res = await executeServiceMikro(initialLoadReq)
+        const res = await getOrderDetailListByOrderNos(initialLoadReq)
         if (res) {
           const list = Array.isArray(res) ? res : []
           setBulkList(list)

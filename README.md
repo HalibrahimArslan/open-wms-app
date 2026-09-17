@@ -24,6 +24,9 @@ npm start
 Uygulama http://localhost:3000 adresinde açılır. `npm start` sırasında `/api` ve
 WebSocket istekleri [src/setupProxy.js](src/setupProxy.js) üzerinden `.env.local`
 içindeki `API_PROXY_TARGET` / `WS_PROXY_TARGET` adreslerine yönlendirilir.
+Yazdırma isteklerinin (`/api/print`) hedefi ayrıdır: döküman servisi başka bir
+portta çalıştığı için bu yol `PRINT_PROXY_TARGET` (varsayılan
+`http://localhost:3200`) adresine gider.
 
 ### WebSocket yolu hakkında
 

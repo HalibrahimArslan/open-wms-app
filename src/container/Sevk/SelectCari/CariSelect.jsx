@@ -5,7 +5,7 @@ import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
 import BusinessIcon from '@mui/icons-material/Business'
 import { useNavigate, useParams } from 'react-router-dom'
-import { executeServiceMikro } from '../../../services/MikroService'
+import { getFirmList } from '../../../services/MikroService'
 import SearchBox from '../../../components/SearchBox'
 import { Chip, useTheme, Stack, Box, Button, Menu, MenuItem } from '@mui/material'
 import LoadingSpinner from '../../../components/Loading/LoadingSpinner'
@@ -13,12 +13,13 @@ import { useSWRConfig } from 'swr'
 import useDepoCode from '../../../hooks/useDepoCode'
 import NotFound from '../../../shared/components/NotFound/NotFound'
 import { notifyError } from '../../../layout/Layout'
-import usePayload from '../../../hooks/usePayload'
+import useAuthHeader from '../../../hooks/useAuthHeader'
 import SwapVertIcon from '@mui/icons-material/SwapVert'
 
 function CariSelect() {
   const navigate = useNavigate()
   const theme = useTheme()
+  const headers = useAuthHeader()
   const depoCode = useDepoCode()
   const { cache } = useSWRConfig()
   const { menuId } = useParams()
@@ -45,16 +46,6 @@ function CariSelect() {
     { label: 'Bölge Adı', value: 'bolgeAdi' },
   ]
 
-  const payload = usePayload({
-    serviceName: 'depoService.getFirmListOrderExists',
-    data: {
-      sipTip: 0,
-      depoNo: depoCode,
-      cbt: 2,
-      cariKod: 'ALL',
-    },
-  })
-
   const handleChangeSearch = (search) => {
     setInputText(search)
   }
@@ -67,7 +58,7 @@ function CariSelect() {
   const fetchFirmListData = async () => {
     try {
       setLoading(true)
-      const res = await executeServiceMikro(payload)
+      const res = await getFirmList(headers, depoCode, 0)
       if (res) {
         setFirmList(res)
         setFilteredList(res)

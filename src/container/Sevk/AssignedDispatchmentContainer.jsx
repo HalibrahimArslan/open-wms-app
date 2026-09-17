@@ -1,7 +1,7 @@
 import { Box, Skeleton } from '@mui/material'
 import { getDepoUrunAddresses, getAddressList } from '../../services/AdressService'
 import { getProductAddresses } from '../../services/ProductAddressService'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getProductInfo } from '../../services/MikroService'
 import { getPickingTmpOrderByUserName } from '../../services/OrderService'
 import { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -158,16 +158,13 @@ function AssignedDispatchmentContainer() {
 
   const fetchQuantityByStockCode = async (stockCode, pieceAmount = 1) => {
     let payload = {
-      data: {
-        stokKodu: stockCode,
-        stokAdi: '',
-        barkod: '',
-        barkodList: [''],
-        depoNo: depoCode,
-      },
-      serviceName: 'stokService.stokDetaySorgula',
+      stokKodu: stockCode,
+      stokAdi: '',
+      barkod: '',
+      barkodList: [''],
+      depoNo: depoCode,
     }
-    const res = await executeServiceMikro(generatePayload(payload))
+    const res = await getProductInfo(generatePayload(payload))
     if (res && res.length > 0) {
       setErpAmount(res[0].depodakiMiktar * pieceAmount)
     }

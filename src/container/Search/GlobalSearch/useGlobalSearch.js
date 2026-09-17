@@ -5,7 +5,7 @@ import useDebounce from '../../../hooks/useDebounce'
 import useDepoCode from '../../../hooks/useDepoCode'
 import { DataStore } from '../../../store/DataStore'
 import { DepoContainer } from '../../../store/DepoContainer'
-import { executeServiceMikro, getOrderByOrderNo } from '../../../services/MikroService'
+import { getOrderByOrderNo, getProductInfo } from '../../../services/MikroService'
 import { getProductAddresses } from '../../../services/ProductAddressService'
 import { getPalletBarcodeOrderDetail } from '../../../services/PalletBarcodeOrderRelService'
 import { generatePayload, getTransferDepoCode } from '../../../utils/Utils'
@@ -24,16 +24,13 @@ export default function useGlobalSearch() {
   const [state, setState] = useState(emptyState)
   const reqIdRef = useRef(0)
 
-  const buildMikroPayload = (field, value) => ({
-    data: {
-      stokKodu: '',
-      stokAdi: '',
-      barkod: '',
-      barkodList: [''],
-      depoNo: depoCode,
-      [field]: value,
-    },
-    serviceName: 'stokService.stokDetaySorgula',
+  const buildProductInfoPayload = (field, value) => ({
+    stokKodu: '',
+    stokAdi: '',
+    barkod: '',
+    barkodList: [''],
+    depoNo: depoCode,
+    [field]: value,
   })
 
   const fetchProductAddressesByQuery = async (queryValue) => {
@@ -69,7 +66,7 @@ export default function useGlobalSearch() {
     }
 
     if (detected.type === SearchType.BARKOD) {
-      const mikroRes = await executeServiceMikro(generatePayload(buildMikroPayload('barkod', detected.value)))
+      const mikroRes = await getProductInfo(generatePayload(buildProductInfoPayload('barkod', detected.value)))
       const products = Array.isArray(mikroRes) ? mikroRes : []
       let addresses = []
       if (products.length > 0) {
@@ -82,7 +79,7 @@ export default function useGlobalSearch() {
       let products = []
       let mikroError = null
       try {
-        const mikroRes = await executeServiceMikro(generatePayload(buildMikroPayload('stokKodu', detected.value)))
+        const mikroRes = await getProductInfo(generatePayload(buildProductInfoPayload('stokKodu', detected.value)))
         products = Array.isArray(mikroRes) ? mikroRes : []
       } catch (e) {
         mikroError = e?.message || 'Stok detayı sorgulanamadı.'
@@ -100,11 +97,8 @@ export default function useGlobalSearch() {
       if (items.length > 0) {
         const barkodList = [...new Set(items.map((it) => it.barcode).filter(Boolean))]
         if (barkodList.length > 0) {
-          const mikroRes = await executeServiceMikro(
-            generatePayload({
-              data: { stokKodu: '', stokAdi: '', barkod: '', barkodList, depoNo: depoCode },
-              serviceName: 'stokService.stokDetaySorgula',
-            })
+          const mikroRes = await getProductInfo(
+            generatePayload({ stokKodu: '', stokAdi: '', barkod: '', barkodList, depoNo: depoCode })
           )
           if (Array.isArray(mikroRes)) {
             for (const row of mikroRes) {

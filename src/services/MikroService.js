@@ -58,6 +58,24 @@ export async function getFirmList(headers, depoCode, sipTip) {
   return firmList
 }
 
+export async function getFirmOrdersByCariKod(payload) {
+  const response = await fetch('/api/mikro/firmOrdersByCariKod', payload)
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(getErrorMessage(response.status, error))
+  }
+  return response.json()
+}
+
+export async function getOrderDetailListByOrderNos(payload) {
+  const response = await fetch('/api/mikro/orderDetailsByOrderNos', payload)
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(getErrorMessage(response.status, error))
+  }
+  return response.json()
+}
+
 export async function getFirmOrderList(payload) {
   const response = await fetch('/api/firmOrderList', payload)
   if (!response.ok) {
@@ -93,15 +111,31 @@ export async function produceBarkod(headers, stokKod) {
   return firmOrderList
 }
 
-export async function executeServiceMikro(payload) {
-  const response = await fetch('/api/executeServiceMikro', payload)
+export async function getFirmStockOrderList(payload) {
+  const response = await fetch('/api/firmStockOrderList', payload)
   if (!response.ok) {
     const error = await response.json()
     throw new Error(getErrorMessage(response.status, error))
   }
-  const executeList = await response.json()
+  return response.json()
+}
 
-  return executeList
+export async function getWaybillList(payload) {
+  const response = await fetch('/api/waybillList', payload)
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(getErrorMessage(response.status, error))
+  }
+  return response.json()
+}
+
+export async function getProductInfo(payload) {
+  const response = await fetch('/api/productInfo', payload)
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(getErrorMessage(response.status, error))
+  }
+  return response.json()
 }
 
 export async function getOrderDetailByOrderNo(headers, orderNo, sipTip, depoNo) {

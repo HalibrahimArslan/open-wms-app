@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import ActionHeader from '../../shared/components/ActionHeader'
-import { executeServiceMikro } from '../../services/MikroService'
+import { getWaybillList } from '../../services/MikroService'
 import { DataGrid } from '@mui/x-data-grid'
 import QueryFilterPanel from '../../components/Filter/QueryFilterPanel'
 import { Box, Button, Chip, CircularProgress, Collapse, Grid, IconButton, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
@@ -155,19 +155,16 @@ const WaybillControlContainer = () => {
   useEffect(() => {
     const getWaybillList = async () => {
       const payload = generatePayload({
-        data: {
-          firmCode: '',
-          evrakTip: appliedFilters.evrakTip === '' ? null : Number(appliedFilters.evrakTip),
-          kaynak: appliedFilters.kaynak ?? '',
-          beginDate: dayjs(appliedFilters.beginDate).format('YYYY-MM-DD HH:mm:ss'),
-          endDate: dayjs(appliedFilters.endDate).format('YYYY-MM-DD HH:mm:ss'),
-        },
-        serviceName: 'irsaliyeService.irsaliyeSorgula1',
+        firmCode: '',
+        evrakTip: appliedFilters.evrakTip === '' ? null : Number(appliedFilters.evrakTip),
+        kaynak: appliedFilters.kaynak ?? '',
+        beginDate: dayjs(appliedFilters.beginDate).format('YYYY-MM-DD HH:mm:ss'),
+        endDate: dayjs(appliedFilters.endDate).format('YYYY-MM-DD HH:mm:ss'),
       })
 
       try {
         setLoading(true)
-        const response = await executeServiceMikro(payload)
+        const response = await getWaybillList(payload)
         const normalizedRows = Array.isArray(response)
           ? response.map((item, index) => ({
               irsaliyeNo: normalizeWaybillNo(item),
