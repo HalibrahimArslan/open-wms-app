@@ -40,7 +40,8 @@ export const notifyError = (text) => {
   })
 }
 
-export async function fetchWithToken(url, headers) {
+// SWR 2 dizi anahtarini ([url, headers]) fetcher'a tek arguman olarak verir.
+export async function fetchWithToken([url, headers]) {
   const res = await fetch(url, { headers: headers })
   return res.json()
 }
