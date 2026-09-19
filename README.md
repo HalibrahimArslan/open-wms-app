@@ -9,7 +9,7 @@ yazılmaz, marka bilgileri build anında ortam değişkenleriyle verilir.
 
 ## Gereksinimler
 
-- Node.js 22+ (önerilen sürüm `.nvmrc` içinde: 24)
+- Node.js 22.22+ (önerilen sürüm `.nvmrc` içinde: 24)
 - npm 10+
 - Erişilebilir bir WMS API sunucusu (geliştirmede proxy ile bağlanılır)
 
