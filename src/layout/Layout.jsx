@@ -1,4 +1,3 @@
-import 'react-toastify/dist/ReactToastify.css'
 
 import { AuthContainer } from '../store/AuthContainer'
 import { SWRConfig } from 'swr'
