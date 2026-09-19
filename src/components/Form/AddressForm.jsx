@@ -26,14 +26,26 @@ const AddressForm = ({ address, handleUpdateAddress }) => {
   })
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <TextField fullWidth id="address" name="Adres" label="Adres" placeholder="Adres" value={formik.values.address} disabled />
         <TextField fullWidth id="bolum" name="Bölüm" label="Bölüm" placeholder="Bölüm" value={formik.values.bolum} disabled />
         <TextField fullWidth id="reyon" name="Koridor" label="Koridor" placeholder="Koridor" value={formik.values.reyon} disabled />
         <TextField fullWidth id="unite" name="Unite" label="Unite" placeholder="Unite" value={formik.values.unite} disabled />
         <TextField fullWidth id="kat" name="Kat" label="Kat" placeholder="Kat" value={formik.values.kat} disabled />
 
-        <Box p={1} display={'flex'} flexDirection={'column'}>
+        <Box
+          sx={{
+            p: 1,
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <FormControlLabel
             label="Gecici Adres"
             control={<Checkbox checked={formik.values.geciciAdres} onChange={formik.handleChange} name="geciciAdres" id="geciciAdres" />}
@@ -56,7 +68,14 @@ const AddressForm = ({ address, handleUpdateAddress }) => {
           />
         </Box>
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           Güncelle
         </Button>

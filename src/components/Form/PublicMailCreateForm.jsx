@@ -18,7 +18,13 @@ const PublicMailCreateForm = ({ handleCreateEmail }) => {
   })
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <TextField
           fullWidth
           id="mailAdres"
@@ -33,7 +39,14 @@ const PublicMailCreateForm = ({ handleCreateEmail }) => {
           type="email"
         />
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           Oluştur
         </Button>

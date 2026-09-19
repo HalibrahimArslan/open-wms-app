@@ -12,8 +12,8 @@ const Home = () => {
   return (
     <Box
       component="main"
-      flex={1}
       sx={{
+        flex: 1,
         flexGrow: 1,
         marginTop: '65px',
         marginRight: '8px',
@@ -24,10 +24,12 @@ const Home = () => {
         height: 'calc(100vh - 70px)',
         overflowY: 'auto',
         overflowX: 'hidden',
+
         padding: {
           md: theme.spacing(1.5),
           sm: 0,
         },
+
         border: `1px solid ${theme.palette.divider}`,
         boxShadow: 'none',
       }}

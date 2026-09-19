@@ -102,7 +102,15 @@ function CariSelect() {
 
   return (
     <>
-      <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'stretch', sm: 'center' }} justifyContent="space-between" spacing={2} sx={{ mb: 2 }}>
+      <Stack
+        direction={{ xs: 'column', sm: 'row' }}
+        spacing={2}
+        sx={{
+          alignItems: { xs: 'stretch', sm: 'center' },
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
         <Box sx={{ flex: 1, minWidth: 230 }}>
           <SearchBox search={inputText} handleChangeSearch={handleChangeSearch} searchLabel="Cari Ünvan Ara" zIndex={false} />
         </Box>
@@ -133,25 +141,27 @@ function CariSelect() {
             anchorEl={anchorEl}
             open={openMenu}
             onClose={handleMenuClose}
-            MenuListProps={{
-              'aria-labelledby': 'basic-button',
-            }}
-            PaperProps={{
-              elevation: 3,
-              sx: {
-                borderRadius: 2,
-                mt: 1.5,
-                minWidth: 180,
-                '& .MuiMenuItem-root': {
-                  px: 2,
-                  py: 1,
-                  typography: 'body2',
-                  fontWeight: 500,
-                },
-              },
-            }}
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            slotProps={{
+              paper: {
+                elevation: 3,
+                sx: {
+                  borderRadius: 2,
+                  mt: 1.5,
+                  minWidth: 180,
+                  '& .MuiMenuItem-root': {
+                    px: 2,
+                    py: 1,
+                    typography: 'body2',
+                    fontWeight: 500,
+                  },
+                },
+              },
+              list: {
+                'aria-labelledby': 'basic-button',
+              },
+            }}
           >
             {sortOptions.map((option) => (
               <MenuItem
@@ -211,8 +221,10 @@ function CariSelect() {
                 sx={{ wordWrap: 'break-word' }}
                 primary={item.cariUnvan}
                 secondary={item.cariKod}
-                primaryTypographyProps={{ variant: 'subtitle1', fontWeight: 600, color: 'text.primary' }}
-                secondaryTypographyProps={{ variant: 'caption', color: 'text.secondary' }}
+                slotProps={{
+                  primary: { variant: 'subtitle1', fontWeight: 600, color: 'text.primary' },
+                  secondary: { variant: 'caption', color: 'text.secondary' },
+                }}
               />
               <Chip label={item.bolgeAdi} />
             </ListItemButton>

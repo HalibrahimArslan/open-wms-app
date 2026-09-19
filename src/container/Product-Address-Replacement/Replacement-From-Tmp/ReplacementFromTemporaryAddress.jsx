@@ -107,7 +107,7 @@ export default function ReplacementFromTemporaryAddress() {
 
   return (
     <Grid container>
-      <Grid item sx={{ display: 'flex', flexGrow: 1 }}>
+      <Grid sx={{ display: 'flex', flexGrow: 1 }}>
         <HorizontalLinearStepper
           processType={'Geçici Adresten Rafa Yerleştirme'}
           activeStep={activeStep}
@@ -129,8 +129,8 @@ export default function ReplacementFromTemporaryAddress() {
             />,
             <StepperInput label={'Miktar Giriniz'} value={amount} handleChange={handleChange} type="number" disabled={disableSituation.quantity} />,
             <Box
-              mb={2}
               sx={{
+                mb: 2,
                 display: 'flex',
                 flexDirection: 'row',
                 flexGrow: 1,

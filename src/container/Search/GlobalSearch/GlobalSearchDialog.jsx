@@ -23,14 +23,16 @@ export default function GlobalSearchDialog({ open, onClose }) {
       fullScreen={isMobile}
       maxWidth="md"
       fullWidth
-      PaperProps={{
-        sx: {
-          borderRadius: isMobile ? 0 : 2,
-          minHeight: isMobile ? '100%' : '70vh',
-          maxHeight: isMobile ? '100%' : '80vh',
-          overflow: 'hidden',
-          display: 'flex',
-          flexDirection: 'column',
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: isMobile ? 0 : 2,
+            minHeight: isMobile ? '100%' : '70vh',
+            maxHeight: isMobile ? '100%' : '80vh',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+          },
         },
       }}
     >

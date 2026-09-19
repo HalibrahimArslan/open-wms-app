@@ -3,7 +3,12 @@ import React from 'react'
 
 export default function TracingItem({ content, header }) {
   return (
-    <Grid component={Paper} p={2}>
+    <Grid
+      component={Paper}
+      sx={{
+        p: 2,
+      }}
+    >
       <Box sx={{ display: 'flex', flexGrow: 1 }}>
         <Typography
           variant="h5"
@@ -17,7 +22,14 @@ export default function TracingItem({ content, header }) {
         </Typography>
       </Box>
       <Divider />
-      <Box sx={{ display: 'flex', flexGrow: 1, justifyContent: 'center' }} marginTop={2}>
+      <Box
+        sx={{
+          marginTop: 2,
+          display: 'flex',
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}
+      >
         <Typography variant="h3">{content}</Typography>
       </Box>
     </Grid>

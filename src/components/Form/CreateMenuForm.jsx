@@ -26,7 +26,13 @@ const CreateMenuForm = ({ menuItem, menuList, companyList, handleCreateMenu }) =
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <TextField
           fullWidth
           id="menuName"
@@ -103,11 +109,22 @@ const CreateMenuForm = ({ menuItem, menuList, companyList, handleCreateMenu }) =
           error={formik.touched.icon && Boolean(formik.errors.icon)}
           helperText={formik.touched.icon && formik.errors.icon}
         />
-        <Box p={1}>
+        <Box
+          sx={{
+            p: 1,
+          }}
+        >
           <FormControlLabel label="Index" control={<Checkbox checked={formik.values.index} onChange={formik.handleChange} name="index" id="index" />} labelPlacement="end" />
         </Box>
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           {menuItem ? 'Güncelle' : 'Oluştur'}
         </Button>

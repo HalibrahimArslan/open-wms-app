@@ -113,8 +113,8 @@ function DispatchmentAddressContainer({ addressList }) {
       </Box>
 
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <Grid container direction="column">
-          <Grid item>
+        <Grid container sx={{ flexDirection: 'column' }}>
+          <Grid>
             {selectedStockCodes.length > 0 && (
               <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, p: 2, borderBottom: `1px solid ${theme.palette.divider}` }}>
                 <IconButton size="small" onClick={handleAllClear} sx={{ mr: 1 }}>
@@ -127,7 +127,7 @@ function DispatchmentAddressContainer({ addressList }) {
             )}
           </Grid>
 
-          <Grid item sx={{ p: 2 }}>
+          <Grid sx={{ p: 2 }}>
             {addressList && theme && (
               <BasicSlider
                 bgImage={true}

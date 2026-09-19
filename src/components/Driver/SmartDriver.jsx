@@ -28,7 +28,14 @@ export default function SmartDriver({ firmCode, onSelect, errorMessages = {}, va
       <SmartDriverSelect value={value} setValue={onSelect} onAddDriverClick={handleAddDriverClick} />
 
       {value && (
-        <Box mt={2} display="flex" flexDirection="column" gap={1.5}>
+        <Box
+          sx={{
+            mt: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.5,
+          }}
+        >
           <TextField sx={{ display: (firmCode === '320.01.920' || firmCode === '320.99.001') && 'none' }} label="T.C No" value={value.identityNumber} fullWidth />
           <TextField sx={{ display: (firmCode === '320.01.920' || firmCode === '320.99.001') && 'none' }} label="Telefon" value={value.phoneNumber} fullWidth />
           <TextField sx={{ display: (firmCode === '320.01.920' || firmCode === '320.99.001') && 'none' }} label="Plaka" value={value.licensePlate} fullWidth />

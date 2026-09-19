@@ -535,7 +535,16 @@ export default function ReceivingContainer() {
 
   return (
     <>
-      <Box component="form" sx={{ display: 'flex', justifyContent: 'center' }} noValidate autoComplete="off" margin={2}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        sx={{
+          margin: 2,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <TextField
           sx={{ flexGrow: '0.5' }}
           disabled={false}
@@ -544,23 +553,31 @@ export default function ReceivingContainer() {
           variant="outlined"
           value={value}
           onChange={handleChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <QrCodeScannerIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') {
               ev.preventDefault()
               setShow(true)
             }
           }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <QrCodeScannerIcon color="action" />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </Box>
 
-      <Box mb={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          mb: 2,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Stack spacing={2} direction="row">
           <Button variant="contained" onClick={handleComplete}>
             İşlem Tamamla

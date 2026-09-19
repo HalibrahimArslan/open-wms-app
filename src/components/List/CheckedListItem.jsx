@@ -47,7 +47,13 @@ const CheckedListItem = React.memo(({ data, displayField, keyField, checkedList,
     >
       {header && (
         <>
-          <Typography variant="body2" gutterBottom ml={2}>
+          <Typography
+            variant="body2"
+            gutterBottom
+            sx={{
+              ml: 2,
+            }}
+          >
             {header}
           </Typography>
           <Divider />
@@ -74,7 +80,15 @@ const MemoizedListItem = React.memo(({ value, checked, handleToggle, displayFiel
     <ListItem disablePadding>
       <ListItemButton role={undefined} onClick={handleToggle} dense>
         <ListItemIcon>
-          <Checkbox edge="start" checked={checked} tabIndex={-1} disableRipple inputProps={{ 'aria-labelledby': labelId }} />
+          <Checkbox
+            edge="start"
+            checked={checked}
+            tabIndex={-1}
+            disableRipple
+            slotProps={{
+              input: { 'aria-labelledby': labelId },
+            }}
+          />
         </ListItemIcon>
         <ListItemText id={labelId} primary={value[displayField]} />
       </ListItemButton>

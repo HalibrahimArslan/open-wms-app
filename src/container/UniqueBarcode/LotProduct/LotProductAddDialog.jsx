@@ -73,20 +73,44 @@ export default function LotProductAddDialog({ open, onClose, onConfirm, companyC
 
   const labelRow = (label, value) => (
     <Stack direction="row" spacing={1}>
-      <Typography variant="body2" color="text.secondary" sx={{ minWidth: 70 }}>
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'text.secondary',
+          minWidth: 70,
+        }}
+      >
         {label}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         :
       </Typography>
-      <Typography variant="body2" fontWeight={600}>
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 600,
+        }}
+      >
         {value}
       </Typography>
     </Stack>
   )
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="xs"
+      slotProps={{
+        paper: { sx: { borderRadius: 2 } },
+      }}
+    >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', pr: 6 }}>
         Ürün Ekle
         <IconButton onClick={onClose} size="small" sx={{ position: 'absolute', right: 8, top: 8 }}>
@@ -102,12 +126,14 @@ export default function LotProductAddDialog({ open, onClose, onConfirm, companyC
             placeholder="Stok Kodu veya Ürün Adı"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <SearchIcon color="action" />
+                  </InputAdornment>
+                ),
+              },
             }}
           />
 
@@ -117,7 +143,14 @@ export default function LotProductAddDialog({ open, onClose, onConfirm, companyC
                 <CircularProgress size={20} />
               </Box>
             ) : results.length === 0 ? (
-              <Typography variant="body2" color="text.secondary" sx={{ p: 1.5, textAlign: 'center' }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  p: 1.5,
+                  textAlign: 'center',
+                }}
+              >
                 Sonuç bulunamadı
               </Typography>
             ) : (
@@ -125,10 +158,20 @@ export default function LotProductAddDialog({ open, onClose, onConfirm, companyC
                 {results.map((p) => (
                   <ListItemButton key={p.rowKey} selected={selected?.rowKey === p.rowKey} onClick={() => setSelected(p)}>
                     <Stack>
-                      <Typography variant="body2" fontWeight={600}>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          fontWeight: 600,
+                        }}
+                      >
                         {p.stokAdi}
                       </Typography>
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography
+                        variant="caption"
+                        sx={{
+                          color: 'text.secondary',
+                        }}
+                      >
                         {p.stokKodu}
                         {p.isLotlu ? ' • Lot’lu' : ''}
                       </Typography>
@@ -147,7 +190,12 @@ export default function LotProductAddDialog({ open, onClose, onConfirm, companyC
                 {labelRow('Ürün Adı', selected.stokAdi)}
               </Stack>
               <Stack spacing={0.75}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   Oluşturulan Barkod
                 </Typography>
                 <Box

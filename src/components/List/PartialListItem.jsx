@@ -9,10 +9,20 @@ const PartialListItem = ({ partialItem, getPartialDetails }) => {
         primary={partialItem.packageName}
         secondary={
           <>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {partialItem.packageBarcode}
             </Typography>
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {partialItem.packageCode}
             </Typography>
           </>

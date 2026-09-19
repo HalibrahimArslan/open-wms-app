@@ -17,7 +17,15 @@ const EXAMPLES = [
 export default function IdleHint() {
   return (
     <Box sx={{ py: 3 }}>
-      <Stack direction="row" alignItems="center" gap={1} sx={{ color: 'text.secondary', mb: 2 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          gap: 1,
+          color: 'text.secondary',
+          mb: 2,
+        }}
+      >
         <AutoAwesomeRoundedIcon fontSize="small" />
         <Typography variant="body2" sx={{ fontWeight: 700 }}>
           Akıllı Arama — tipini otomatik tanır
@@ -28,10 +36,10 @@ export default function IdleHint() {
           <Stack
             key={i}
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            gap={1.5}
             sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 1.5,
               px: 1.5,
               py: 1,
               border: '1px solid',
@@ -39,7 +47,13 @@ export default function IdleHint() {
               borderRadius: 1.5,
             }}
           >
-            <Stack direction="row" alignItems="center" gap={1}>
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
               <Box sx={{ color: 'primary.main', display: 'flex' }}>{ex.icon}</Box>
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                 {ex.label}

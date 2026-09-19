@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { DataGrid, GridToolbarQuickFilter, trTR } from '@mui/x-data-grid'
+import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid'
 import { CircularProgress, Button, Box } from '@mui/material'
 import * as XLSX from 'xlsx'
 import { getDepoStockAddresses } from '../../services/AdressService'
@@ -38,7 +38,7 @@ export default function ProductAddressContainer() {
       headerName: 'Depo Adi',
       width: 200,
       editable: true,
-      valueGetter: getDepoName,
+      valueGetter: (value, row) => getDepoName({ row }),
     },
     {
       field: 'stokKodu',
@@ -53,7 +53,7 @@ export default function ProductAddressContainer() {
       field: 'lastUpdateDate',
       headerName: 'Güncelleme Tarihi',
       width: 200,
-      valueFormatter: (params) => {
+      valueFormatter: (value) => {
         const v = params?.value
         if (!v) return ''
         return String(v).slice(0, 16).replace('T', ' ')
@@ -124,12 +124,12 @@ export default function ProductAddressContainer() {
         rows={addressList.filter((item) => item.status === true)}
         columns={columns}
         disableSelectionOnClick
-        components={{
-          Toolbar: CustomToolbar,
-          NoRowsOverlay: CustomNoRowsOverlay,
+        slots={{
+          toolbar: CustomToolbar,
+          noRowsOverlay: CustomNoRowsOverlay,
         }}
-        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
         style={{ minHeight: gridHeight }}
+        showToolbar
       />
     </>
   )

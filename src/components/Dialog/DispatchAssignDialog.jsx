@@ -191,10 +191,16 @@ export default function DispatchAssignDialog({
         </TableContainer>
         <Divider />
 
-        <Box mt={2}>{opType === 'FMK' ? <ReceivingPerson person={person} handlePerson={handlePerson} /> : <SevkiyatPerson person={person} handlePerson={handlePerson} />}</Box>
         <Box
-          mt={2}
           sx={{
+            mt: 2,
+          }}
+        >
+          {opType === 'FMK' ? <ReceivingPerson person={person} handlePerson={handlePerson} /> : <SevkiyatPerson person={person} handlePerson={handlePerson} />}
+        </Box>
+        <Box
+          sx={{
+            mt: 2,
             display: 'flex',
             justifyContent: 'flex-end',
             gap: 2,

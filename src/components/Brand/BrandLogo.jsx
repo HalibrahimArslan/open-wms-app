@@ -31,7 +31,15 @@ const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
   // marka adi isaretin altina alinir, alt baslik ise tamamen birakilir.
   if (variant === 'stacked') {
     return (
-      <Stack alignItems={'center'} spacing={0.6} sx={sx}>
+      <Stack
+        spacing={0.6}
+        sx={[
+          {
+            alignItems: 'center',
+          },
+          ...(Array.isArray(sx) ? sx : [sx]),
+        ]}
+      >
         <BrandMark size={size} />
         <Typography
           component="span"
@@ -52,7 +60,16 @@ const BrandLogo = ({ variant = 'full', size = 40, showTagline = true, sx }) => {
   const withTagline = showTagline && Boolean(BRAND.tagline)
 
   return (
-    <Stack direction={'row'} alignItems={'center'} spacing={1.25} sx={sx}>
+    <Stack
+      direction={'row'}
+      spacing={1.25}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(sx) ? sx : [sx]),
+      ]}
+    >
       <BrandMark size={size} />
 
       {/* Isaret ile yaziyi ayiran ince kural: kilidi kurumsal bir butun yapar. */}

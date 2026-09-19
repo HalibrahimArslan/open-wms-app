@@ -48,7 +48,13 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
         <span className="login-orb login-orb--rose" />
         <Box className="login-shine" />
 
-        <Stack className="login-brand" spacing={2.5} alignItems={'center'}>
+        <Stack
+          className="login-brand"
+          spacing={2.5}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <Box className="login-mark">
             <BrandMark size={120} color="#FFFFFF" />
           </Box>
@@ -70,7 +76,14 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
             </Typography>
           </Box>
 
-          <Stack direction={'row'} spacing={1} justifyContent={'center'} sx={{ marginTop: '1.25rem' }}>
+          <Stack
+            direction={'row'}
+            spacing={1}
+            sx={{
+              justifyContent: 'center',
+              marginTop: '1.25rem',
+            }}
+          >
             {TESTIMONIALS.map((item, index) => (
               <Box
                 key={item.author}

@@ -46,10 +46,12 @@ export default function OrderTracingDrawer({ order, id, open, handleDrawerClose 
         anchor="right"
         open={open}
         onClose={handleDrawerClose}
-        PaperProps={{
-          sx: {
-            width: isMobile ? '100%' : 520,
-            display: 'flex',
+        slotProps={{
+          paper: {
+            sx: {
+              width: isMobile ? '100%' : 520,
+              display: 'flex',
+            },
           },
         }}
       >

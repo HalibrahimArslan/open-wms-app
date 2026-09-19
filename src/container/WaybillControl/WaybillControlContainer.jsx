@@ -17,7 +17,13 @@ import { generatePayload } from '../../utils/Utils'
 
 const CustomNoRowsOverlay = () => {
   return (
-    <Stack height="100%" alignItems="center" justifyContent="center">
+    <Stack
+      sx={{
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <Typography variant="body2">Veri yok</Typography>
     </Stack>
   )
@@ -25,7 +31,14 @@ const CustomNoRowsOverlay = () => {
 
 const CustomLoadingOverlay = () => {
   return (
-    <Stack height="100%" spacing={1} alignItems="center" justifyContent="center">
+    <Stack
+      spacing={1}
+      sx={{
+        height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <CircularProgress size={24} />
       <Typography variant="body2">Yükleniyor...</Typography>
     </Stack>
@@ -213,7 +226,13 @@ const WaybillControlContainer = () => {
     <>
       <ActionHeader title={'İrsaliye Kontrol'} hide={true} />
       <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <IconButton size="small" onClick={handleExportExcel} aria-label="Excel indir" sx={{ opacity: waybillList.length === 0 ? 0.5 : 1 }} disabled={waybillList.length === 0}>
             <img src={excelimg} alt="Excel indir" width={24} height={24} />
           </IconButton>
@@ -235,19 +254,37 @@ const WaybillControlContainer = () => {
             <Paper sx={{ p: 2, mb: 2, backgroundColor: '#F2F5FF' }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid
+                    size={{
+                      xs: 12,
+                      sm: 6,
+                      md: 3,
+                    }}
+                  >
                     <TextField select label="Evrak Tipi" variant="standard" fullWidth value={filters.evrakTip || ''} onChange={(e) => setFilter('evrakTip', e.target.value)}>
                       <MenuItem value="1">Sevkiyat</MenuItem>
                       <MenuItem value="13">Mal Kabul</MenuItem>
                     </TextField>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid
+                    size={{
+                      xs: 12,
+                      sm: 6,
+                      md: 3,
+                    }}
+                  >
                     <TextField select label="Kaynak" variant="standard" fullWidth value={filters.kaynak || ''} onChange={(e) => setFilter('kaynak', e.target.value)}>
                       <MenuItem value="DYS">Depo Yönetim Sistemi</MenuItem>
                       <MenuItem value="ERP">Mikro</MenuItem>
                     </TextField>
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid
+                    size={{
+                      xs: 12,
+                      sm: 6,
+                      md: 3,
+                    }}
+                  >
                     <DatePicker
                       label="Başlangıç Tarihi"
                       value={filters.beginDate || null}
@@ -255,7 +292,13 @@ const WaybillControlContainer = () => {
                       slotProps={{ textField: { variant: 'standard', fullWidth: true } }}
                     />
                   </Grid>
-                  <Grid item xs={12} sm={6} md={3}>
+                  <Grid
+                    size={{
+                      xs: 12,
+                      sm: 6,
+                      md: 3,
+                    }}
+                  >
                     <DatePicker
                       label="Bitiş Tarihi"
                       value={filters.endDate || null}
@@ -282,9 +325,9 @@ const WaybillControlContainer = () => {
         rows={waybillList}
         columns={columns}
         loading={loading}
-        components={{
-          NoRowsOverlay: CustomNoRowsOverlay,
-          LoadingOverlay: CustomLoadingOverlay,
+        slots={{
+          noRowsOverlay: CustomNoRowsOverlay,
+          loadingOverlay: CustomLoadingOverlay,
         }}
         localeText={{
           noRowsLabel: 'Veri yok',

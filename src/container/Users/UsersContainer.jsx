@@ -76,7 +76,14 @@ function UsersContainer() {
   }, [users, name])
 
   return (
-    <Box position={'relative'} display={'flex'} flexDirection={'column'} gap={2}>
+    <Box
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -85,7 +92,11 @@ function UsersContainer() {
         }}
       >
         <Typography
+          variant="h4"
           sx={{
+            textAlign: 'start',
+            fontWeight: theme.typography.fontWeightMedium,
+
             fontSize: {
               xs: '18px',
               sm: '20px',
@@ -94,9 +105,6 @@ function UsersContainer() {
               xl: '36px',
             },
           }}
-          textAlign={'start'}
-          fontWeight={theme.typography.fontWeightMedium}
-          variant="h4"
         >
           Kullanıcılar
         </Typography>

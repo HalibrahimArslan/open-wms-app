@@ -100,14 +100,15 @@ const EmptyAddressContainer = () => {
           disableColumnMenu
           disableSelectionOnClick
           getRowId={(row) => row.urunAdresId}
-          components={{ Toolbar: CustomToolbar }}
-          componentsProps={{
+          slots={{ toolbar: CustomToolbar }}
+          slotProps={{
             toolbar: {
               showQuickFilter: true,
               quickFilterProps: { debounceMs: 500 },
             },
           }}
           style={{ minHeight: gridHeight }}
+          showToolbar
         />
       )}
     </Paper>

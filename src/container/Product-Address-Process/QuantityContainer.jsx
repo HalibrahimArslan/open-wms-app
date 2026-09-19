@@ -184,8 +184,8 @@ const QuantityContainer = ({ processType }) => {
       )}
       <Grid
         container
-        gap={2}
         sx={{
+          gap: 2,
           display: 'flex',
           flexDirection: 'row',
           flexGrow: 1,

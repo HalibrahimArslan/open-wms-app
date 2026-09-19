@@ -27,15 +27,37 @@ const CustomBox = ({ children, loading, ...props }) => {
   return (
     <StyledBox {...props}>
       {loading ? (
-        <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} gap={5} alignContent={'center'} p={1}>
-          <Box display={'flex'} justifyContent={'center'}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 5,
+            alignContent: 'center',
+            p: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <Skeleton variant="text" width={50} height={20} />
           </Box>
           {Array(3)
             .fill()
             .map((_, index) => (
               <Box key={index}>
-                <Box display={'flex'} justifyContent={'center'} flexDirection={'column'} gap={2} alignItems={'center'}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: 2,
+                    alignItems: 'center',
+                  }}
+                >
                   <Skeleton variant="text" width={100} height={20} />
                   <Skeleton variant="rounded" width={100} height={50} />
                 </Box>
@@ -120,9 +142,11 @@ const RayonStorageRateContainer = () => {
             }}
             label="Koridor"
             MenuProps={{
-              PaperProps: {
-                sx: {
-                  maxHeight: 200,
+              slotProps: {
+                paper: {
+                  sx: {
+                    maxHeight: 200,
+                  },
                 },
               },
             }}
@@ -150,7 +174,13 @@ const RayonStorageRateContainer = () => {
             <Typography variant="h6" align="center" gutterBottom>
               Koridor Doluluk Oranı
             </Typography>
-            <Typography variant="h3" fontWeight={theme.typography.fontWeightBold} ref={countUpRef} />
+            <Typography
+              variant="h3"
+              ref={countUpRef}
+              sx={{
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            />
           </Box>
         )}
       </CountUp>

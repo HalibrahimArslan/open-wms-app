@@ -71,16 +71,16 @@ export default function CountingDefinitionForm({ open, handleVisible, handleAddC
     <Collapse in={open} timeout="auto" unmountOnExit>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
         <Grid container spacing={2}>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <DepoCombo />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <TextField required fullWidth id="countingName" label="Sayım Adı" name="countingName" type="text" autoComplete="off" autoFocus size="small" />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <TextField required fullWidth name="definition" label="Sayım Açıklaması" type="text" id="definition" multiline minRows={2} />
           </Grid>
-          <Grid item xs={12}>
+          <Grid size={12}>
             <Paper variant="outlined" sx={{ p: 1.5, borderRadius: 1.5 }}>
               <Typography variant="subtitle2" sx={{ mb: 1, fontWeight: 600 }}>
                 Sayım Görüntüleme Yetkisi

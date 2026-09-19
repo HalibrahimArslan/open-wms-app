@@ -23,7 +23,12 @@ export default function PalletBarcodeDetailCardItem({ palletInfo, theme, handleD
           <OrderItemColumn title={'Sipariş No'} value={palletInfo.orderNo || palletInfo.siparisNo} />
         </CardContent>
         <CardContent>
-          <Typography variant="h4" fontWeight={theme.typography.fontWeightMedium}>
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: theme.typography.fontWeightMedium,
+            }}
+          >
             {palletInfo.amount} {palletInfo.teslimMiktar}
           </Typography>
         </CardContent>

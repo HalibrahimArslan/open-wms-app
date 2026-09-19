@@ -6,14 +6,14 @@ export default function PlacementBox({ label, value, handleChange, fetchData, di
   return (
     <Box
       sx={{
+        padding: 2,
+        margin: 2,
+        borderRadius: theme.shape.borderRadius,
+        bgcolor: theme.palette.secondary.main,
         display: 'flex',
         flexGrow: 1,
         justifyContent: 'center',
       }}
-      padding={2}
-      margin={2}
-      borderRadius={theme.shape.borderRadius}
-      bgcolor={theme.palette.secondary.main}
     >
       <TextField
         id="outlined-basic"

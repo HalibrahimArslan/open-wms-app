@@ -39,7 +39,14 @@ export default function BarcodeGeneratorContainer() {
   }, [print])
 
   return (
-    <Dialog fullScreen open={true} TransitionComponent={Transition} className="ean13">
+    <Dialog
+      fullScreen
+      open={true}
+      className="ean13"
+      slots={{
+        transition: Transition,
+      }}
+    >
       {barcode && barcode.map((item, index) => <Barcode key={index} value={item} />)}
     </Dialog>
   )

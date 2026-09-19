@@ -1,7 +1,7 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
-import trLocale from 'date-fns/locale/tr'
+import { tr as trLocale } from 'date-fns/locale/tr'
 import { TextField } from '@mui/material'
 
 const DateFilterButton = ({ date, handleDate, label, minDate }) => {

@@ -9,14 +9,16 @@ export default function TableSearchField({ placeholder = 'Ara', onChange, width 
       variant="outlined"
       placeholder={placeholder}
       onChange={onChange}
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon fontSize="small" color="action" />
-          </InputAdornment>
-        ),
-      }}
       sx={{ width: { xs: '100%', sm: width }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }}
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon fontSize="small" color="action" />
+            </InputAdornment>
+          ),
+        },
+      }}
     />
   )
 }

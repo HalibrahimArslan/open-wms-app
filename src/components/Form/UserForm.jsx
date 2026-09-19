@@ -39,7 +39,12 @@ const UserForm = ({ initialValues = {}, validationSchema, onSubmit, backButtonLa
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             {Object.keys(initialValues).map((fieldName) => (
-              <Box key={fieldName} mt={2}>
+              <Box
+                key={fieldName}
+                sx={{
+                  mt: 2,
+                }}
+              >
                 {fieldName === 'authorities' ? (
                   userAuthorities.includes('ROLE_ADMIN') && (
                     <FormControl fullWidth error={touched.authorities && Boolean(errors.authorities)}>
@@ -101,21 +106,29 @@ const UserForm = ({ initialValues = {}, validationSchema, onSubmit, backButtonLa
                     onBlur={handleBlur}
                     error={touched[fieldName] && Boolean(errors[fieldName])}
                     helperText={touched[fieldName] ? errors[fieldName] : ''}
-                    InputProps={{
-                      endAdornment: fieldName.includes('Password') ? (
-                        <InputAdornment position="end">
-                          <IconButton onClick={toggleShowPassword} edge="end">
-                            {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null,
+                    slotProps={{
+                      input: {
+                        endAdornment: fieldName.includes('Password') ? (
+                          <InputAdornment position="end">
+                            <IconButton onClick={toggleShowPassword} edge="end">
+                              {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                            </IconButton>
+                          </InputAdornment>
+                        ) : null,
+                      },
                     }}
                   />
                 )}
               </Box>
             ))}
 
-            <Box display="flex" gap={1} mt={2}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                mt: 2,
+              }}
+            >
               <Button startIcon={<ArrowBackOutlinedIcon />} variant="contained" color="primary" onClick={() => nav(-1)}>
                 {backButtonLabel}
               </Button>

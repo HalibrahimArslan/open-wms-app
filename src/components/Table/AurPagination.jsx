@@ -14,11 +14,22 @@ const AurPagination = ({ page, count, rowsPerPageList, rowsPerPage, defaultValue
       <Alert severity="info" sx={{ py: 0, px: 1 }}>
         {count} adet bulundu
       </Alert>
-      <Box display={'flex'} alignItems={'center'}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
         <IconButton disabled={page === 1} onClick={handleDecrease}>
           <ChevronLeftIcon />
         </IconButton>
-        <Typography fontWeight={'bold'}>{page}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+          }}
+        >
+          {page}
+        </Typography>
         <IconButton onClick={handleIncrease} disabled={page === (ratio <= 1 ? 1 : Math.ceil(ratio))}>
           <ChevronRightIcon />
         </IconButton>

@@ -29,7 +29,12 @@ export default function OrderJustifyDrawer({ list, orderType, cariBaglantiTipi }
       <SearchBox search={searchText} handleChangeSearch={handleChangeSearch} zIndex={true} top={5} />
       {filteredList && filteredList.length > 0 ? (
         filteredList.map((todo) => (
-          <Box p={1} key={orderType === 'MSK' ? todo.sipUid : todo.stokKodu}>
+          <Box
+            key={orderType === 'MSK' ? todo.sipUid : todo.stokKodu}
+            sx={{
+              p: 1,
+            }}
+          >
             <OrderJustifyListItem
               key={orderType === 'MSK' ? todo.sipUid : todo.stokKodu}
               pk={orderType === 'MSK' ? todo.sipUid : todo.stokKodu}

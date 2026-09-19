@@ -41,7 +41,14 @@ export default function GlobalSearchInput({ value, onChange, detected, loading, 
         py: 1.25,
       }}
     >
-      <Stack direction="row" alignItems="center" gap={{ xs: 0.5, sm: 1 }} sx={{ minWidth: 0 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          gap: { xs: 0.5, sm: 1 },
+          minWidth: 0,
+        }}
+      >
         <SearchIcon sx={{ color: 'text.secondary', flexShrink: 0 }} />
         <InputBase
           value={value}

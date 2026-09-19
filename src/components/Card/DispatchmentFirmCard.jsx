@@ -22,7 +22,12 @@ const DispatchmentFirmCard = ({ handleListItemClick, firm }) => {
           alignItems: 'center',
         }}
       >
-        <Typography align="left" fontWeight={theme.typography.fontWeightMedium}>
+        <Typography
+          align="left"
+          sx={{
+            fontWeight: theme.typography.fontWeightMedium,
+          }}
+        >
           {firm.bolgeAdi}
         </Typography>
         {firm.cariBaglantiTipi === '4' && (

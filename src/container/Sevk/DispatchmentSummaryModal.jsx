@@ -27,7 +27,13 @@ const DispatchmentSummaryModal = ({ open, orderDetail, addresses, selectedAddres
         {addresses.length === 0 ? (
           <NotFound msg="Kontrol Adres bulunamadı" />
         ) : (
-          <Box display={addresses.length === 1 ? 'none' : 'flex'} justifyContent="space-between" alignItems="center">
+          <Box
+            sx={{
+              display: addresses.length === 1 ? 'none' : 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Autocomplete
               disablePortal
               value={selectedAddress}
@@ -82,7 +88,14 @@ const DispatchmentSummaryModal = ({ open, orderDetail, addresses, selectedAddres
         </TableContainer>
         <Divider />
 
-        <Box display={'flex'} justifyContent={'flex-end'} gap={2} mt={2}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 2,
+            mt: 2,
+          }}
+        >
           <Button variant="outlined" onClick={handleClose}>
             Kapat
           </Button>

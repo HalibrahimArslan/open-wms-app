@@ -17,7 +17,14 @@ const AurDialog = ({ open, handleClose, children, scroll, disabled, paperProps }
   }, [open])
 
   return (
-    <Dialog open={open} onClose={handleClose} scroll={scroll} PaperProps={paperProps}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      scroll={scroll}
+      slotProps={{
+        paper: paperProps,
+      }}
+    >
       <Box sx={{ background: theme.palette.background.paper }}>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
           <IconButton

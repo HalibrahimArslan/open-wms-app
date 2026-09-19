@@ -191,8 +191,10 @@ export default function Header() {
               <ListItemText
                 primary={depo.name}
                 secondary={`Depo kodu: ${depo.code}`}
-                primaryTypographyProps={{ fontWeight: isSelected ? 700 : 500, variant: 'body2' }}
-                secondaryTypographyProps={{ variant: 'caption' }}
+                slotProps={{
+                  primary: { fontWeight: isSelected ? 700 : 500, variant: 'body2' },
+                  secondary: { variant: 'caption' },
+                }}
               />
               {isSelected && <CheckIcon fontSize="small" color="primary" />}
             </MenuItem>

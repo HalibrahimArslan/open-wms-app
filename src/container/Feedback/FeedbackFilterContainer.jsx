@@ -23,24 +23,39 @@ const FeedbackFilterContainer = ({ checkedFilter, setCheckedFilter, startDate, h
   return (
     <Box
       component={Paper}
-      display={'flex'}
-      padding={1}
-      justifyContent={'flex-start'}
-      borderRadius={2}
-      bgcolor={theme.palette.secondary.light}
-      alignItems={'flex-start'}
       elevation={0}
-      gap={2}
-      overflow={'auto'}
-      flexDirection={'column'}
+      sx={{
+        display: 'flex',
+        padding: 1,
+        justifyContent: 'flex-start',
+        borderRadius: 2,
+        bgcolor: theme.palette.secondary.light,
+        alignItems: 'flex-start',
+        gap: 2,
+        overflow: 'auto',
+        flexDirection: 'column',
+      }}
     >
       {(startDate || endDate || checkedFilter.length > 0) && (
-        <Box display={'flex'} alignItems={'center'} gap={1} p={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            p: 1,
+          }}
+        >
           {filterChipList.map((item) => item)}
         </Box>
       )}
 
-      <Box display={'flex'} alignItems={'center'} gap={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
         <DateFilterButton date={startDate} handleDate={handleStartDate} label={'Başlangıç Tarihi'} />
         <DateFilterButton date={endDate} handleDate={handleEndDate} label={'Bitiş Tarihi'} />
         <DynamicSelect buttonName="Destek Tipi" data={bulkList} checkedFilter={checkedFilter} setCheckedFilter={setCheckedFilter} icon={<MdSupportAgent />} />

@@ -2,7 +2,8 @@ import { Box, Button, Collapse, Grid, IconButton, Paper, Skeleton, Stack, TextFi
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getOrderMasterList } from '../../services/OrderDetailService'
-import { DataGrid, GridActionsCellItem, trTR, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid'
+import { selectionModelToIds } from '../../shared/components/DataGrid/selection'
 import MouseIcon from '@mui/icons-material/Mouse'
 import TracingItem from '../../components/TracingItem'
 import { useTheme } from '@mui/material/styles'
@@ -420,13 +421,13 @@ export default function OrderTracingContainer() {
         field: 'aurUser.login',
         headerName: 'Kullanıcı Id',
         width: 140,
-        valueGetter: getUserName,
+        valueGetter: (value, row) => getUserName({ row }),
       },
       {
         field: 'siparisNo',
         headerName: 'Sipariş No',
         width: 160,
-        valueGetter: getSiparisNo,
+        valueGetter: (value, row) => getSiparisNo({ row }),
       },
 
       { field: 'firmCode', headerName: 'Firma Kodu', hide: true },
@@ -442,7 +443,7 @@ export default function OrderTracingContainer() {
         headerName: 'Firma Adı',
         flex: 1.2,
         minWidth: 220,
-        valueGetter: (params) => parseFirmName(params.row.firmName).firma,
+        valueGetter: (value, row) => parseFirmName(row.firmName).firma,
       },
 
       {
@@ -450,7 +451,7 @@ export default function OrderTracingContainer() {
         headerName: 'Operasyon Tipi',
         width: 170,
         editable: true,
-        valueGetter: getOpType,
+        valueGetter: (value, row) => getOpType({ row }),
       },
 
       {
@@ -458,7 +459,7 @@ export default function OrderTracingContainer() {
         headerName: 'Siparis Durumu',
         width: 220,
         editable: true,
-        valueGetter: getSiparisDurumuTr,
+        valueGetter: (value, row) => getSiparisDurumuTr({ row }),
       },
 
       {
@@ -466,7 +467,7 @@ export default function OrderTracingContainer() {
         headerName: 'Oluşturulma Tarihi',
         width: 150,
         align: 'center',
-        valueGetter: getCreatedDate,
+        valueGetter: (value, row) => getCreatedDate({ row }),
       },
 
       {
@@ -474,7 +475,7 @@ export default function OrderTracingContainer() {
         type: 'actions',
         headerName: 'Detay',
         width: 90,
-        getActions: (params) => [<GridActionsCellItem icon={<MouseIcon />} label="Detay" onClick={() => changeOrderId(params.row.id)} />],
+        getActions: (params) => [<GridActionsCellItem key="detay" icon={<MouseIcon />} label="Detay" onClick={() => changeOrderId(params.row.id)} />],
       },
       {
         field: 'generatePdf',
@@ -482,7 +483,7 @@ export default function OrderTracingContainer() {
         headerName: 'PDF',
         width: 80,
         getActions: (params) => [
-          <GridActionsCellItem disabled={!(params.row.status === 'DONE')} icon={<PictureAsPdfIcon />} label="PDF" onClick={() => downloadPdf(params.row.id)} />,
+          <GridActionsCellItem key="pdf" disabled={!(params.row.status === 'DONE')} icon={<PictureAsPdfIcon />} label="PDF" onClick={() => downloadPdf(params.row.id)} />,
         ],
       },
       {
@@ -492,6 +493,7 @@ export default function OrderTracingContainer() {
         width: 100,
         getActions: (params) => [
           <GridActionsCellItem
+            key="duzenle"
             disabled={!(params.row.status === 'DONE' || authorityList.includes('SUPERUSER'))}
             icon={<EditIcon />}
             label="Düzenle"
@@ -515,7 +517,7 @@ export default function OrderTracingContainer() {
         headerName: 'Alt Cari',
         flex: 1,
         minWidth: 200,
-        valueGetter: (params) => parseFirmName(params.row.firmName).altCari,
+        valueGetter: (value, row) => parseFirmName(row.firmName).altCari,
       })
     }
 
@@ -527,7 +529,13 @@ export default function OrderTracingContainer() {
       <ActionHeader title={'Sipariş Takip'} hide={true} />
 
       <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <SplitButton
             variant="outlined"
             size="medium"
@@ -570,7 +578,13 @@ export default function OrderTracingContainer() {
               <Paper sx={{ p: 3, backgroundColor: '#F2F5FF' }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <DatePicker
                         label="Başlangıç"
                         value={filters['lastModifiedDate.greaterThan'] || null}
@@ -579,7 +593,13 @@ export default function OrderTracingContainer() {
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <DatePicker
                         label="Bitiş"
                         value={filters['lastModifiedDate.lessThan'] || null}
@@ -588,7 +608,13 @@ export default function OrderTracingContainer() {
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <TextField
                         label="Stok Kodu"
                         variant="standard"
@@ -599,7 +625,13 @@ export default function OrderTracingContainer() {
                     </Grid>
 
                     {/* ✅ STATUS FILTER */}
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <TextField
                         select
                         label="Sipariş Durumu"
@@ -673,20 +705,20 @@ export default function OrderTracingContainer() {
             pagination
             columns={columns}
             disableSelectionOnClick
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
             getRowClassName={(params) => `grid-row-theme--${params.row.status}`}
-            components={{ Toolbar: GridToolbar }}
+            slots={{ toolbar: GridToolbar }}
             checkboxSelection
             isRowSelectable={(params) => params.row.opType === 'MSK'}
-            onRowSelectionModelChange={(row) => {
-              setSelectedRows(row)
+            onRowSelectionModelChange={(model) => {
+              setSelectedRows(selectionModelToIds(model, data, (row) => row.opType === 'MSK'))
             }}
-            componentsProps={{
+            slotProps={{
               toolbar: {
                 showQuickFilter: true,
                 quickFilterProps: { debounceMs: 500 },
               },
             }}
+            showToolbar
           />
         )}
       </Grid>

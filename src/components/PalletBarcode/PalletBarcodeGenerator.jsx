@@ -85,7 +85,13 @@ export default function PalletBarcodeGenerator({
           </Table>
         </TableContainer>
         <Divider />
-        <Box mt={2} sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <Box
+          sx={{
+            mt: 2,
+            display: 'flex',
+            justifyContent: 'space-evenly',
+          }}
+        >
           <Stack>
             <Button variant="contained" disabled={!(orderDetail.filter((q) => q.teslimMiktar > 0).length > 0)} onClick={createPalletBarcode}>
               Palet Oluştur
@@ -97,7 +103,12 @@ export default function PalletBarcodeGenerator({
             </Button>
           </Stack>
         </Box>
-        <Box mt={2} overflow="auto">
+        <Box
+          sx={{
+            mt: 2,
+            overflow: 'auto',
+          }}
+        >
           {palletList &&
             palletList.length > 0 &&
             palletList
@@ -120,11 +131,22 @@ export default function PalletBarcodeGenerator({
                         </Box>
                         <Box>
                           Palet Barkodu
-                          <Typography textAlign={'center'}>{pallet.palletBarcode}</Typography>
+                          <Typography
+                            sx={{
+                              textAlign: 'center',
+                            }}
+                          >
+                            {pallet.palletBarcode}
+                          </Typography>
                         </Box>
                       </Box>
                       <Box>
-                        <Stack gap={1} direction={'row'}>
+                        <Stack
+                          direction={'row'}
+                          sx={{
+                            gap: 1,
+                          }}
+                        >
                           <Button variant="contained" onClick={() => addProductPalletBarcode(pallet.palletBarcodeId)}>
                             EKLE
                           </Button>
@@ -171,7 +193,13 @@ export default function PalletBarcodeGenerator({
                                   flexDirection: 'column',
                                 }}
                               >
-                                <Typography fontWeight={'bold'}>{barcode.quantity}</Typography>
+                                <Typography
+                                  sx={{
+                                    fontWeight: 'bold',
+                                  }}
+                                >
+                                  {barcode.quantity}
+                                </Typography>
                                 <Typography>{barcode.stockCode}</Typography>
                               </Box>
                               <Box>

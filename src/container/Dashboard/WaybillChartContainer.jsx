@@ -15,7 +15,15 @@ const CustomBox = ({ children, loading, ...props }) => {
   return (
     <StyledBox {...props}>
       {loading ? (
-        <Box display={'flex'} flexDirection={'column'} gap={5} alignContent={'center'} p={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 5,
+            alignContent: 'center',
+            p: 1,
+          }}
+        >
           <Skeleton variant="text" width={150} height={20} />
           <Skeleton variant="circular" width={150} height={150}>
             <Avatar />
@@ -56,7 +64,12 @@ const StyledDoughnut = ({ data, dysPercentage, options, onSliceClick }) => {
 
   return (
     <>
-      <Typography variant="h6" pt={1}>
+      <Typography
+        variant="h6"
+        sx={{
+          pt: 1,
+        }}
+      >
         {data.datasets[0].label}
       </Typography>
       <div style={{ width: '100%', height: 200, margin: 'auto', position: 'relative' }}>
@@ -203,8 +216,20 @@ const WaybillChartContainer = () => {
       <StyledDoughnut data={receivingData} dysPercentage={receivingStats.dysPercentage} options={options} onSliceClick={(source) => navigateToWaybillControl(13, source)} />
       <Divider flexItem />
       <StyledDoughnut data={dispatchmentData} dysPercentage={dispatchmentStats.dysPercentage} options={options} onSliceClick={(source) => navigateToWaybillControl(1, source)} />
-      <Box display={'flex'} justifyContent={'flex-end'} width={'100%'}>
-        <Typography variant="caption" align="center" pr={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          width: '100%',
+        }}
+      >
+        <Typography
+          variant="caption"
+          align="center"
+          sx={{
+            pr: 1,
+          }}
+        >
           Son 7 Gün Baz Alınmaktadır.
         </Typography>
       </Box>

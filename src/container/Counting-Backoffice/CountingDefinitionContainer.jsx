@@ -124,8 +124,14 @@ export default function CountingDefinitionContainer() {
   const warningCount = activeCountingList.length
 
   return (
-    <Grid container spacing={2} alignItems="stretch">
-      <Grid item xs={12}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        alignItems: 'stretch',
+      }}
+    >
+      <Grid size={12}>
         <Paper
           elevation={0}
           sx={{
@@ -136,12 +142,32 @@ export default function CountingDefinitionContainer() {
           }}
         >
           <Stack spacing={2}>
-            <Stack direction={isMobile ? 'column' : 'row'} justifyContent="space-between" alignItems={isMobile ? 'flex-start' : 'center'} spacing={2}>
+            <Stack
+              direction={isMobile ? 'column' : 'row'}
+              spacing={2}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: isMobile ? 'flex-start' : 'center',
+              }}
+            >
               <Box>
-                <Typography variant="h5" textAlign={'left'} sx={{ fontWeight: 700, lineHeight: 1.25 }}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    textAlign: 'left',
+                    fontWeight: 700,
+                    lineHeight: 1.25,
+                  }}
+                >
                   Sayım Yönetim Paneli
                 </Typography>
-                <Typography variant="body1" color="text.secondary" sx={{ mt: 1.25 }}>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: 'text.secondary',
+                    mt: 1.25,
+                  }}
+                >
                   Sayımı seçin, ana aksiyonları kullanın ve detayları aşağıdaki sekmelerden takip edin.
                 </Typography>
               </Box>
@@ -160,7 +186,12 @@ export default function CountingDefinitionContainer() {
         </Paper>
       </Grid>
 
-      <Grid item xs={12} lg={8.5}>
+      <Grid
+        size={{
+          xs: 12,
+          lg: 8.5,
+        }}
+      >
         <Stack spacing={2}>
           <Accordion
             expanded={warningExpanded}
@@ -179,7 +210,13 @@ export default function CountingDefinitionContainer() {
                 },
               }}
             >
-              <Stack direction="row" spacing={1} alignItems="center">
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <Typography sx={{ fontWeight: 600, fontSize: theme.typography.pxToRem(14.5), lineHeight: 1.2 }}>Sayım Uyarıları</Typography>
                 <Chip
                   color={warningCount > 0 ? 'warning' : 'success'}
@@ -197,7 +234,13 @@ export default function CountingDefinitionContainer() {
               </Stack>
             </AccordionSummary>
             <AccordionDetails sx={{ pt: 0.25, pb: 1 }}>
-              <Box maxHeight={220} overflow="auto" sx={{ textAlign: 'left' }}>
+              <Box
+                sx={{
+                  maxHeight: 220,
+                  overflow: 'auto',
+                  textAlign: 'left',
+                }}
+              >
                 <ActiveCountingAlert activeCountingList={activeCountingList} />
               </Box>
             </AccordionDetails>
@@ -209,7 +252,12 @@ export default function CountingDefinitionContainer() {
         </Stack>
       </Grid>
 
-      <Grid item xs={12} lg={3.5}>
+      <Grid
+        size={{
+          xs: 12,
+          lg: 3.5,
+        }}
+      >
         <Stack spacing={2} sx={{ position: { lg: 'sticky' }, top: { lg: theme.spacing(2) } }}>
           <Item sx={{ p: 1.5 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
@@ -240,18 +288,26 @@ export default function CountingDefinitionContainer() {
         anchor={isMobile ? 'bottom' : 'right'}
         open={isVisible}
         onClose={handleVisible}
-        PaperProps={{
-          sx: {
-            width: isMobile ? '100%' : 520,
-            p: 2,
-            display: 'flex',
-          },
-        }}
         sx={{
           zIndex: (theme) => theme.zIndex.appBar + 1,
         }}
+        slotProps={{
+          paper: {
+            sx: {
+              width: isMobile ? '100%' : 520,
+              p: 2,
+              display: 'flex',
+            },
+          },
+        }}
       >
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Typography variant="h6">Yeni Sayım Tanımı</Typography>
           <Button size="small" startIcon={<CloseIcon />} onClick={handleVisible}>
             Kapat

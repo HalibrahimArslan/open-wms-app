@@ -252,13 +252,41 @@ const HallMapContainer = ({ hall, loading }) => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" gap={4}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" gap={2} flexWrap="wrap">
-        <Typography fontWeight="bold" sx={{ textTransform: 'uppercase', fontSize: '1.5rem', mb: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 4,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 2,
+          flexWrap: 'wrap',
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            fontSize: '1.5rem',
+            mb: 2,
+          }}
+        >
           {hall.code}
         </Typography>
 
-        <Box display="flex" gap={1.5} flexWrap="wrap" alignItems="center">
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1.5,
+            flexWrap: 'wrap',
+            alignItems: 'center',
+          }}
+        >
           <Autocomplete
             value={user}
             onChange={(event, newValue) => {
@@ -418,23 +446,35 @@ const HallMapContainer = ({ hall, loading }) => {
         {successMessage}
       </Alert>
 
-      <Box display="flex" flexDirection="row" gap={2} overflow="auto">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          gap: 2,
+          overflow: 'auto',
+        }}
+      >
         {flats.map((flat) => {
           const addresses = addressData.filter((address) => address.kat === flat)
           const allAssigned = addresses.every((address) => isAddressSelected(address.urunAdresId))
 
           return (
-            <Box key={flat} flex={1}>
+            <Box
+              key={flat}
+              sx={{
+                flex: 1,
+              }}
+            >
               <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                mb={1}
+                onClick={() => handleToggleFlat(flat)}
                 sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  mb: 1,
                   cursor: addresses.some((a) => !isCellLockedByCount(a.urunAdresId)) ? 'pointer' : 'default',
                   userSelect: 'none',
                 }}
-                onClick={() => handleToggleFlat(flat)}
               >
                 <Paper
                   sx={{
@@ -497,14 +537,16 @@ const HallMapContainer = ({ hall, loading }) => {
 
                     {assigned && assigned.login && !isPendingDelete && (
                       <Box
-                        mt={0.5}
-                        fontSize="0.85em"
-                        sx={{ color: isLocked ? 'text.disabled' : theme.palette.secondary.light }}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        gap={1}
-                        height={50}
+                        sx={{
+                          mt: 0.5,
+                          fontSize: '0.85em',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 1,
+                          height: 50,
+                          color: isLocked ? 'text.disabled' : theme.palette.secondary.light,
+                        }}
                       >
                         {assigned.login}
                       </Box>

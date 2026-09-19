@@ -17,8 +17,22 @@ export default function ActiveCountingAlert({ activeCountingList }) {
             const statusConfig = getStatusConfig(countingItem.sayimDurumu)
             return (
               <Box key={countingItem.id} sx={{ textAlign: 'left' }}>
-                <Stack direction="row" alignItems="center" spacing={0.75} sx={{ py: 0.35, flexWrap: 'wrap' }}>
-                  <Typography variant="body2" color="text.primary" sx={{ fontWeight: 500 }}>
+                <Stack
+                  direction="row"
+                  spacing={0.75}
+                  sx={{
+                    alignItems: 'center',
+                    py: 0.35,
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'text.primary',
+                      fontWeight: 500,
+                    }}
+                  >
                     {countingItem.sayimAdi} adlı
                   </Typography>
                   <Chip
@@ -34,7 +48,12 @@ export default function ActiveCountingAlert({ activeCountingList }) {
                       },
                     }}
                   />
-                  <Typography variant="body2" color="text.primary">
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'text.primary',
+                    }}
+                  >
                     sayımınız mevcuttur.
                   </Typography>
                 </Stack>
@@ -43,7 +62,13 @@ export default function ActiveCountingAlert({ activeCountingList }) {
             )
           })
         ) : (
-          <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'left' }}>
+          <Typography
+            variant="body1"
+            sx={{
+              color: 'text.secondary',
+              textAlign: 'left',
+            }}
+          >
             Devam eden herhangi bir sayımınız yoktur.
           </Typography>
         )}

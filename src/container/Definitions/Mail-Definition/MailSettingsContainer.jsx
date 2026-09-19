@@ -3,7 +3,7 @@ import { createOrUpdateLookup, deleteMails, getLookupsByLookupNames } from '../.
 import { generatePayload } from '../../../utils/Utils'
 import { notify, notifyError } from '../../../layout/Layout'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineOutlined'
 import { Box, Button, IconButton, Typography, useTheme } from '@mui/material'
 import LookupForm from '../../../components/Form/LookupForm'
 import SettingsIcon from '@mui/icons-material/Settings'
@@ -142,7 +142,13 @@ const MailSettingsContainer = () => {
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
         <IconButton onClick={() => setSettingDialog(true)} disabled={mailSettings && mailSettings.length === 0}>
           <SettingsIcon />
         </IconButton>
@@ -165,11 +171,30 @@ const MailSettingsContainer = () => {
         open={settingDialog}
         handleClose={() => setSettingDialog(false)}
         dialogContent={
-          <Box display={'flex'} flexDirection={'column'} gap={1}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1,
+            }}
+          >
             {mailSettings &&
               mailSettings.map((mailSetting) => (
-                <Box key={mailSetting.id} display={'flex'} justifyContent={'space-between'} gap={1}>
-                  <Typography fontWeight={theme.typography.fontWeightBold}>{mailSetting.lookupName}</Typography>
+                <Box
+                  key={mailSetting.id}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    gap: 1,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontWeight: theme.typography.fontWeightBold,
+                    }}
+                  >
+                    {mailSetting.lookupName}
+                  </Typography>
                   <IosSwitch
                     checked={mailSetting.lookupCode === 'true'}
                     onChange={(event) => {

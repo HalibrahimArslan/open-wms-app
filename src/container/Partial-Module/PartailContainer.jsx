@@ -209,7 +209,12 @@ const PartailContainer = () => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={4} position={'relative'}>
+      <Grid
+        size={4}
+        sx={{
+          position: 'relative',
+        }}
+      >
         <FitItem>
           <SearchBox search={search} handleChangeSearch={handleChangeFilter} zIndex={true} top={5} searchLabel={'Stok Kodu Giriniz'} />
           <PartialItemContainer
@@ -221,7 +226,12 @@ const PartailContainer = () => {
           />
         </FitItem>
       </Grid>
-      <Grid item xs={8} position={'relative'}>
+      <Grid
+        size={8}
+        sx={{
+          position: 'relative',
+        }}
+      >
         <FitItem>
           <PartialDetailContainer selectedPartialItem={selectedItem} partialDetailList={partialDetailList} childLoading={childLoading} handleUpdateStatus={handleUpdateStatus} />
         </FitItem>

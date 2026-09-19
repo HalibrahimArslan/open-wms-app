@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
-import { DataGrid, trTR } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import { Box, Chip } from '@mui/material'
 import ActionHeader from '../../../shared/components/ActionHeader'
 import CustomToolbar from '../../../shared/components/DataGrid/CustomToolbar'
@@ -117,16 +117,16 @@ const ReserveProductContainer = () => {
         columns={columns}
         pageSize={20}
         rowsPerPageOptions={[20, 50, 100]}
-        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
         getRowId={(row) => row.id || `${row.orderNo}-${row.productCode}`}
         processRowUpdate={handleRowUpdate}
-        components={{ Toolbar: CustomToolbar }}
-        componentsProps={{
+        slots={{ toolbar: CustomToolbar }}
+        slotProps={{
           toolbar: {
             showQuickFilter: true,
             quickFilterProps: { debounceMs: 500 },
           },
         }}
+        showToolbar
       />
     </Box>
   )

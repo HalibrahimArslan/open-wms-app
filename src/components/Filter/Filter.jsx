@@ -9,7 +9,7 @@ import { Box, Stack, TextField } from '@mui/material'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker'
-import trLocale from 'date-fns/locale/tr'
+import { tr as trLocale } from 'date-fns/locale/tr'
 
 function DateItem({ label, value, handleChange }) {
   return (

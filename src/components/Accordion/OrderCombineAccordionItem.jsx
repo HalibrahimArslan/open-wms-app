@@ -11,7 +11,13 @@ export default function OrderCombineAccordionItem({ order, handleCheckedList }) 
   }
 
   return (
-    <Box display="flex" flexDirection={'row'} marginBottom="2px">
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        marginBottom: '2px',
+      }}
+    >
       <Checkbox checked={checked} onChange={() => handleChange(order.masterId)} sx={{ position: 'sticky', left: 0, zIndex: 1 }} />
       <Accordion key={order.masterId}>
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">

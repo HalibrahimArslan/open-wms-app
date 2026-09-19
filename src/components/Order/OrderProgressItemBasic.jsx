@@ -125,7 +125,11 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
   }, [value, list])
 
   return (
-    <Box p={2}>
+    <Box
+      sx={{
+        p: 2,
+      }}
+    >
       <TablePanel
         title="Sipariş Kalemleri"
         meta={<Chip size="small" variant="outlined" label={`${list.length} kalem`} />}

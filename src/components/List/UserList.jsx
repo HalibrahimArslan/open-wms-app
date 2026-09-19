@@ -1,7 +1,7 @@
 import * as React from 'react'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import LockResetIcon from '@mui/icons-material/LockReset'
-import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutlineOutlined'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { Avatar, Box, Chip, Grid, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material'
 import MoreVertButton from '../MenuWrapper/MoreVertButton'
@@ -32,7 +32,13 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
     return (
       <Grid container spacing={2}>
         {users.map((user, index) => (
-          <Grid item xs={12} sm={6} key={user.id || index}>
+          <Grid
+            key={user.id || index}
+            size={{
+              xs: 12,
+              sm: 6,
+            }}
+          >
             <Box
               sx={{
                 p: 2,
@@ -197,7 +203,14 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
           }}
           key={user.id}
         >
-          <Box display={'flex'} alignItems={'center'} gap={2} flex={0.5}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 2,
+              flex: 0.5,
+            }}
+          >
             <Avatar
               sx={{
                 width: '50px',
@@ -210,7 +223,11 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
             <Typography variant="subtitle2"> {user.login} </Typography>
           </Box>
 
-          <Box flex={1}>
+          <Box
+            sx={{
+              flex: 1,
+            }}
+          >
             <Typography variant="subtitle2"> {user.email} </Typography>
           </Box>
 

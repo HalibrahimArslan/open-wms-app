@@ -89,19 +89,32 @@ export default function CountingPickingContainer() {
       open={open}
       onClose={goHome}
       aria-labelledby="responsive-dialog-title"
-      PaperProps={{
-        sx: {
-          borderRadius: isMobile ? 0 : 2,
+      slotProps={{
+        paper: {
+          sx: {
+            borderRadius: isMobile ? 0 : 2,
+          },
         },
       }}
     >
       <DialogTitle id="responsive-dialog-title" sx={{ pb: 1 }}>
-        <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
           <Box>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>
               Sayım Tanımı Seçiniz
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Başlatmak istediğiniz aktif sayımı seçin.
             </Typography>
           </Box>

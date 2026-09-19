@@ -49,17 +49,22 @@ export default function PickingSelect({ list, adresList, opType, handleNavigate 
           borderColor: 'divider',
         }}
       >
-        <Typography variant="h6" fontWeight={800}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 800,
+          }}
+        >
           Sipariş Detayları
         </Typography>
 
         <Stack
           direction="row"
           spacing={{ xs: 1, sm: 1.5 }}
-          alignItems="center"
-          flexWrap="wrap"
-          rowGap={1}
           sx={{
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            rowGap: 1,
             width: { xs: '100%', sm: 'auto' },
             justifyContent: { xs: 'space-between', sm: 'flex-end' },
           }}

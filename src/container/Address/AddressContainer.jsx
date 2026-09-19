@@ -358,14 +358,32 @@ export default function AddressContainer() {
   }
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={theme.spacing(1)}>
-      <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} gap={1}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: theme.spacing(1),
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
         <AddressFilterContainer />
         <Button startIcon={<AddIcon />} variant="contained" onClick={handleOpenCreateDialog} sx={{ whiteSpace: 'nowrap', flexShrink: 0 }}>
           Adres Ekle
         </Button>
       </Box>
-      <Box display={'flex'} gap={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+        }}
+      >
         <Chip
           label="Değişiklikleri Kaydet"
           variant="filled"

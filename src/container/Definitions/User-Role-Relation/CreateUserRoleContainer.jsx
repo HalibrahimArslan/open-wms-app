@@ -93,7 +93,14 @@ export default function CreateUserRoleContainer() {
       dialogHeader={'Kullanıcı Rol İlişkilendirme'}
       actionButtonName={'Kaydet'}
       dialogContent={
-        <Grid container flexDirection={'column'} gap={2} mt={1}>
+        <Grid
+          container
+          sx={{
+            flexDirection: 'column',
+            gap: 2,
+            mt: 1,
+          }}
+        >
           <Autocomplete
             multiple
             onChange={handleChangeRoleList}

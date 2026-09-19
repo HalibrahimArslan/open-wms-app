@@ -34,7 +34,13 @@ export default function ProductAddressList({ data }) {
         borderRadius: 1,
       }}
     >
-      <Typography p={1}>Adresler</Typography>
+      <Typography
+        sx={{
+          p: 1,
+        }}
+      >
+        Adresler
+      </Typography>
       <SearchBox search={inputText} handleChangeSearch={handleChangeSearch} />
       <Box
         sx={{

@@ -19,8 +19,25 @@ export default function GlobalSearchResultCard({ icon, typeLabel, title, subtitl
       }}
     >
       <CardContent sx={{ p: { xs: 1.5, sm: 2 } }}>
-        <Stack direction="row" alignItems="flex-start" justifyContent="space-between" gap={1} sx={{ flexWrap: 'wrap', rowGap: 1 }}>
-          <Stack direction="row" alignItems="flex-start" gap={1.2} sx={{ minWidth: 0, flex: '1 1 200px' }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+            gap: 1,
+            flexWrap: 'wrap',
+            rowGap: 1,
+          }}
+        >
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'flex-start',
+              gap: 1.2,
+              minWidth: 0,
+              flex: '1 1 200px',
+            }}
+          >
             {icon && (
               <Box
                 sx={{
@@ -62,8 +79,26 @@ export default function GlobalSearchResultCard({ icon, typeLabel, title, subtitl
             <Divider sx={{ my: 1.5 }} />
             <Stack spacing={1}>
               {rows.map((row, i) => (
-                <Stack key={i} direction="row" alignItems="center" justifyContent="space-between" gap={1} sx={{ flexWrap: 'wrap', rowGap: 0.5 }}>
-                  <Stack direction="row" alignItems="center" gap={0.8} sx={{ color: 'text.secondary', minWidth: 0 }}>
+                <Stack
+                  key={i}
+                  direction="row"
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: 1,
+                    flexWrap: 'wrap',
+                    rowGap: 0.5,
+                  }}
+                >
+                  <Stack
+                    direction="row"
+                    sx={{
+                      alignItems: 'center',
+                      gap: 0.8,
+                      color: 'text.secondary',
+                      minWidth: 0,
+                    }}
+                  >
                     {row.icon}
                     <Typography variant="body2" sx={{ fontWeight: 600 }}>
                       {row.label}

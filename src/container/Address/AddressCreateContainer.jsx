@@ -30,11 +30,23 @@ const AddressCreateContainer = ({ createDialog, addressModel, setAddressModel, d
               ))}
             </Stepper>
           </Box>
-          <Box mb={2}>
+          <Box
+            sx={{
+              mb: 2,
+            }}
+          >
             {activeStep === 0 && <AddressModelCreate addressModel={addressModel} setAddressModel={setAddressModel} />}
             {activeStep === 1 && data && <AddressCreateForm data={data} addressModel={addressModel} handleSubmit={handleSubmit} />}
           </Box>
-          <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'} position={'sticky'} bottom={0}>
+          <Stack
+            direction={'row'}
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              position: 'sticky',
+              bottom: 0,
+            }}
+          >
             <Button disabled={activeStep === 0} onClick={() => setActiveStep(0)} startIcon={<KeyboardArrowLeftIcon />}>
               Geri
             </Button>

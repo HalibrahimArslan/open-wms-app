@@ -19,7 +19,16 @@ const WarehouseCombo = ({ warehouse, label, warehouseList, handleChange }) => {
 
 const SelectWarehouseContainer = ({ transferWarehouse, targetWarehouse, handleChangeTransfer, handleChangeTarget, depoList }) => {
   return (
-    <Box component={Paper} display={'flex'} justifyContent={'space-around'} gap={5} padding={2} mb={2}>
+    <Box
+      component={Paper}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        gap: 5,
+        padding: 2,
+        mb: 2,
+      }}
+    >
       <WarehouseCombo warehouse={transferWarehouse} label={'Çıkış Depo Seçiniz'} warehouseList={depoList} handleChange={handleChangeTransfer} />
       <WarehouseCombo warehouse={targetWarehouse} label={'Giriş Depo Seçiniz'} warehouseList={depoList} handleChange={handleChangeTarget} />
     </Box>

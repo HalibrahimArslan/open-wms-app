@@ -5,8 +5,26 @@ const FeedbackForm = ({ feedbackTitle, loading, handleChange, handleSend, feedba
   const theme = useTheme()
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={2} maxHeight={'80dvh'} overflow={'auto'} p={1}>
-      <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} bgcolor={theme.palette.grey[300]} p={2} borderRadius={2}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        maxHeight: '80dvh',
+        overflow: 'auto',
+        p: 1,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          bgcolor: theme.palette.grey[300],
+          p: 2,
+          borderRadius: 2,
+        }}
+      >
         <Typography>Tip Seçiniz</Typography>
         <ToggleButtonGroup value={feedbackTitle} exclusive onChange={handleChange} aria-label="Feedback Type" color="primary">
           <ToggleButton value="FEEDBACK">DESTEK</ToggleButton>
@@ -21,9 +39,9 @@ const FeedbackForm = ({ feedbackTitle, loading, handleChange, handleSend, feedba
       </Box>
 
       <Box
-        display={'flex'}
-        justifyContent={'space-between'}
         sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
           position: 'sticky',
           bottom: 0,
           left: 0,

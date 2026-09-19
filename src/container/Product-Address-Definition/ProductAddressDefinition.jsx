@@ -102,7 +102,7 @@ export default function ProductAddressDefinition() {
 
   return (
     <Grid container>
-      <Grid item sx={{ display: 'flex', flexGrow: 1 }}>
+      <Grid sx={{ display: 'flex', flexGrow: 1 }}>
         <HorizontalLinearStepper
           processType={'Ürün Adres Tanımlama'}
           activeStep={activeStep}
@@ -127,9 +127,9 @@ export default function ProductAddressDefinition() {
             <StepperInput label={'Miktar Giriniz'} value={amount} disabled={disableSituation.quantity} handleChange={handleChange} type="number" />,
             <Grid
               container
-              mb={2}
-              gap={2}
               sx={{
+                mb: 2,
+                gap: 2,
                 display: 'flex',
                 flexDirection: 'row',
                 flexGrow: 1,

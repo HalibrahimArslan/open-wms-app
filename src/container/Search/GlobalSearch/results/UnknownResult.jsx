@@ -39,9 +39,9 @@ export default function UnknownResult({ hint }) {
           <Stack
             key={i}
             direction="row"
-            alignItems="center"
-            gap={1.2}
             sx={{
+              alignItems: 'center',
+              gap: 1.2,
               px: 1.5,
               py: 1,
               border: '1px solid',
@@ -54,7 +54,12 @@ export default function UnknownResult({ hint }) {
               <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
                 {h.label}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {h.desc}
               </Typography>
             </Box>

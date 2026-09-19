@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, Alert, AlertTitle, Button, Container } from '@mui/material'
-import { ExpandMore as ExpandMoreIcon, ErrorOutline as ErrorIcon, Refresh as RefreshIcon, BugReport as BugIcon } from '@mui/icons-material'
+import { ExpandMore as ExpandMoreIcon, ErrorOutlineOutlined as ErrorIcon, Refresh as RefreshIcon, BugReport as BugIcon } from '@mui/icons-material'
 
 class ErrorBoundary extends React.Component {
   state = {
@@ -70,7 +70,13 @@ class ErrorBoundary extends React.Component {
                 Oops! Bir Hata Oluştu
               </Typography>
 
-              <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: 'text.secondary',
+                  mb: 3,
+                }}
+              >
                 UI tarafında beklenmeyen bir problem meydana geldi. Lütfen sayfayı yenilemeyi deneyin.
               </Typography>
 

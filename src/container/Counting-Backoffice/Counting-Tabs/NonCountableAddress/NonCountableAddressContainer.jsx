@@ -139,7 +139,7 @@ const NonCountableAddressContainer = () => {
   return (
     <>
       <Grid container spacing={2}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <AurPagination
             defaultValue={5}
             rowsPerPage={rowsPerPage}
@@ -153,13 +153,22 @@ const NonCountableAddressContainer = () => {
             count={count}
           />
         </Grid>
-        <Grid item xs={12} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <Grid sx={{ display: 'flex', justifyContent: 'flex-end' }} size={12}>
           <Button sx={{ boxShadow: 0, borderRadius: 20 }} onClick={() => setState({ ...state, bottom: true })} variant="contained">
             Adres Ekle
           </Button>
         </Grid>
         {addressExceptionList.map((addressException) => (
-          <Grid item key={addressException.id} xs={6} sm={4} md={4} lg={3} xl={2}>
+          <Grid
+            key={addressException.id}
+            size={{
+              xs: 6,
+              sm: 4,
+              md: 4,
+              lg: 3,
+              xl: 2,
+            }}
+          >
             <Card sx={{ boxShadow: theme.shadows[0], bgcolor: theme.palette.action.hover, border: 1, borderColor: theme.palette.primary.main + '2A' }}>
               <CardContent sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
                 <Typography variant="h5" component="h2">

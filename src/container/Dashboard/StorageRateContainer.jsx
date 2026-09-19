@@ -43,8 +43,22 @@ const CustomBox = ({ children, loading, ...props }) => {
   return (
     <StyledBox {...props}>
       {loading ? (
-        <Box display={'flex'} flexDirection={'column'} justifyContent={'center'} gap={5} alignContent={'center'} p={1}>
-          <Box display={'flex'} justifyContent={'center'}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: 5,
+            alignContent: 'center',
+            p: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <Skeleton variant="text" width={150} height={20} />
           </Box>
           <Skeleton variant="circular" width={200} height={200} />
@@ -100,7 +114,12 @@ const StorageRateContainer = () => {
 
   return (
     <CustomBox loading={loading}>
-      <Typography variant="h6" pt={1}>
+      <Typography
+        variant="h6"
+        sx={{
+          pt: 1,
+        }}
+      >
         {doughnutData.datasets[0].label}
       </Typography>
       <div style={{ width: '100%', height: 200, margin: 'auto', position: 'relative' }}>

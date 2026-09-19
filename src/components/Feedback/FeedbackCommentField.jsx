@@ -37,7 +37,6 @@ const FeedbackCommentField = ({ comment, inputRef, handleChangeComment, handleAd
         minRows={3}
         fullWidth
         margin="normal"
-        InputLabelProps={{ shrink: true }}
         sx={{
           '& .MuiOutlinedInput-root': {
             borderRadius: theme.shape.borderRadius,
@@ -47,6 +46,9 @@ const FeedbackCommentField = ({ comment, inputRef, handleChangeComment, handleAd
           if (e.key === 'Enter') {
             handleAddComment()
           }
+        }}
+        slotProps={{
+          inputLabel: { shrink: true },
         }}
       />
       {showButtons && (

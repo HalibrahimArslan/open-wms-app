@@ -65,11 +65,21 @@ const CountingAssignCellToUsers = ({ handleClose }) => {
       <Divider sx={{ mb: 2 }} />
       {step === 0 && (
         <Box>
-          <Box mb={2}>
+          <Box
+            sx={{
+              mb: 2,
+            }}
+          >
             {loading ? (
               <CircularProgress />
             ) : (
-              <Box display="flex" flexWrap="wrap" gap={1}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: 1,
+                }}
+              >
                 {halls.map((hall) => (
                   <FormControlLabel
                     key={hall.id}

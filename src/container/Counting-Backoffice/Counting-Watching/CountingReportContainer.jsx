@@ -123,7 +123,15 @@ export default function CountingReportContainer() {
   }
 
   return (
-    <Box display={'flex'} gap={2} flexDirection={'row'} justifyContent={'space-between'} alignItems={'center'}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 2,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
       <Button variant="contained" onClick={handleOpenDrawer} disabled={enable} startIcon={<Iconify icon="mdi:report-box-outline" />}>
         Raporlar
       </Button>
@@ -134,8 +142,10 @@ export default function CountingReportContainer() {
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        PaperProps={{ sx: { width: { xs: '100%', sm: 600 }, maxWidth: '100vw' } }}
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}
+        slotProps={{
+          paper: { sx: { width: { xs: '100%', sm: 600 }, maxWidth: '100vw' } },
+        }}
       >
         <Box sx={{ p: 2, height: '100%', boxSizing: 'border-box', overflow: 'auto' }}>
           <CountingAssignCellToUsers handleClose={() => setDrawerOpen(false)} />

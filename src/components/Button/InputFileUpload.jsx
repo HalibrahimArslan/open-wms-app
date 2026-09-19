@@ -30,7 +30,14 @@ const InputFileUpload = ({ file, handleFileChange, handleDelete }) => {
   return (
     <>
       {file && file.length > 0 && (
-        <Box display={'flex'} overflow={'auto'} gap={1} padding={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            overflow: 'auto',
+            gap: 1,
+            padding: 1,
+          }}
+        >
           {[...file].map((f, index) => (
             <Chip key={index} label={f.name} onDelete={() => handleDelete(f.name)} />
           ))}

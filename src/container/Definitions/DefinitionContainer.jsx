@@ -10,10 +10,10 @@ export default function DefinitionContainer() {
 
   return (
     <Grid container direction={isMobile ? 'column' : 'row'} spacing={{ xs: 2, sm: 2, md: 5 }}>
-      <Grid item xs={2.5}>
+      <Grid size={2.5}>
         <DefinationsMenu />
       </Grid>
-      <Grid item xs={9.5}>
+      <Grid size={9.5}>
         <Outlet />
       </Grid>
     </Grid>

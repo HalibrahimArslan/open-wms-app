@@ -14,7 +14,12 @@ function ActionHeader({ handleClick, title, Icon, hide }) {
           p: hide ? 1 : 0,
         }}
       >
-        <Typography variant="h5" fontWeight={theme.typography.fontWeightMedium}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: theme.typography.fontWeightMedium,
+          }}
+        >
           {title}
         </Typography>
         {handleClick && Icon ? (

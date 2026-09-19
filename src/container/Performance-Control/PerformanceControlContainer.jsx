@@ -195,14 +195,15 @@ const PerformanceControlContainer = () => {
         pageSize={20}
         rowsPerPageOptions={[20, 50, 100]}
         autoHeight
-        components={{ Toolbar: CustomToolbar }}
-        componentsProps={{
+        slots={{ toolbar: CustomToolbar }}
+        slotProps={{
           toolbar: {
             showQuickFilter: true,
             quickFilterProps: { debounceMs: 500 },
           },
         }}
         getRowId={(row) => row.id}
+        showToolbar
       />
     </Box>
   )

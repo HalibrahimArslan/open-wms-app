@@ -101,7 +101,13 @@ function FeedbackManagementContainer() {
   }
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={0.5}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 0.5,
+      }}
+    >
       <FeedbackFilterContainer
         checkedFilter={checkedFilter}
         setCheckedFilter={setCheckedFilter}

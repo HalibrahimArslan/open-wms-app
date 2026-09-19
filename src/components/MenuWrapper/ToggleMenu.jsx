@@ -26,7 +26,13 @@ const ToggleMenu = ({ btnList, activeIndex, setActiveIndex }) => {
           }}
           onClick={() => setActiveIndex(index)}
         >
-          <Typography fontWeight={theme.typography.fontWeightBold}>{btnItem}</Typography>
+          <Typography
+            sx={{
+              fontWeight: theme.typography.fontWeightBold,
+            }}
+          >
+            {btnItem}
+          </Typography>
         </Box>
       ))}
     </Box>

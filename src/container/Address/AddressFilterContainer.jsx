@@ -5,7 +5,15 @@ import { Box } from '@mui/material'
 const AddressFilterContainer = () => {
   const [searchParams, setSearchParams] = useSearchParams()
   return (
-    <Box display={'flex'} gap={1} alignItems={'center'} flexWrap={'nowrap'} sx={{ overflowX: 'auto' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 1,
+        alignItems: 'center',
+        flexWrap: 'nowrap',
+        overflowX: 'auto',
+      }}
+    >
       <BooleanFilter
         text={'Geçici Adres'}
         selected={searchParams.get('geciciAdres.equals') === 'true'}

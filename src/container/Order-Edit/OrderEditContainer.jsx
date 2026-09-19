@@ -220,7 +220,15 @@ export default function OrderEditContainer() {
   }, [firmCodeList, filteredList, bulkList, orderType])
 
   return (
-    <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition} sx={{ bgcolor: theme.palette.action.hover }}>
+    <Dialog
+      fullScreen
+      open={open}
+      onClose={handleClose}
+      sx={{ bgcolor: theme.palette.action.hover }}
+      slots={{
+        transition: Transition,
+      }}
+    >
       <Box
         sx={{
           display: isMobile ? 'none' : 'flex',
@@ -262,8 +270,27 @@ export default function OrderEditContainer() {
             <OrderJustifyDrawer list={orderType === 'FMK' ? filteredList : bulkList} orderType={orderType} cariBaglantiTipi={cariBaglantiTipi} />
           )}
         </Paper>
-        <Box component="main" sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, gap: 3 }} ml={55} mt={2} position={'relative'} overflow={'auto'}>
-          <Box display={'flex'} justifyContent={'center'} alignItems={'center'} overflow={'auto'}>
+        <Box
+          component="main"
+          sx={{
+            ml: 55,
+            mt: 2,
+            position: 'relative',
+            overflow: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+            flexGrow: 1,
+            gap: 3,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              overflow: 'auto',
+            }}
+          >
             {loading ? <LoadingInner text={'Veri Çekiliyor'} /> : <Movement order={orderList} orderStatus={orderStatus2} />}
           </Box>
           <Box sx={{ width: '100%', typography: 'body1', position: 'relative' }}>

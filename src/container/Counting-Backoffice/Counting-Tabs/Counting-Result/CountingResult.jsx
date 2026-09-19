@@ -1,5 +1,5 @@
 import { Box, Grid, Paper, Stack, Typography } from '@mui/material'
-import { DataGrid, GridActionsCellItem, GridToolbar, trTR } from '@mui/x-data-grid'
+import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid'
 import { getCountingResultList, getCountingDetailByStokKodAndBarcode } from '../../../../services/CountingDetailService'
 import React, { useContext, useState } from 'react'
 import useAuthHeader from '../../../../hooks/useAuthHeader'
@@ -78,6 +78,7 @@ export default function CountingResult() {
       headerName: 'Kalemlerini Göster',
       getActions: (params) => [
         <GridActionsCellItem
+          key="detay-goster"
           icon={<PreviewIcon />}
           label="Detay Göster"
           onClick={() => fetchCountingResultDataByStokKodAndBarcode(selectedCountingId, params.row.barcode, params.row.stokKod)}
@@ -89,19 +90,24 @@ export default function CountingResult() {
   return (
     <React.Fragment>
       {loading || (list && list.length > 0) ? (
-        <Grid margin={2} style={{ height: 650, width: '100%' }}>
+        <Grid
+          style={{ height: 650, width: '100%' }}
+          sx={{
+            margin: 2,
+          }}
+        >
           <DataGrid
             rows={list}
             columns={columns}
             loading={loading}
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-            components={{ Toolbar: GridToolbar }}
-            componentsProps={{
+            slots={{ toolbar: GridToolbar }}
+            slotProps={{
               toolbar: {
                 showQuickFilter: true,
                 quickFilterProps: { debounceMs: 500 },
               },
             }}
+            showToolbar
           />
         </Grid>
       ) : null}
@@ -118,12 +124,25 @@ export default function CountingResult() {
             justifyContent: 'center',
           }}
         >
-          <Stack alignItems="center" spacing={1} sx={{ textAlign: 'center', maxWidth: 460, px: 2 }}>
+          <Stack
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              textAlign: 'center',
+              maxWidth: 460,
+              px: 2,
+            }}
+          >
             <InboxOutlinedIcon color="disabled" sx={{ fontSize: 44 }} />
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
               Sayım sonucu bulunamadı
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Sonuçlar bu sayım için henüz oluşmamış olabilir. Farklı bir sayım seçip tekrar kontrol edin.
             </Typography>
           </Stack>
@@ -143,7 +162,12 @@ export default function CountingResult() {
             </Box>
           ) : (
             <Paper variant="outlined" sx={{ p: 3, textAlign: 'center' }}>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 Seçili barkod için detay bulunamadı.
               </Typography>
             </Paper>

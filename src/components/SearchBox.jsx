@@ -34,10 +34,10 @@ export default function SearchBox({ search, handleChangeSearch, searchLabel, zIn
 
   return (
     <Box
-      position="sticky"
-      zIndex={zIndex ? 10 : 0}
-      top={top || '0px'}
       sx={{
+        position: 'sticky',
+        zIndex: zIndex ? 10 : 0,
+        top: top || '0px',
         display: 'flex',
         margin: '5px',
       }}

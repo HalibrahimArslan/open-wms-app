@@ -5,14 +5,14 @@ const StepperInput = ({ value, label, disabled, type = 'text', handleChange }) =
   return (
     <Box
       sx={{
+        padding: 2,
+        margin: 2,
+        borderRadius: theme.shape.borderRadius,
+        bgcolor: theme.palette.secondary.main,
         display: 'flex',
         flexGrow: 1,
         justifyContent: 'center',
       }}
-      padding={2}
-      margin={2}
-      borderRadius={theme.shape.borderRadius}
-      bgcolor={theme.palette.secondary.main}
     >
       <TextField label={label} value={value} onChange={handleChange} disabled={disabled || false} type={type} />
     </Box>

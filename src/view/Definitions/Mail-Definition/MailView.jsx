@@ -7,7 +7,11 @@ const MailView = () => {
   return (
     <>
       <Seo title="Mailler" />
-      <Box boxShadow={2}>
+      <Box
+        sx={{
+          boxShadow: 2,
+        }}
+      >
         <MailContainer />
       </Box>
     </>

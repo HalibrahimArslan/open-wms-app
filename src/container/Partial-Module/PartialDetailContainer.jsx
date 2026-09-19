@@ -7,7 +7,14 @@ const PartialDetailContainer = ({ selectedPartialItem, partialDetailList, childL
   return (
     <Box sx={{ p: 1 }}>
       {selectedPartialItem && (
-        <Box display={'flex'} justifyContent={'space-between'} sx={{ borderBottom: '1px solid black', p: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            borderBottom: '1px solid black',
+            p: 1,
+          }}
+        >
           <Typography align="left" variant="h5">
             {selectedPartialItem.packageName} Detayları
           </Typography>

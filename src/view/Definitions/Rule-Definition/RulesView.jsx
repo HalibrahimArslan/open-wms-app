@@ -7,7 +7,11 @@ const RulesView = () => {
   return (
     <>
       <Seo title="Kurallar" />
-      <Box boxShadow={2}>
+      <Box
+        sx={{
+          boxShadow: 2,
+        }}
+      >
         <RuleContainer />
       </Box>
     </>

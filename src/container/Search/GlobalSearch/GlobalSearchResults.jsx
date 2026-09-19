@@ -17,7 +17,12 @@ export default function GlobalSearchResults({ query, detected, type, loading, er
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1.5, py: 4 }}>
         <CircularProgress size={28} />
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           Aranıyor...
         </Typography>
       </Box>

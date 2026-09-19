@@ -17,14 +17,32 @@ export default function TablePanel({ title, meta, actions, children, sx }) {
       {hasHeader && (
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
-          justifyContent="space-between"
-          alignItems={{ xs: 'stretch', sm: 'center' }}
           spacing={1.5}
-          sx={{ paddingX: 2, paddingY: 1.5, borderBottom: '1px solid', borderColor: 'divider' }}
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: { xs: 'stretch', sm: 'center' },
+            paddingX: 2,
+            paddingY: 1.5,
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+          }}
         >
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
             {title && (
-              <Typography variant="subtitle1" fontWeight={700}>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: 700,
+                }}
+              >
                 {title}
               </Typography>
             )}
@@ -32,7 +50,13 @@ export default function TablePanel({ title, meta, actions, children, sx }) {
           </Stack>
 
           {actions && (
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               {actions}
             </Stack>
           )}

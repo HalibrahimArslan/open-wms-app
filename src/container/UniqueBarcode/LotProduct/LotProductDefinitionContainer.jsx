@@ -122,7 +122,12 @@ export default function LotProductDefinitionContainer() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: 'calc(100dvh - 140px)' }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-        <Typography variant="h5" fontWeight={500}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: 500,
+          }}
+        >
           Lot’lu Ürün Tanımlama
         </Typography>
         <Button variant="outlined" startIcon={<AddIcon />} onClick={() => setDialogOpen(true)}>
@@ -138,12 +143,14 @@ export default function LotProductDefinitionContainer() {
           placeholder="Stok Kodu, Ürün Adı veya Barkod ile ara"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon color="action" fontSize="small" />
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon color="action" fontSize="small" />
+                </InputAdornment>
+              ),
+            },
           }}
         />
       </Box>
@@ -153,7 +160,14 @@ export default function LotProductDefinitionContainer() {
           <CircularProgress size={28} />
         </Box>
       ) : lotProducts.length === 0 ? (
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 3, textAlign: 'center' }}>
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+            mt: 3,
+            textAlign: 'center',
+          }}
+        >
           Henüz lot’lu ürün tanımlanmadı.
         </Typography>
       ) : (

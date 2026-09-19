@@ -108,8 +108,14 @@ export default function ComparativeCountingReport() {
   }, [depoCode])
 
   return (
-    <Grid container spacing={2} justifyContent={'flex-start'}>
-      <Grid item xs={4.5}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        justifyContent: 'flex-start',
+      }}
+    >
+      <Grid size={4.5}>
         <CheckedListItem
           data={countingListAsCounter}
           keyField={'id'}
@@ -120,7 +126,7 @@ export default function ComparativeCountingReport() {
           header={'Sayım Listesi'}
         />
       </Grid>
-      <Grid item xs={4.5}>
+      <Grid size={4.5}>
         <CheckedListItem
           data={countingListAsChecker}
           keyField={'id'}
@@ -131,8 +137,15 @@ export default function ComparativeCountingReport() {
           header={'Kontrol Listesi'}
         />
       </Grid>
-      <Grid item xs={3}>
-        <Box display={'flex'} flexDirection={'column'} gap={2} alignItems={'center'}>
+      <Grid size={3}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            alignItems: 'center',
+          }}
+        >
           <LoadingButton text={'Karşılaştır'} loading={loading} onClick={handleReport} />
           {comparativeCountingReport.length > 0 && (
             <Button variant="outlined" onClick={handleOnExport}>

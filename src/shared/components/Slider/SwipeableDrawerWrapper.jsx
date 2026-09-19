@@ -27,9 +27,22 @@ export const SwipeableDrawerHeader = ({ title, searchable, search, handleChangeS
         {title}
       </Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1 }}>
-        <Box flex={9}>{searchable && <SearchBox search={search} handleChangeSearch={handleChangeSearch} top={10} size="small" />}</Box>
+        <Box
+          sx={{
+            flex: 9,
+          }}
+        >
+          {searchable && <SearchBox search={search} handleChangeSearch={handleChangeSearch} top={10} size="small" />}
+        </Box>
         {buttonLabel && (
-          <Box flex={1} sx={{ display: 'flex', justifyContent: 'flex-end', whiteSpace: 'nowrap' }}>
+          <Box
+            sx={{
+              flex: 1,
+              display: 'flex',
+              justifyContent: 'flex-end',
+              whiteSpace: 'nowrap',
+            }}
+          >
             <Button variant="contained" onClick={handleOperate} sx={{ borderRadius: 20, boxShadow: 0, '&:hover': { boxShadow: 0 } }}>
               {buttonLabel}
             </Button>
@@ -52,15 +65,17 @@ const SwipeableDrawerWrapper = ({ anchor, state, toggleDrawer, children }) => {
         open={state[anchor]}
         onClose={toggleDrawer(anchor, false)}
         onOpen={toggleDrawer(anchor, true)}
-        PaperProps={{
-          style: {
-            width: isMobile ? '97%' : '600px',
-            margin: 'auto',
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
+        sx={{ position: 'relative' }}
+        slotProps={{
+          paper: {
+            style: {
+              width: isMobile ? '97%' : '600px',
+              margin: 'auto',
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
+            },
           },
         }}
-        sx={{ position: 'relative' }}
       >
         <StyledBox sx={{ minHeight: 150, maxHeight: 400, overflow: 'auto' }}>{children}</StyledBox>
       </SwipeableDrawer>

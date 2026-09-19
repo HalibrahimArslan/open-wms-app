@@ -137,9 +137,9 @@ const LeftBar = ({ menus }) => {
                       <Iconify icon={menu.icon} width={24} />
                     </Box>
                     <Typography
-                      textAlign={'center'}
                       variant="subtitle2"
                       sx={{
+                        textAlign: 'center',
                         fontWeight: isSelected ? 800 : 600,
                       }}
                     >
@@ -199,7 +199,12 @@ const LeftBar = ({ menus }) => {
               }}
               onClick={handleChangeDock}
             >
-              <Typography variant="subtitle1" fontWeight={600}>
+              <Typography
+                variant="subtitle1"
+                sx={{
+                  fontWeight: 600,
+                }}
+              >
                 {selectedMenuName}
               </Typography>
               <Iconify icon={dock ? 'mdi:chevron-double-left' : 'mdi:chevron-double-right'} width={20} style={{ color: theme.palette.text.secondary }} />
@@ -231,10 +236,12 @@ const LeftBar = ({ menus }) => {
                   >
                     <ListItemText
                       primary={menu.name}
-                      primaryTypographyProps={{
-                        variant: 'body2',
-                        noWrap: true,
-                        fontWeight: 500,
+                      slotProps={{
+                        primary: {
+                          variant: 'body2',
+                          noWrap: true,
+                          fontWeight: 500,
+                        },
                       }}
                     />
                   </ListItemButton>

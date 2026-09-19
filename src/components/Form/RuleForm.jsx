@@ -22,7 +22,13 @@ const RuleForm = ({ rule, handleRule }) => {
   })
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <TextField
           fullWidth
           id="ruleName"
@@ -51,7 +57,14 @@ const RuleForm = ({ rule, handleRule }) => {
           sx={!isMobile && { width: 500 }}
         />
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           Oluştur
         </Button>

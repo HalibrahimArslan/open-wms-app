@@ -2,8 +2,25 @@ import { Box, Typography } from '@mui/material'
 
 const FeedbackAttachment = ({ upload, theme, index }) => {
   return (
-    <Box key={index} display={'flex'} flexDirection={'column'} gap={2} padding={2} bgcolor={theme.palette.action.hover} mb={2} borderRadius={theme.shape.borderRadius}>
-      <Typography align="left" variant="h6" fontWeight={theme.typography.fontWeightBold}>
+    <Box
+      key={index}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        padding: 2,
+        bgcolor: theme.palette.action.hover,
+        mb: 2,
+        borderRadius: theme.shape.borderRadius,
+      }}
+    >
+      <Typography
+        align="left"
+        variant="h6"
+        sx={{
+          fontWeight: theme.typography.fontWeightBold,
+        }}
+      >
         {`Dosya ${index + 1}`}
       </Typography>
       {upload.url.includes('png') ? (
@@ -37,7 +54,13 @@ const FeedbackAttachment = ({ upload, theme, index }) => {
         />
       )}
 
-      <Typography align="left" variant="body1" fontWeight={theme.typography.fontWeightMedium}>
+      <Typography
+        align="left"
+        variant="body1"
+        sx={{
+          fontWeight: theme.typography.fontWeightMedium,
+        }}
+      >
         {upload.name}
       </Typography>
     </Box>

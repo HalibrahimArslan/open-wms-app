@@ -6,21 +6,36 @@ import BasicSlider from '../../shared/components/Slider/BasicSlider'
 export default function PickingItem({ list, master, adresList }) {
   const theme = useTheme()
   return (
-    <Box sx={{ backgroundColor: theme.palette.action.hover }} p={0.5} borderRadius={theme.shape.borderRadius} position={'relative'} mb={1}>
-      <Box display={'flex'} gap={1}>
+    <Box
+      sx={{
+        p: 0.5,
+        borderRadius: theme.shape.borderRadius,
+        position: 'relative',
+        mb: 1,
+        backgroundColor: theme.palette.action.hover,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 1,
+        }}
+      >
         {list
           .filter((todo) => todo.pieceMaster.stokKodu === master)
           .slice(0, 1)
           .map((item) => (
             <Box
-              display={'flex'}
-              justifyContent={'row'}
-              gap={2}
-              bgcolor={theme.palette.action.focus}
-              borderRadius={theme.shape.borderRadius}
-              m={'auto'}
-              p={'0 1rem'}
-              alignItems={'center'}
+              sx={{
+                display: 'flex',
+                justifyContent: 'row',
+                gap: 2,
+                bgcolor: theme.palette.action.focus,
+                borderRadius: theme.shape.borderRadius,
+                m: 'auto',
+                p: '0 1rem',
+                alignItems: 'center',
+              }}
             >
               <Typography variant="subtitle1">{item.pieceMaster.stokKodu}</Typography>
               <Typography variant="subtitle2">{item.pieceMaster.stokAdi}</Typography>

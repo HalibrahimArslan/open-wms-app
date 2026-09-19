@@ -178,7 +178,12 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
     const isPieceParent = row.hasPiece && extractPieces(row).length > 0
     return (
       <StickyActionCell align="center">
-        <Stack spacing={0.75} alignItems="center">
+        <Stack
+          spacing={0.75}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {isPieceParent ? (
             <Button
               variant="outlined"
@@ -212,7 +217,11 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
   }
 
   return (
-    <Box p={2}>
+    <Box
+      sx={{
+        p: 2,
+      }}
+    >
       <TablePanel
         title="Sipariş Kalemleri"
         meta={
@@ -327,7 +336,13 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                         {row.stokKodu}
                       </TableCell>
                       <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                        <Stack direction="row" spacing={1} alignItems="center">
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{
+                            alignItems: 'center',
+                          }}
+                        >
                           {row.hasPiece && extractPieces(row).length > 0 && (
                             <Tooltip title={expandedRows.has(row.stokKodu) ? 'Parçaları gizle' : 'Parçaları göster'}>
                               <IconButton
@@ -394,14 +409,34 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                                 overflow: 'hidden',
                               }}
                             >
-                              <Stack direction="row" alignItems="center" spacing={1} sx={{ px: 2, py: 1, bgcolor: alpha(theme.palette.primary.main, 0.08) }}>
+                              <Stack
+                                direction="row"
+                                spacing={1}
+                                sx={{
+                                  alignItems: 'center',
+                                  px: 2,
+                                  py: 1,
+                                  bgcolor: alpha(theme.palette.primary.main, 0.08),
+                                }}
+                              >
                                 <ViewInArIcon fontSize="small" color="primary" />
-                                <Typography variant="subtitle2" fontWeight={700} color="primary.main">
+                                <Typography
+                                  variant="subtitle2"
+                                  sx={{
+                                    fontWeight: 700,
+                                    color: 'primary.main',
+                                  }}
+                                >
                                   Ürün Parçaları
                                 </Typography>
                                 <Chip size="small" variant="outlined" color="primary" label={`${extractPieces(row).length} parça`} />
                                 <Box sx={{ flexGrow: 1 }} />
-                                <Typography variant="caption" color="text.secondary">
+                                <Typography
+                                  variant="caption"
+                                  sx={{
+                                    color: 'text.secondary',
+                                  }}
+                                >
                                   Ana Ürün: <b>{row.stokKodu}</b>
                                 </Typography>
                               </Stack>
@@ -441,8 +476,21 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
 
                                       {/* Kimlik: stok kodu, ad, birim, barkod, son okutulan */}
                                       <Box sx={{ flex: '1 1 220px', minWidth: 0 }}>
-                                        <Stack direction="row" spacing={0.75} alignItems="center" sx={{ minWidth: 0 }}>
-                                          <Typography variant="body2" fontWeight={700} noWrap>
+                                        <Stack
+                                          direction="row"
+                                          spacing={0.75}
+                                          sx={{
+                                            alignItems: 'center',
+                                            minWidth: 0,
+                                          }}
+                                        >
+                                          <Typography
+                                            variant="body2"
+                                            noWrap
+                                            sx={{
+                                              fontWeight: 700,
+                                            }}
+                                          >
                                             {piece.stokKodu}
                                           </Typography>
                                           {piece.lotBasedTracking ? (
@@ -451,15 +499,36 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                                             <Chip size="small" variant="outlined" color="primary" label={piece.stokBirimi || '-'} sx={{ flex: '0 0 auto', height: 20 }} />
                                           )}
                                         </Stack>
-                                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }} noWrap>
+                                        <Typography
+                                          variant="caption"
+                                          noWrap
+                                          sx={{
+                                            color: 'text.secondary',
+                                            display: 'block',
+                                          }}
+                                        >
                                           {piece.stokAdi}
                                         </Typography>
-                                        <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 0.25 }}>
+                                        <Stack
+                                          direction="row"
+                                          spacing={1}
+                                          sx={{
+                                            flexWrap: 'wrap',
+                                            mt: 0.25,
+                                          }}
+                                        >
                                           <Typography variant="caption" sx={{ fontFamily: 'monospace' }}>
                                             Barkod: <b>{piece.barkod || '-'}</b>
                                           </Typography>
                                           {lastCode && (
-                                            <Typography variant="caption" color="success.main" sx={{ fontFamily: 'monospace' }} noWrap>
+                                            <Typography
+                                              variant="caption"
+                                              noWrap
+                                              sx={{
+                                                color: 'success.main',
+                                                fontFamily: 'monospace',
+                                              }}
+                                            >
                                               Son: <b>{lastCode}</b>
                                             </Typography>
                                           )}
@@ -474,10 +543,23 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                                           { label: 'Kalan', value: kalan, color: kalan > 0 ? 'warning.main' : 'text.secondary' },
                                         ].map((s) => (
                                           <Box key={s.label} sx={{ textAlign: 'center', minWidth: 52 }}>
-                                            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', lineHeight: 1.2 }}>
+                                            <Typography
+                                              variant="caption"
+                                              sx={{
+                                                color: 'text.secondary',
+                                                display: 'block',
+                                                lineHeight: 1.2,
+                                              }}
+                                            >
                                               {s.label}
                                             </Typography>
-                                            <Typography variant="body2" fontWeight={700} color={s.color}>
+                                            <Typography
+                                              variant="body2"
+                                              color={s.color}
+                                              sx={{
+                                                fontWeight: 700,
+                                              }}
+                                            >
                                               {formatMiktar(s.value)}
                                             </Typography>
                                           </Box>

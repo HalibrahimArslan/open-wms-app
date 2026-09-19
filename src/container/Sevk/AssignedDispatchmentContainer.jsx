@@ -403,7 +403,11 @@ function AssignedDispatchmentContainer() {
         onBarcodeEnter={fetchCheckProductAddress}
       />
       {loading ? (
-        <Box p={2}>
+        <Box
+          sx={{
+            p: 2,
+          }}
+        >
           <Skeleton variant="rectangular" height={120} sx={{ borderRadius: 2, mb: 2 }} />
           <Skeleton variant="rectangular" height={400} sx={{ borderRadius: 2 }} />
         </Box>

@@ -258,15 +258,17 @@ const DynamicTable = ({
           onChange={handleFilterChange}
           placeholder="Ara..."
           size="small"
-          InputProps={{
-            startAdornment: <Iconify icon={'material-symbols:search'} sx={{ mr: 1, mb: 0.5 }} />,
-            endAdornment: (
-              <IconButton sx={{ display: columns.find((column) => column.filterKey) ? 'flex' : 'none' }} onClick={toggleDrawerSearchParams(anchor, true)}>
-                <Iconify icon={'bytesize:options'} />
-              </IconButton>
-            ),
-          }}
           variant="standard"
+          slotProps={{
+            input: {
+              startAdornment: <Iconify icon={'material-symbols:search'} sx={{ mr: 1, mb: 0.5 }} />,
+              endAdornment: (
+                <IconButton sx={{ display: columns.find((column) => column.filterKey) ? 'flex' : 'none' }} onClick={toggleDrawerSearchParams(anchor, true)}>
+                  <Iconify icon={'bytesize:options'} />
+                </IconButton>
+              ),
+            },
+          }}
         />
       </Box>
       {/* Table */}
@@ -381,7 +383,14 @@ const DynamicTable = ({
                         column.visible !== false ? (
                           column.type === 'actions' ? (
                             <TableCell align="center" key={column.field}>
-                              <Box display={'flex'} key={column.field} justifyContent={'center'} alignItems={'center'}>
+                              <Box
+                                key={column.field}
+                                sx={{
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
                                 {column.getActions &&
                                   column.getActions(row).map((action) => (
                                     <IconButton key={action.id} onClick={() => action.onClick(row)}>
@@ -399,7 +408,9 @@ const DynamicTable = ({
                                   onChange={(e) => handleInputChange(column.field, e.target.value)}
                                   variant="standard"
                                   type={column.editType || 'text'}
-                                  inputProps={column.editType === 'number' ? { min: 0 } : {}}
+                                  slotProps={{
+                                    htmlInput: column.editType === 'number' ? { min: 0 } : {},
+                                  }}
                                 />
                               ) : column.render ? (
                                 column.render(getValue(row, column.field), row)
@@ -413,7 +424,11 @@ const DynamicTable = ({
                       {hasEditableColumns && (
                         <TableCell align="center">
                           {editRowId === getValue(row, firstColumnField) ? (
-                            <Box display={'flex'}>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                              }}
+                            >
                               <IconButton onClick={handleSaveClick}>
                                 <Save sx={{ fontSize: 20 }} />
                               </IconButton>
@@ -443,7 +458,11 @@ const DynamicTable = ({
         </List>
       </SwipeableDrawerWrapper>
       <SwipeableDrawerWrapper anchor={anchor} state={searchParamsOptions} toggleDrawer={toggleDrawerSearchParams}>
-        <Box p={2}>
+        <Box
+          sx={{
+            p: 2,
+          }}
+        >
           <FormControl sx={{ width: '100%' }}>
             <FormLabel id="demo-controlled-radio-buttons-group">Seçenekler</FormLabel>
             <RadioGroup aria-labelledby="demo-controlled-radio-buttons-group" name="controlled-radio-buttons-group" value={searchCriteria} onChange={handleChangeSearchCriteria}>

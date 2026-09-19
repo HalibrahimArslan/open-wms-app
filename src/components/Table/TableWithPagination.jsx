@@ -72,16 +72,18 @@ export default function TableWithPagination({ children, count, page, rowsPerPage
               count={count}
               rowsPerPage={rowsPerPage}
               page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
               labelRowsPerPage="Sayfa başına satır sayısı"
+              ActionsComponent={TablePaginationActions}
+              slotProps={{
+                select: {
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                },
+              }}
             />
           </TableRow>
         </TableFooter>

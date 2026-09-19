@@ -78,7 +78,13 @@ export default function UserInfoContainer() {
   return (
     <Box sx={{ minHeight: '500px', width: '100%' }}>
       <Box>
-        <Typography variant="h6" fontWeight={theme.typography.fontWeightMedium} textAlign={'start'}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: theme.typography.fontWeightMedium,
+            textAlign: 'start',
+          }}
+        >
           Kullanıcı Bilgilerim
         </Typography>
       </Box>
@@ -89,10 +95,21 @@ export default function UserInfoContainer() {
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <Typography fontWeight={theme.typography.fontWeightBold} textAlign={'start'} variant="subtitle1">
+        <Typography
+          variant="subtitle1"
+          sx={{
+            fontWeight: theme.typography.fontWeightBold,
+            textAlign: 'start',
+          }}
+        >
           Profil Bilgileri
         </Typography>
-        <Typography textAlign={'start'} variant="subtitle2">
+        <Typography
+          variant="subtitle2"
+          sx={{
+            textAlign: 'start',
+          }}
+        >
           Depodaki deneyiminizi en iyi seviyede tutabilmemiz için gereken bilgilerinizi buradan düzenleyebilirsiniz.
         </Typography>
         <UserForm
@@ -112,7 +129,12 @@ export default function UserInfoContainer() {
       </CustomTabPanel>
 
       <CustomTabPanel value={value} index={1}>
-        <Typography textAlign={'start'} variant="subtitle2">
+        <Typography
+          variant="subtitle2"
+          sx={{
+            textAlign: 'start',
+          }}
+        >
           Şifreniz en az bir harf, rakam veya özel karakter içermeli. Ayrıca şifreniz en az 4 karakterden oluşmalı.
         </Typography>
 

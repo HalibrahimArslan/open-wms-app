@@ -143,8 +143,18 @@ export default function OrderProgressItem({ list, opType, adresList, handleNavig
   }
 
   return (
-    <Box p={2}>
-      <Stack direction={'row'} gap={2} justifyContent={hasReserve ? 'space-between' : 'flex-end'}>
+    <Box
+      sx={{
+        p: 2,
+      }}
+    >
+      <Stack
+        direction={'row'}
+        sx={{
+          gap: 2,
+          justifyContent: hasReserve ? 'space-between' : 'flex-end',
+        }}
+      >
         {hasReserve && (
           <Alert variant="filled" color="warning">
             Rezerve Ürünler Bulunmaktadır

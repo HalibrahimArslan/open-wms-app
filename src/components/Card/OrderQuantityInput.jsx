@@ -16,7 +16,13 @@ function OrderQuantityInput({ order, quantity, handleChange, handleKeyPress, erp
       }}
     >
       <DialogContent>
-        <Box display={'flex'} flexDirection={'column'} gap={2}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+          }}
+        >
           <TextField
             label="Miktar Giriniz"
             id="order-quantity"
@@ -35,7 +41,14 @@ function OrderQuantityInput({ order, quantity, handleChange, handleKeyPress, erp
           />
         </Box>
       </DialogContent>
-      <Box display={'flex'} gap={2} justifyContent={erpAmount !== null && erpAmount !== undefined ? 'space-between' : 'flex-end'} alignItems={'center'}>
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 2,
+          justifyContent: erpAmount !== null && erpAmount !== undefined ? 'space-between' : 'flex-end',
+          alignItems: 'center',
+        }}
+      >
         <Chip
           sx={{ display: erpAmount !== undefined && erpAmount !== null ? 'inherit' : 'none' }}
           label={`Mikro Miktarı: ${erpAmount}`}
@@ -49,7 +62,12 @@ function OrderQuantityInput({ order, quantity, handleChange, handleKeyPress, erp
       <DialogContentText>
         <Typography variant="subtitle2">{order.stokKodu}</Typography>
         <Tooltip title={order.stokAdi}>
-          <Typography variant="h6" fontWeight={'bold'}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {order.stokAdi}
           </Typography>
         </Tooltip>

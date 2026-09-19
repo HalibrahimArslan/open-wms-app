@@ -8,7 +8,13 @@ export default function ComboItemPartial({ value, handleChange, list = [], label
   }
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={2}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       {label && (
         <Typography variant="h6" sx={{ mb: 1, color: 'text.secondary' }}>
           {label}
@@ -41,7 +47,12 @@ export default function ComboItemPartial({ value, handleChange, list = [], label
                 >
                   <ListItemText
                     primary={
-                      <Typography variant="body1" fontWeight={500}>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: 500,
+                        }}
+                      >
                         {item.orderNo} - {item.stockCode}
                       </Typography>
                     }
@@ -72,7 +83,13 @@ export default function ComboItemPartial({ value, handleChange, list = [], label
             <ListItem>
               <ListItemText
                 primary={
-                  <Typography variant="body2" color="text.secondary" align="center">
+                  <Typography
+                    variant="body2"
+                    align="center"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     Liste boş
                   </Typography>
                 }
@@ -81,7 +98,12 @@ export default function ComboItemPartial({ value, handleChange, list = [], label
           )}
         </List>
       </Paper>
-      <Box display={'flex'} justifyContent={'flex-end'}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+        }}
+      >
         <Button variant="contained" disabled={!value} onClick={handleComplete} startIcon={<CheckCircle />}>
           Tamamla
         </Button>

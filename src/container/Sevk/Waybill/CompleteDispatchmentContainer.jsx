@@ -376,10 +376,22 @@ function CompleteDispatchmentContainer() {
 
   return (
     <React.Fragment>
-      <Stack spacing={0.25} overflow="auto" justifyContent={'flex-start'}>
+      <Stack
+        spacing={0.25}
+        sx={{
+          overflow: 'auto',
+          justifyContent: 'flex-start',
+        }}
+      >
         <Alert severity="info">{firmName} Siparişleri</Alert>
         <Alert severity="info">
-          <Box display={'flex'} gap={0.5} sx={{ overflowX: 'auto' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: 0.5,
+              overflowX: 'auto',
+            }}
+          >
             {[...new Set(orderDetail.map((item) => item.siparisNo))].map((item) => (
               <Chip label={item} variant="outlined" />
             ))}
@@ -387,7 +399,17 @@ function CompleteDispatchmentContainer() {
         </Alert>
       </Stack>
 
-      <Box component="form" sx={{ display: 'flex', justifyContent: 'center' }} noValidate autoComplete="off" margin={2} border={'1px soft'}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        sx={{
+          margin: 2,
+          border: '1px soft',
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <TextField
           disabled={visible}
           sx={{ flexGrow: '1' }}
@@ -404,7 +426,14 @@ function CompleteDispatchmentContainer() {
           }}
         />
       </Box>
-      <Box mb={2} sx={{ display: 'flex', justifyContent: 'center' }} gap={2}>
+      <Box
+        sx={{
+          mb: 2,
+          gap: 2,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Stack spacing={2} direction="row">
           <Button variant="contained" onClick={handleDialogOpen} disabled={!disabled}>
             İrsaliye Bilgilerini Gir
@@ -451,7 +480,12 @@ function CompleteDispatchmentContainer() {
         dialogTitle={
           <Alert severity="warning" sx={{ padding: 1 }}>
             <AlertTitle>Sipariş Kapatma</AlertTitle>
-            <Typography variant="h6" fontWeight={theme.typography.fontWeightBold}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            >
               Siparişi kapatmak istediğinizden emin misiniz?
             </Typography>
           </Alert>

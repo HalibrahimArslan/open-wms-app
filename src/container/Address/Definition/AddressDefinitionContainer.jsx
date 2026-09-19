@@ -37,7 +37,12 @@ export default function AddressDefinitionContainer() {
   return (
     <>
       <Grid container spacing={1}>
-        <Grid item xs={4} position={'relative'}>
+        <Grid
+          size={4}
+          sx={{
+            position: 'relative',
+          }}
+        >
           <FitItem>
             <List sx={{ display: 'flex', flexDirection: 'column', gap: 1, pl: 1, pr: 1 }}>
               {definitionList.map((item) => (
@@ -56,7 +61,7 @@ export default function AddressDefinitionContainer() {
             </List>
           </FitItem>
         </Grid>
-        <Grid item xs={8}>
+        <Grid size={8}>
           <FitItem>
             <Box sx={{ p: 1 }}>
               <Outlet />

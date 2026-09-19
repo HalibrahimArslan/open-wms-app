@@ -47,10 +47,25 @@ function DispatchingOrder() {
     <>
       <Seo title={'Atamnmış Siparişler'} />
       <SearchBox search={searchText} handleChangeSearch={handleChangeSearch} />
-      <Grid container justifyContent={'center'} spacing={2} alignItems={'center'}>
+      <Grid
+        container
+        spacing={2}
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {orders && orders.length > 0 ? (
           orders.map((order) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6,
+                md: 4,
+                lg: 3,
+                xl: 2,
+              }}
+            >
               <OrderSummaryCard
                 header={order.firmName[0]}
                 title={order.firmName}

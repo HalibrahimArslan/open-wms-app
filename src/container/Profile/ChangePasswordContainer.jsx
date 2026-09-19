@@ -28,10 +28,29 @@ export default function ChangePasswordContainer() {
   }
 
   return (
-    <Dialog fullScreen open={true} TransitionComponent={Transition}>
-      <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={2}>
+    <Dialog
+      fullScreen
+      open={true}
+      slots={{
+        transition: Transition,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          p: 2,
+        }}
+      >
         <Box>
-          <Typography textAlign="start" variant="subtitle2">
+          <Typography
+            variant="subtitle2"
+            sx={{
+              textAlign: 'start',
+            }}
+          >
             Şifreniz en az bir harf, rakam veya özel karakter içermeli. Ayrıca şifreniz en az 4 karakterden oluşmalı.
           </Typography>
         </Box>

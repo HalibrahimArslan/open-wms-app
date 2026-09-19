@@ -12,7 +12,12 @@ function CreateNewDefinition({ handleClick, title }) {
           alignItems: 'center',
         }}
       >
-        <Typography variant="h5" fontWeight={theme.typography.fontWeightMedium}>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: theme.typography.fontWeightMedium,
+          }}
+        >
           {title}
         </Typography>
         <IconButton onClick={handleClick}>

@@ -1,5 +1,6 @@
 import { Alert, Box, Button, Chip, CircularProgress, Divider, Drawer, Grid, IconButton, Stack, Typography, useMediaQuery, useTheme } from '@mui/material'
-import { DataGrid, GridToolbar, trTR } from '@mui/x-data-grid'
+import { DataGrid, GridToolbar } from '@mui/x-data-grid'
+import { selectionModelToIds } from '../../../shared/components/DataGrid/selection'
 import TablePanel, { dataGridSx } from '../../../shared/components/Table/TablePanel'
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
@@ -10,7 +11,7 @@ import usePayload from '../../../hooks/usePayload'
 import { notify, notifyError } from '../../../layout/Layout'
 import AddIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Close'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 import { styled, alpha } from '@mui/material/styles'
 import ActionHeader from '../../../shared/components/ActionHeader'
@@ -136,7 +137,12 @@ export default function OrderProgressSevkiyat() {
         params.value ? (
           <Chip label={params.value} color="warning" size="medium" sx={{ fontSize: '16px' }} />
         ) : (
-          <Typography color="text.disabled" sx={{ pl: 1 }}>
+          <Typography
+            sx={{
+              color: 'text.disabled',
+              pl: 1,
+            }}
+          >
             —
           </Typography>
         ),
@@ -184,7 +190,7 @@ export default function OrderProgressSevkiyat() {
       align: 'right',
       headerAlign: 'right',
       cellClassName: 'numeric-cell',
-      valueGetter: (params) => getSevkHazirMiktar(params.row),
+      valueGetter: (value, row) => getSevkHazirMiktar(row),
     },
     { field: 'teslimMiktar', headerName: 'Sevk Edilmiş Miktar', width: 150, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
     { field: 'siparisMiktar', headerName: 'Sipariş Miktarı', width: 120, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
@@ -195,7 +201,7 @@ export default function OrderProgressSevkiyat() {
       field: 'teslimTarihi',
       headerName: 'Teslim Tarihi',
       width: 150,
-      valueFormatter: (params) => (params.value ? String(params.value).slice(0, 10) : ''),
+      valueFormatter: (value) => (value ? String(value).slice(0, 10) : ''),
     },
     { field: 'sevkAddress', headerName: 'İl/İlçe', width: 150 },
     {
@@ -485,13 +491,35 @@ export default function OrderProgressSevkiyat() {
   }, [bulkList])
 
   return (
-    <Grid container spacing={2} padding={2}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        padding: 2,
+      }}
+    >
       <ActionHeader title="Sipariş Listesi" hide={true} />
 
-      <Grid item xs={12}>
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" mb={1}>
+      <Grid size={12}>
+        <Stack
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={1.5}
+          sx={{
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            justifyContent: 'space-between',
+            mb: 1,
+          }}
+        >
           <Alert severity="info">Birden fazla sipariş seçebilirsiniz. MG ile diğer tipler birlikte seçilemez.</Alert>
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
             <Chip size="small" label={`Seçili: ${appliedOrderPickerNos.length}`} />
             <Button variant="outlined" onClick={handleOpen}>
               Sipariş Seç
@@ -499,15 +527,37 @@ export default function OrderProgressSevkiyat() {
           </Stack>
         </Stack>
         {appliedOrderPickerNos.length > 0 && (
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{
+              flexWrap: 'wrap',
+            }}
+          >
             {appliedOrderPickerNos.map((orderNo) => (
               <Chip key={orderNo} size="small" variant="outlined" label={orderLabelMap[orderNo] || orderNo} />
             ))}
           </Stack>
         )}
 
-        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1.5} alignItems={{ xs: 'flex-start', md: 'center' }} justifyContent="space-between" mt={1.5}>
-          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+        <Stack
+          direction={{ xs: 'column', md: 'row' }}
+          spacing={1.5}
+          sx={{
+            alignItems: { xs: 'flex-start', md: 'center' },
+            justifyContent: 'space-between',
+            mt: 1.5,
+          }}
+        >
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{
+              flexWrap: 'wrap',
+            }}
+          >
             <Chip
               label={`Tümü (${bulkList.length})`}
               color={statusFilter === 'all' ? 'primary' : 'default'}
@@ -531,20 +581,53 @@ export default function OrderProgressSevkiyat() {
             />
           </Stack>
 
-          <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" useFlexGap>
-            <Typography variant="body2" color="text.secondary">
+          <Stack
+            direction="row"
+            spacing={1}
+            useFlexGap
+            sx={{
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Toplam: <strong>{bulkList.length}</strong>
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               ·
             </Typography>
-            <Typography variant="body2" color="success.main">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'success.main',
+              }}
+            >
               Seçilebilir: <strong>{selectableCount}</strong>
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               ·
             </Typography>
-            <Typography variant="body2" color="primary.main">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'primary.main',
+              }}
+            >
               Seçili: <strong>{selectionModel.length}</strong>
             </Typography>
           </Stack>
@@ -555,16 +638,25 @@ export default function OrderProgressSevkiyat() {
         anchor="right"
         open={open}
         onClose={handleClose}
-        PaperProps={{
-          sx: {
-            width: { xs: '100%', sm: 520 },
-            p: 2,
-            mt: `${drawerTopOffset}px`,
-            height: `calc(100% - ${drawerTopOffset}px)`,
+        slotProps={{
+          paper: {
+            sx: {
+              width: { xs: '100%', sm: 520 },
+              p: 2,
+              mt: `${drawerTopOffset}px`,
+              height: `calc(100% - ${drawerTopOffset}px)`,
+            },
           },
         }}
       >
-        <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 1,
+          }}
+        >
           <Typography variant="h6">Müşteri Sipariş Listesi</Typography>
           <IconButton onClick={handleClose} size="small">
             <CloseIcon />
@@ -578,7 +670,14 @@ export default function OrderProgressSevkiyat() {
         </Alert>
         <Divider sx={{ mb: 2 }} />
         <MultiSelectItem options={orderList} selectedValues={orderPickerNos} handleChangeValues={setOrderPickerSelection} label={'Siparişler'} originalData={originalData} />
-        <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mt: 2,
+          }}
+        >
           <Chip size="small" label={`Seçili: ${orderPickerNos.length}`} />
           <Button variant="contained" onClick={handleOrderComplete} disabled={orderPickerNos.length === 0 || loading}>
             Siparişleri Getir
@@ -586,7 +685,7 @@ export default function OrderProgressSevkiyat() {
         </Box>
       </Drawer>
 
-      <Grid item xs={12}>
+      <Grid size={12}>
         <TablePanel title="Sipariş Listesi" meta={<Chip size="small" variant="outlined" label={`${filteredBulkList.length} sipariş`} />}>
           <StyledDataGrid
             rows={filteredBulkList}
@@ -599,7 +698,8 @@ export default function OrderProgressSevkiyat() {
             }}
             checkboxSelection
             selectionModel={selectionModel}
-            onRowSelectionModelChange={(newSelection) => {
+            onRowSelectionModelChange={(model) => {
+              let newSelection = selectionModelToIds(model, filteredBulkList)
               const beforeFilterCount = newSelection.length
               let selectedOrders = bulkList.filter((item) => newSelection.includes(item.id))
               selectedOrders = selectedOrders.filter(isRowSelectableData)
@@ -660,18 +760,18 @@ export default function OrderProgressSevkiyat() {
 
               return true
             }}
-            localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
             loading={loading}
             slots={{
               loadingOverlay: GridLoadingOverlay,
+              toolbar: GridToolbar,
             }}
-            components={{ Toolbar: GridToolbar }}
-            componentsProps={{
+            slotProps={{
               toolbar: {
                 showQuickFilter: true,
                 quickFilterProps: { debounceMs: 500 },
               },
             }}
+            showToolbar
           />
         </TablePanel>
       </Grid>

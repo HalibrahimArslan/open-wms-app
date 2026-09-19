@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { DataGrid, trTR } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import { Skeleton, Box, TextField, Button } from '@mui/material'
 import { deleteDriver, getFilterDrivers, updateDrivers } from '../../../services/DriverService'
 import useAuthHeader from '../../../hooks/useAuthHeader'
@@ -146,20 +146,20 @@ const DriverDefinitionsContainer = () => {
         pageSize={20}
         loading={loading}
         rowsPerPageOptions={[50, 100]}
-        localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
         disableRowSelectionOnClick
-        components={{ Toolbar: CustomToolbar }}
+        slots={{ toolbar: CustomToolbar }}
         getRowId={(row) => Number(row.id)}
         filterMode="server"
         disableColumnFilter
         filterModel={filterModel}
         onFilterModelChange={handleFilterModelChange}
-        componentsProps={{
+        slotProps={{
           toolbar: {
             showQuickFilter: true,
             quickFilterProps: { debounceMs: 500 },
           },
         }}
+        showToolbar
       />
 
       <AddDriverModal
@@ -179,7 +179,14 @@ const DriverDefinitionsContainer = () => {
         paperProps={{ sx: { width: '80%', maxHeight: '90vh' } }}
         disabled={false}
         children={
-          <Box display="flex" flexDirection="column" gap={2} p={2}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              p: 2,
+            }}
+          >
             {editedDriver && (
               <>
                 <TextField
@@ -204,8 +211,10 @@ const DriverDefinitionsContainer = () => {
                   onChange={(e) => setEditedDriver((prev) => ({ ...prev, licensePlate: e.target.value }))}
                   fullWidth
                   size="small"
-                  inputProps={{ maxLength: MAX_PLATE_LEN }}
                   helperText="Maksimum 15 karakter"
+                  slotProps={{
+                    htmlInput: { maxLength: MAX_PLATE_LEN },
+                  }}
                 />
 
                 {/* ✅ trailerPlate edit alanı */}
@@ -215,8 +224,10 @@ const DriverDefinitionsContainer = () => {
                   onChange={(e) => setEditedDriver((prev) => ({ ...prev, trailerPlate: e.target.value }))}
                   fullWidth
                   size="small"
-                  inputProps={{ maxLength: MAX_PLATE_LEN }}
                   helperText="Maksimum 15 karakter"
+                  slotProps={{
+                    htmlInput: { maxLength: MAX_PLATE_LEN },
+                  }}
                 />
 
                 <TextField
@@ -227,7 +238,12 @@ const DriverDefinitionsContainer = () => {
                   size="small"
                 />
 
-                <Box display="flex" justifyContent="flex-end">
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                  }}
+                >
                   <Button size="small" variant="contained" color="primary" onClick={handleUpdateDriver}>
                     Kaydet
                   </Button>

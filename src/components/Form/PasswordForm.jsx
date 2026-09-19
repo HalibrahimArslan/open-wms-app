@@ -37,7 +37,12 @@ const PasswordForm = ({ initialValues = {}, validationSchema, onSubmit, backButt
         {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
           <Form onSubmit={handleSubmit}>
             {Object.keys(initialValues).map((fieldName) => (
-              <Box key={fieldName} mt={2}>
+              <Box
+                key={fieldName}
+                sx={{
+                  mt: 2,
+                }}
+              >
                 <TextField
                   fullWidth
                   type={fieldName.includes('Password') ? (showPassword ? 'text' : 'password') : 'text'}
@@ -46,19 +51,27 @@ const PasswordForm = ({ initialValues = {}, validationSchema, onSubmit, backButt
                   value={values[fieldName] || ''}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  InputProps={{
-                    endAdornment: fieldName.includes('Password') ? (
-                      <InputAdornment position="end">
-                        <IconButton onClick={toggleShowPassword} edge="end">
-                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null,
+                  slotProps={{
+                    input: {
+                      endAdornment: fieldName.includes('Password') ? (
+                        <InputAdornment position="end">
+                          <IconButton onClick={toggleShowPassword} edge="end">
+                            {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null,
+                    },
                   }}
                 />
               </Box>
             ))}
-            <Box display="flex" gap={1} mt={2}>
+            <Box
+              sx={{
+                display: 'flex',
+                gap: 1,
+                mt: 2,
+              }}
+            >
               <Button startIcon={<ArrowBackOutlinedIcon />} variant="contained" color="primary" onClick={() => nav(-1)} disabled={disableBackButton}>
                 {backButtonLabel}
               </Button>

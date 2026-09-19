@@ -107,7 +107,14 @@ export default function CountingTransaction() {
   return (
     <React.Fragment>
       <Paper variant="outlined" sx={{ p: 1.25, borderRadius: 1.5, mb: 2 }}>
-        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="flex-end" alignItems={isMobile ? 'stretch' : 'center'} gap={1.25}>
+        <Stack
+          direction={isMobile ? 'column' : 'row'}
+          sx={{
+            justifyContent: 'flex-end',
+            alignItems: isMobile ? 'stretch' : 'center',
+            gap: 1.25,
+          }}
+        >
           <SearchBox
             zIndex={false}
             search={search}
@@ -143,7 +150,12 @@ export default function CountingTransaction() {
             <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
               Sayım hareketi bulunamadı
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography
+              variant="body1"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Filtreleri temizleyerek veya farklı bir sayım seçerek tekrar deneyin.
             </Typography>
           </Box>

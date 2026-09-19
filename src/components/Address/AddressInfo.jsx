@@ -19,7 +19,14 @@ function AddressInfo({ miktar, address }) {
         justifyContent: 'space-between',
       }}
     >
-      <Typography fontWeight={theme.typography.fontWeightBold}> {address} </Typography>
+      <Typography
+        sx={{
+          fontWeight: theme.typography.fontWeightBold,
+        }}
+      >
+        {' '}
+        {address}{' '}
+      </Typography>
       <Box sx={{ flexGrow: 1 }} />
       <Divider orientation="vertical" flexItem />
       <Typography> {miktar} </Typography>

@@ -8,14 +8,22 @@ function AddressOperationsContainer() {
   const theme = useTheme()
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={theme.spacing(1)}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: theme.spacing(1),
+      }}
+    >
       <Box
-        sx={{ display: { xs: 'none', sm: 'flex' } }}
-        justifyContent={'space-between'}
-        alignItems={'center'}
-        bgcolor={theme.palette.secondary.main}
-        borderRadius={theme.shape.borderRadius}
-        p={theme.spacing(0, 2)}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          bgcolor: theme.palette.secondary.main,
+          borderRadius: theme.shape.borderRadius,
+          p: theme.spacing(0, 2),
+          display: { xs: 'none', sm: 'flex' },
+        }}
       >
         <Box>
           <Typography variant="h5" gutterBottom align="left">

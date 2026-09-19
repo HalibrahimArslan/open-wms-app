@@ -41,14 +41,32 @@ function BarcodeCard({ code, quantity, description, showQuantity, selected, onTo
       <Checkbox size="small" checked={selected} onClick={(e) => e.stopPropagation()} onChange={onToggle} sx={{ position: 'absolute', top: 2, right: 2, p: 0.5 }} />
       <Barcode value={code} width={1.2} height={40} fontSize={10} margin={0} displayValue={true} />
       {(showQuantity && quantity != null) || descText ? (
-        <Stack direction="row" spacing={1} alignItems="center" flexWrap="wrap" justifyContent="center">
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
           {showQuantity && quantity != null && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Miktar: <b>{quantity}</b>
             </Typography>
           )}
           {descText && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {descText}
             </Typography>
           )}
@@ -60,15 +78,38 @@ function BarcodeCard({ code, quantity, description, showQuantity, selected, onTo
 
 function PanelHeader({ product, onClose }) {
   return (
-    <Stack direction="row" alignItems="flex-start" justifyContent="space-between" gap={1}>
-      <Stack direction="row" alignItems="flex-start" spacing={1}>
+    <Stack
+      direction="row"
+      sx={{
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 1,
+      }}
+    >
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'flex-start',
+        }}
+      >
         <QrCode2Icon color="primary" sx={{ mt: 0.3 }} />
         <Box>
-          <Typography variant="subtitle1" fontWeight={600}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 600,
+            }}
+          >
             {product ? `${product.stokAdi} (${product.stokKodu})` : 'Okutulan Barkodlar'}
           </Typography>
           {product && (
-            <Typography variant="caption" color="text.secondary">
+            <Typography
+              variant="caption"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               Ürün Barkod: <b>{product.barkod}</b>
             </Typography>
           )}
@@ -89,7 +130,12 @@ function PanelContent({ product, scannedBarcodes, selected, onToggle }) {
   if (!product) {
     return (
       <Box sx={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           Barkodları görmek için yukarıdan bir ürün seçiniz.
         </Typography>
       </Box>
@@ -98,7 +144,12 @@ function PanelContent({ product, scannedBarcodes, selected, onToggle }) {
   if (scannedBarcodes.length === 0) {
     return (
       <Box sx={{ height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           Bu ürün için henüz okutulan barkod yok.
         </Typography>
       </Box>
@@ -204,13 +255,15 @@ export default function UniqueBarcodeListPanel({ open = false, onClose, product,
         onClose={onClose}
         onOpen={() => {}}
         disableSwipeToOpen
-        PaperProps={{
-          sx: {
-            borderTopLeftRadius: 16,
-            borderTopRightRadius: 16,
-            maxHeight: '85dvh',
-            display: 'flex',
-            flexDirection: 'column',
+        slotProps={{
+          paper: {
+            sx: {
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              maxHeight: '85dvh',
+              display: 'flex',
+              flexDirection: 'column',
+            },
           },
         }}
       >
@@ -238,12 +291,14 @@ export default function UniqueBarcodeListPanel({ open = false, onClose, product,
       anchor="right"
       open={open}
       onClose={onClose}
-      PaperProps={{
-        sx: {
-          width: 420,
-          maxWidth: '100vw',
-          display: 'flex',
-          flexDirection: 'column',
+      slotProps={{
+        paper: {
+          sx: {
+            width: 420,
+            maxWidth: '100vw',
+            display: 'flex',
+            flexDirection: 'column',
+          },
         },
       }}
     >

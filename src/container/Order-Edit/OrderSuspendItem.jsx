@@ -140,7 +140,12 @@ export default function OrderSuspendItem({ list }) {
                         backgroundColor: theme.palette.background.paper,
                       }}
                     >
-                      <Stack direction={'row'} gap={2}>
+                      <Stack
+                        direction={'row'}
+                        sx={{
+                          gap: 2,
+                        }}
+                      >
                         <Button
                           disabled={cancelledItem.includes(orderType === 'MSK' ? row.sipUid : row.stokKodu)}
                           onClick={() => handleCancel(orderType === 'MSK' ? row.sipUid : row.stokKodu)}

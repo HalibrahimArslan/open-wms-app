@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Button, useTheme, Stack } from '@mui/material'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutlined'
 import InventoryIcon from '@mui/icons-material/Inventory'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import { useMediaQuery } from '@mui/material'

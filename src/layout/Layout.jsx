@@ -1,4 +1,3 @@
-
 import { AuthContainer } from '../store/AuthContainer'
 import { SWRConfig } from 'swr'
 import { Bounce, toast, Zoom } from 'react-toastify'

@@ -3,7 +3,14 @@ import React from 'react'
 
 const RepetableSkeleton = ({ length }) => {
   return (
-    <Box display={'flex'} flexDirection={'column'} flex={1} gap={1}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        flex: 1,
+        gap: 1,
+      }}
+    >
       {Array.from({ length: length }).map((_, index) => (
         <Skeleton key={index} variant="rectangular" height={75} />
       ))}

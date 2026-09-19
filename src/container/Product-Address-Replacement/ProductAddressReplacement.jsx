@@ -158,9 +158,9 @@ export default function ProductAddressReplacement() {
           />,
           <Grid
             container
-            mb={2}
-            gap={2}
             sx={{
+              mb: 2,
+              gap: 2,
               display: 'flex',
               flexDirection: 'row',
               flexGrow: 1,

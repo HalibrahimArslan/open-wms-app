@@ -85,14 +85,32 @@ function ProductInfoCard({ productList, totalAmount, approvedUser }) {
                   }}
                 >
                   <Box>
-                    <Typography fontSize={'10px'}>{approvedUser ? 'Siparis' : 'Mikro'}</Typography>
-                    <Typography fontWeight={'bold'} variant="h5">
+                    <Typography
+                      sx={{
+                        fontSize: '10px',
+                      }}
+                    >
+                      {approvedUser ? 'Siparis' : 'Mikro'}
+                    </Typography>
+                    <Typography
+                      variant="h5"
+                      sx={{
+                        fontWeight: 'bold',
+                      }}
+                    >
                       {product.depodakiMiktar}{' '}
                     </Typography>
                   </Box>
                   <Divider color="black" orientation="vertical" flexItem />
                   <Box>
-                    <Typography fontSize={'10px'}> Depo</Typography>
+                    <Typography
+                      sx={{
+                        fontSize: '10px',
+                      }}
+                    >
+                      {' '}
+                      Depo
+                    </Typography>
                     <Typography variant="h5"> {totalAmount}</Typography>
                   </Box>
                 </Box>
@@ -104,10 +122,22 @@ function ProductInfoCard({ productList, totalAmount, approvedUser }) {
                   }}
                 >
                   <Box>
-                    <Typography fontSize={theme.typography.fontSize} textAlign={'end'}>
+                    <Typography
+                      sx={{
+                        fontSize: theme.typography.fontSize,
+                        textAlign: 'end',
+                      }}
+                    >
                       {product.stokKodu}
                     </Typography>
-                    <Typography fontSize={theme.typography.fontSize - 2}> {product.barkod} </Typography>
+                    <Typography
+                      sx={{
+                        fontSize: theme.typography.fontSize - 2,
+                      }}
+                    >
+                      {' '}
+                      {product.barkod}{' '}
+                    </Typography>
                   </Box>
                 </Box>
               </Box>
@@ -117,7 +147,13 @@ function ProductInfoCard({ productList, totalAmount, approvedUser }) {
               <Typography sx={{ wordBreak: 'break-word' }}>{product.stokAdi}</Typography>
             </Box>
             <Box sx={{ backgroundColor: theme.palette.warning.main, p: 1, borderRadius: theme.shape.borderRadius }}>
-              <Typography sx={{ wordBreak: 'break-word' }} fontWeight={theme.typography.fontWeightMedium} variant="body2">
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: theme.typography.fontWeightMedium,
+                  wordBreak: 'break-word',
+                }}
+              >
                 {product.description ? product.description : 'Açıklama Bulunamadı'}
               </Typography>
             </Box>

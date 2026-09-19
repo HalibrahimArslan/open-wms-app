@@ -1,17 +1,35 @@
 import React from 'react'
 import { Box, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineOutlined'
 
 export default function LotProductCard({ product, onDelete }) {
   const labelRow = (label, value) => (
     <Stack direction="row" spacing={1}>
-      <Typography variant="body2" color="text.secondary" sx={{ minWidth: 70, flexShrink: 0 }}>
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'text.secondary',
+          minWidth: 70,
+          flexShrink: 0,
+        }}
+      >
         {label}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
+      <Typography
+        variant="body2"
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         :
       </Typography>
-      <Typography variant="body2" fontWeight={600} sx={{ wordBreak: 'break-word' }}>
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 600,
+          wordBreak: 'break-word',
+        }}
+      >
         {value}
       </Typography>
     </Stack>
@@ -46,7 +64,12 @@ export default function LotProductCard({ product, onDelete }) {
 
       <Stack spacing={0.75} sx={{ mt: 'auto', pt: 1 }}>
         <Divider sx={{ mb: 0.5 }} />
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           Barkod
         </Typography>
         <Box

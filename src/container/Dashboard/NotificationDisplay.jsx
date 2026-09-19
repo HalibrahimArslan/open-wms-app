@@ -140,10 +140,27 @@ export const NotificationDisplay = () => {
             p: 2,
           }}
         >
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Stack direction="row" alignItems="center" spacing={1.5}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Stack
+              direction="row"
+              spacing={1.5}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <NotificationsIcon sx={{ fontSize: 20 }} />
-              <Typography variant="h6" fontWeight="600">
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: '600',
+                }}
+              >
                 Bildirimler
               </Typography>
               <Chip
@@ -225,10 +242,22 @@ export const NotificationDisplay = () => {
                   }}
                 />
               </Box>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                  mb: 0.5,
+                }}
+              >
                 Henüz bildirim yok
               </Typography>
-              <Typography variant="caption" color="text.secondary" sx={{ opacity: 0.7 }}>
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'text.secondary',
+                  opacity: 0.7,
+                }}
+              >
                 Yeni bildirimler burada görünecek
               </Typography>
             </Box>
@@ -279,7 +308,13 @@ export const NotificationDisplay = () => {
                             </Typography>
                           }
                           secondary={
-                            <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5 }}>
+                            <Typography
+                              variant="caption"
+                              sx={{
+                                color: 'text.secondary',
+                                mt: 0.5,
+                              }}
+                            >
                               {msg.timestamp.toLocaleDateString('tr-TR')} • {msg.timestamp.toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
                             </Typography>
                           }
@@ -323,8 +358,19 @@ export const NotificationDisplay = () => {
               borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
             }}
           >
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-              <Typography variant="caption" color="text.secondary">
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography
+                variant="caption"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {messages.length > 10 ? `Son 10 bildirim (Toplam ${messages.length})` : `${messages.length} bildirim`}
               </Typography>
 

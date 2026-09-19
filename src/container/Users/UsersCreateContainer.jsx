@@ -50,7 +50,13 @@ const UserCreateContainer = () => {
 
   return (
     <Box>
-      <Typography textAlign="start" fontWeight={theme.typography.fontWeightMedium} variant="h4">
+      <Typography
+        variant="h4"
+        sx={{
+          textAlign: 'start',
+          fontWeight: theme.typography.fontWeightMedium,
+        }}
+      >
         Kullanıcı Oluştur
       </Typography>
       <Divider />

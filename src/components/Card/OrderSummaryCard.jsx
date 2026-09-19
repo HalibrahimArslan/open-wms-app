@@ -41,20 +41,32 @@ export default function OrderSummaryCard({ header, title, subHeader, orderCount,
             {orderDetails &&
               orderDetails.length > 0 &&
               orderDetails.map((item) => (
-                <Typography variant="h4" alignItems={'flex-start'} padding={0.25}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    alignItems: 'flex-start',
+                    padding: 0.25,
+                  }}
+                >
                   {item}
                 </Typography>
               ))}
           </Box>
           <Box
-            marginLeft={'auto'}
             sx={{
+              marginLeft: 'auto',
               border: `2px solid ${theme.palette.primary.main + '3B'}`,
               borderRadius: theme.shape.borderRadius,
               backgroundColor: theme.palette.secondary.main,
             }}
           >
-            <Typography variant="h6" alignItems={'center'} padding={0.25}>
+            <Typography
+              variant="h6"
+              sx={{
+                alignItems: 'center',
+                padding: 0.25,
+              }}
+            >
               {notCountingItem} / {orderCount}
             </Typography>
           </Box>
@@ -67,7 +79,13 @@ export default function OrderSummaryCard({ header, title, subHeader, orderCount,
           backgroundColor: theme.palette.secondary.main,
         }}
       >
-        <Typography variant="h6" alignItems={'center'} marginLeft={0.25}>
+        <Typography
+          variant="h6"
+          sx={{
+            alignItems: 'center',
+            marginLeft: 0.25,
+          }}
+        >
           {title.slice(0, 15) + '...'}
         </Typography>
         <IconButton aria-label="settings" sx={{ marginLeft: 'auto' }}>

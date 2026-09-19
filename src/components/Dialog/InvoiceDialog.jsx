@@ -127,7 +127,17 @@ export default function InvoiceDialog({ contentText, open, setOpen, setIrsaliyeI
   }
 
   return (
-    <Dialog sx={{ minWidth: '200px' }} open={open} scroll="paper" TransitionComponent={Transition} keepMounted fullScreen={isMobile} onClose={handleClose}>
+    <Dialog
+      sx={{ minWidth: '200px' }}
+      open={open}
+      scroll="paper"
+      keepMounted
+      fullScreen={isMobile}
+      onClose={handleClose}
+      slots={{
+        transition: Transition,
+      }}
+    >
       <DialogContent dividers>
         <AurTabs
           section={[
@@ -140,7 +150,13 @@ export default function InvoiceDialog({ contentText, open, setOpen, setIrsaliyeI
               value: '1',
               component: (
                 <>
-                  <Box display="flex" flexDirection="column" gap={1.5}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 1.5,
+                    }}
+                  >
                     <Typography>{contentText}</Typography>
                     {firmCode !== FABRIKA_FIRM_CODE && (
                       <SmartDriver
@@ -169,7 +185,12 @@ export default function InvoiceDialog({ contentText, open, setOpen, setIrsaliyeI
 
                     <Box component="form" onSubmit={handleSubmit} onChange={handleChange} noValidate>
                       {opType === 'FMK' ? (
-                        <Box display="flex" gap={2}>
+                        <Box
+                          sx={{
+                            display: 'flex',
+                            gap: 2,
+                          }}
+                        >
                           <TextField
                             fullWidth
                             name="seriNo"
@@ -207,7 +228,13 @@ export default function InvoiceDialog({ contentText, open, setOpen, setIrsaliyeI
               label: 'Nakliye',
               value: '2',
               component: (
-                <Box display="flex" flexDirection="column" gap={2}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                  }}
+                >
                   <Record
                     handleChangeLookup={handleChangeLookup}
                     label="Logistic Tipi"

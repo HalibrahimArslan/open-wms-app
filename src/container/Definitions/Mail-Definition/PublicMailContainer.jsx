@@ -86,7 +86,13 @@ const PublicMailContainer = () => {
 
   return (
     <Box sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+        }}
+      >
         <Button variant="outlined" onClick={handleOpen}>
           Ekle
         </Button>

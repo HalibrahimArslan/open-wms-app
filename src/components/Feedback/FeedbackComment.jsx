@@ -38,17 +38,28 @@ const FeedbackComment = ({ comment, theme, index, handleAddInnerComment, handleU
   return (
     <Box
       key={index}
-      display={'flex'}
-      justifyContent={'flex-start'}
-      gap={0.25}
-      padding={2}
-      mb={2}
-      borderRadius={theme.shape.borderRadius}
-      border={`1px solid ${theme.palette.grey[300]}`}
-      position={'relative'}
+      sx={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+        gap: 0.25,
+        padding: 2,
+        mb: 2,
+        borderRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.grey[300]}`,
+        position: 'relative',
+      }}
     >
       <Avatar alt={comment.createdBy}>{comment.createdBy[0].toUpperCase()}</Avatar>
-      <Box display={'flex'} flexDirection={'column'} padding={2} gap={1} overflow={'auto'} width={'100%'}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          padding: 2,
+          gap: 1,
+          overflow: 'auto',
+          width: '100%',
+        }}
+      >
         {isEdit ? (
           <FeedbackCommentField
             inputRef={inputRef}
@@ -61,12 +72,25 @@ const FeedbackComment = ({ comment, theme, index, handleAddInnerComment, handleU
             }}
           />
         ) : (
-          <Typography align="left" variant="body1" style={{ wordWrap: 'break-word' }} fontWeight={theme.typography.fontWeightMedium}>
+          <Typography
+            align="left"
+            variant="body1"
+            style={{ wordWrap: 'break-word' }}
+            sx={{
+              fontWeight: theme.typography.fontWeightMedium,
+            }}
+          >
             {comment.content}
           </Typography>
         )}
 
-        <Box display={'flex'} justifyContent={'flex-start'} gap={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-start',
+            gap: 1,
+          }}
+        >
           {commentOpen && (
             <FeedbackCommentField
               inputRef={inputRef}
@@ -114,7 +138,13 @@ const FeedbackComment = ({ comment, theme, index, handleAddInnerComment, handleU
             />
           ))}
       </Box>
-      <Box position={'absolute'} top={5} right={5}>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 5,
+          right: 5,
+        }}
+      >
         {comment.createdDate.split('T')[0]} {comment.createdDate.split('T')[1].split('.')[0]}
         {account?.login === comment.createdBy && (
           <MoreVertButton

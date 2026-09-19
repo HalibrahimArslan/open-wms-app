@@ -20,18 +20,53 @@ export default function AddressRecommendationItem({ item, theme, handleAllAddres
           borderTop: `10px solid ${theme.palette.primary.main}`,
         }}
       >
-        <CardHeader subheader={'Miktar'} title={item.miktar} titleTypographyProps={{ align: 'center' }} subheaderTypographyProps={{ align: 'center' }} />
+        <CardHeader
+          subheader={'Miktar'}
+          title={item.miktar}
+          slotProps={{
+            title: { align: 'center' },
+            subheader: { align: 'center' },
+          }}
+        />
         <CardContent>
-          <Box border={0.25} borderRadius={2} backgroundColor={theme.palette.secondary.main}>
-            <Typography sx={{ fontWeight: 'bold' }} textAlign={'center'}>
+          <Box
+            sx={{
+              border: 0.25,
+              borderRadius: 2,
+              backgroundColor: theme.palette.secondary.main,
+            }}
+          >
+            <Typography
+              sx={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+              }}
+            >
               Stok Kodu
             </Typography>
-            <Typography textAlign={'center'}>{item.stockCode}</Typography>
+            <Typography
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              {item.stockCode}
+            </Typography>
 
-            <Typography sx={{ fontWeight: 'bold' }} textAlign={'center'}>
+            <Typography
+              sx={{
+                textAlign: 'center',
+                fontWeight: 'bold',
+              }}
+            >
               Adres
             </Typography>
-            <Typography textAlign={'center'}>{item.address}</Typography>
+            <Typography
+              sx={{
+                textAlign: 'center',
+              }}
+            >
+              {item.address}
+            </Typography>
           </Box>
         </CardContent>
       </Card>

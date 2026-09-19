@@ -54,7 +54,14 @@ const CompleteDispatchmentSummaryModal = ({ modal, handleClose, orderDetail, ena
         </TableContainer>
         <Divider />
 
-        <Box display={'flex'} justifyContent={'flex-end'} gap={2} mt={2}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            gap: 2,
+            mt: 2,
+          }}
+        >
           <Button variant="outlined" onClick={handleClose}>
             Kapat
           </Button>

@@ -99,11 +99,11 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Grid container direction="column" spacing={1}>
-        <Grid item xs={2}>
+      <Grid container spacing={1} sx={{ flexDirection: 'column' }}>
+        <Grid size={2}>
           <Typography>Adres Tipi</Typography>
         </Grid>
-        <Grid item xs={10}>
+        <Grid size={10}>
           <FormControl fullWidth error={Boolean(formik.values.addressType && formik.touched.addressType)}>
             <InputLabel id="address-type-simple-select-label">Adres Tipi</InputLabel>
             <Select
@@ -129,11 +129,16 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
           <>
             {getVisibility(item.label) ? (
               <React.Fragment key={item.key}>
-                <Grid item>
+                <Grid>
                   <Typography>{item.label}</Typography>
                 </Grid>
-                <Grid item>
-                  <Box display={'flex'} gap={1}>
+                <Grid>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 1,
+                    }}
+                  >
                     <FormControl fullWidth error={Boolean(formik.errors[item.values.first] && formik.touched[item.values.first])}>
                       <InputLabel id={`first-${item.key}-simple-select-label`}>Başlangıç</InputLabel>
                       <Select
@@ -185,7 +190,13 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
           </>
         ))}
       </Grid>
-      <Box display={'flex'} flexDirection={'column'} gap={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
         <FormControlLabel
           label="Geçici Adres"
           control={<Checkbox checked={formik.values.geciciAdres} onChange={formik.handleChange} name="geciciAdres" id="geciciAdres" />}
@@ -197,7 +208,14 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
           labelPlacement="end"
         />
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           Oluştur
         </Button>

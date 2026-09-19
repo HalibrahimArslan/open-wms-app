@@ -58,7 +58,13 @@ const ReceivingSummaryModal = ({
         {addresses.length === 0 ? (
           <NotFound msg="Geçici Adres bulunamadı" />
         ) : (
-          <Box display={addresses.length === 1 ? 'none' : 'flex'} justifyContent="space-between" alignItems="center">
+          <Box
+            sx={{
+              display: addresses.length === 1 ? 'none' : 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Autocomplete
               disablePortal
               value={selectedAddress}
@@ -143,9 +149,26 @@ const ReceivingSummaryModal = ({
 
           return (
             rezervasyon.isReserve === 'E' && (
-              <Box key={orderItem.stokKodu} mt={2}>
-                <Typography fontWeight={600}>{orderItem.stokAdi}</Typography>
-                <Stack direction="row" spacing={2} mt={1}>
+              <Box
+                key={orderItem.stokKodu}
+                sx={{
+                  mt: 2,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                  }}
+                >
+                  {orderItem.stokAdi}
+                </Typography>
+                <Stack
+                  direction="row"
+                  spacing={2}
+                  sx={{
+                    mt: 1,
+                  }}
+                >
                   <TextField
                     label="Reserve No"
                     value={rezervasyon.reserveNo}
@@ -166,7 +189,13 @@ const ReceivingSummaryModal = ({
 
         <Divider sx={{ my: 2 }} />
 
-        <Stack direction="row" justifyContent="flex-end" spacing={2}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            justifyContent: 'flex-end',
+          }}
+        >
           <Button variant="outlined" onClick={handleClose}>
             Kapat
           </Button>

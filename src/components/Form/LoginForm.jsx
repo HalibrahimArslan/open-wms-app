@@ -68,12 +68,14 @@ export default function LoginForm({ onSubmit, isSubmitting }) {
         helperText={formik.touched.username && formik.errors.username}
         disabled={isSubmitting}
         sx={fieldSx}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <PersonOutlineRoundedIcon fontSize="small" color="action" />
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <PersonOutlineRoundedIcon fontSize="small" color="action" />
+              </InputAdornment>
+            ),
+          },
         }}
       />
       <TextField
@@ -92,19 +94,21 @@ export default function LoginForm({ onSubmit, isSubmitting }) {
         helperText={formik.touched.password && formik.errors.password}
         disabled={isSubmitting}
         sx={fieldSx}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LockOutlinedIcon fontSize="small" color="action" />
-            </InputAdornment>
-          ),
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'} onClick={() => setShowPassword((prev) => !prev)} edge="end" size="small">
-                {showPassword ? <VisibilityOffRoundedIcon fontSize="small" /> : <VisibilityRoundedIcon fontSize="small" />}
-              </IconButton>
-            </InputAdornment>
-          ),
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <LockOutlinedIcon fontSize="small" color="action" />
+              </InputAdornment>
+            ),
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'} onClick={() => setShowPassword((prev) => !prev)} edge="end" size="small">
+                  {showPassword ? <VisibilityOffRoundedIcon fontSize="small" /> : <VisibilityRoundedIcon fontSize="small" />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          },
         }}
       />
 

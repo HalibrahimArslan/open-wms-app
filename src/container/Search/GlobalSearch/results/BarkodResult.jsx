@@ -22,8 +22,25 @@ function MikroMiktarSection({ totalQty, description }) {
   const items = parseDepoMiktar(description)
   return (
     <Box>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1} sx={{ flexWrap: 'wrap', rowGap: 0.5 }}>
-        <Stack direction="row" alignItems="center" gap={0.8} sx={{ color: 'text.secondary', minWidth: 0 }}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: 1,
+          flexWrap: 'wrap',
+          rowGap: 0.5,
+        }}
+      >
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+            gap: 0.8,
+            color: 'text.secondary',
+            minWidth: 0,
+          }}
+        >
           <NumbersRoundedIcon fontSize="small" />
           <Typography variant="body2" sx={{ fontWeight: 600 }}>
             Mikro Miktar
@@ -32,7 +49,16 @@ function MikroMiktarSection({ totalQty, description }) {
         <ResultChip color={qtyChipColor(totalQty)} label={totalQty ?? 0} />
       </Stack>
       {items.length > 0 && (
-        <Stack direction="row" flexWrap="wrap" gap={0.7} justifyContent="flex-start" alignItems="stretch" sx={{ mt: 1.2 }}>
+        <Stack
+          direction="row"
+          sx={{
+            flexWrap: 'wrap',
+            gap: 0.7,
+            justifyContent: 'flex-start',
+            alignItems: 'stretch',
+            mt: 1.2,
+          }}
+        >
           {items.map((item, i) => {
             const active = item.qty > 0
             return (
@@ -114,15 +140,20 @@ export default function BarkodResult({ data }) {
           <Typography variant="overline" sx={{ color: 'text.secondary', fontWeight: 700 }}>
             Bulunduğu Adresler ({addresses.length})
           </Typography>
-          <Stack spacing={0.8} mt={0.5}>
+          <Stack
+            spacing={0.8}
+            sx={{
+              mt: 0.5,
+            }}
+          >
             {addresses.map((a, i) => (
               <Stack
                 key={i}
                 direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                gap={1}
                 sx={{
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  gap: 1,
                   px: 1.5,
                   py: 1,
                   border: '1px solid',
@@ -131,7 +162,14 @@ export default function BarkodResult({ data }) {
                   flexWrap: 'wrap',
                 }}
               >
-                <Stack direction="row" alignItems="center" gap={0.8} sx={{ minWidth: 0 }}>
+                <Stack
+                  direction="row"
+                  sx={{
+                    alignItems: 'center',
+                    gap: 0.8,
+                    minWidth: 0,
+                  }}
+                >
                   <LocationOnRoundedIcon fontSize="small" color="action" />
                   <Typography variant="body2" sx={{ fontWeight: 600, wordBreak: 'break-word' }}>
                     {a?.urunAdres?.adres || '-'}

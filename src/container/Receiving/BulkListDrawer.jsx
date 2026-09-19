@@ -10,19 +10,26 @@ function BulkListDrawer({ open, onClose, bulkList, apiList, checked, setChecked,
       open={open}
       onClose={onClose}
       onOpen={() => {}}
-      PaperProps={{
-        sx: {
-          width: { xs: '100%', sm: 420 },
-          display: 'flex',
-          flexDirection: 'column',
-        },
-      }}
       sx={{
         zIndex: 'tooltip',
       }}
+      slotProps={{
+        paper: {
+          sx: {
+            width: { xs: '100%', sm: 420 },
+            display: 'flex',
+            flexDirection: 'column',
+          },
+        },
+      }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: 1.5 }}>
-        <Typography variant="h6" fontWeight={600}>
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 600,
+          }}
+        >
           Kalem Ekle
         </Typography>
         <IconButton onClick={onClose} size="small">

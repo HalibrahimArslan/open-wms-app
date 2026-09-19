@@ -39,7 +39,12 @@ function SidebarContainer({ account }) {
         >
           {account?.firstName ? account.firstName[0].toUpperCase() : ''}
         </Avatar>
-        <Typography fontWeight={theme.typography.fontWeightMedium} variant="h6">
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: theme.typography.fontWeightMedium,
+          }}
+        >
           {account?.firstName} {account?.lastName}
         </Typography>
       </Box>

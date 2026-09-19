@@ -69,7 +69,15 @@ export default function Picking({ list, adresList, opType }) {
         {notPartialList &&
           notPartialList.length > 0 &&
           notPartialList.map((item) => (
-            <Grid key={item.id} item xs={12} sm={6} md={4} lg={3}>
+            <Grid
+              key={item.id}
+              size={{
+                xs: 12,
+                sm: 6,
+                md: 4,
+                lg: 3,
+              }}
+            >
               <PickingCard key={item.id} item={item} opType={opType} enable={enable} adresList={adresList} />
             </Grid>
           ))}

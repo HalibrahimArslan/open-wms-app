@@ -53,7 +53,14 @@ export default function ExtendedDialog({ open, handleClose, dialogContent, dialo
         </DialogTitle>
       )}
       <DialogContent dividers={scroll === 'paper'} sx={{ position: 'relative', minWidth: '300px' }}>
-        <DialogContentText id="scroll-dialog-description" ref={descriptionElementRef} tabIndex={-1} mt={1}>
+        <DialogContentText
+          id="scroll-dialog-description"
+          ref={descriptionElementRef}
+          tabIndex={-1}
+          sx={{
+            mt: 1,
+          }}
+        >
           {dialogContent}
         </DialogContentText>
       </DialogContent>

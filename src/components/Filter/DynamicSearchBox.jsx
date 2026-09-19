@@ -48,7 +48,16 @@ export default function DynamicSearchBox({ checked, setChecked, bulkList, search
             <ListItem key={item[keyField]} disablePadding>
               <ListItemButton role={undefined} onClick={handleToggle(item[keyField])} dense>
                 <ListItemIcon>
-                  <Checkbox edge="start" checked={checked.indexOf(item[keyField]) !== -1} tabIndex={-1} disableRipple inputProps={{ 'aria-labelledby': labelId }} size="small" />
+                  <Checkbox
+                    edge="start"
+                    checked={checked.indexOf(item[keyField]) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    size="small"
+                    slotProps={{
+                      input: { 'aria-labelledby': labelId },
+                    }}
+                  />
                 </ListItemIcon>
                 <ListItemText id={labelId} primary={`${item[displayField]}`} sx={{ fontSize: 2 }} />
               </ListItemButton>

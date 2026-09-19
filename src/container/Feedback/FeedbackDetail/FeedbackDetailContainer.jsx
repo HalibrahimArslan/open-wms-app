@@ -178,7 +178,14 @@ const FeedbackDetailContainer = () => {
 
   if (isLoading) {
     return (
-      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100vh'}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <CircularProgress />
       </Box>
     )
@@ -186,7 +193,14 @@ const FeedbackDetailContainer = () => {
 
   if (error) {
     return (
-      <Box display={'flex'} justifyContent={'center'} alignItems={'center'} height={'100vh'}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
         <Typography variant="h3" color="error">
           Bir hata oluştu
         </Typography>
@@ -195,30 +209,92 @@ const FeedbackDetailContainer = () => {
   }
 
   return (
-    <Grid container spacing={2} p={1}>
-      <Grid container item xs={isMobile ? 12 : 8} direction={'column'} alignItems={'flex-start'} spacing={2}>
-        <Box display={'flex'} alignItems={'center'} paddingLeft={1}>
+    <Grid
+      container
+      spacing={2}
+      sx={{
+        p: 1,
+      }}
+    >
+      <Grid
+        container
+        direction={'column'}
+        spacing={2}
+        size={isMobile ? 12 : 8}
+        sx={{
+          alignItems: 'flex-start',
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: 1,
+          }}
+        >
           <Button variant="text" startIcon={<KeyboardBackspaceIcon />} onClick={() => window.history.back()}>
             TALEPLER
           </Button>
         </Box>
-        <Grid item width={'100%'}>
-          <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={1}>
-            <Typography align="left" variant="h5" fontWeight={theme.typography.fontWeightBold}>
+        <Grid
+          sx={{
+            width: '100%',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
+            <Typography
+              align="left"
+              variant="h5"
+              sx={{
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            >
               {data?.title ? FeedbackTitle[data.title] : ''}
             </Typography>
             <Chip label={data?.status ? FeedbackStatus[data.status] : ''} color={data?.status === 'Tamamlandı' ? 'success' : 'warning'} />
           </Box>
         </Grid>
         <Divider flexItem />
-        <Grid item height={300} bgcolor={theme.palette.action.hover} width={'100%'} mt={2} borderRadius={theme.shape.borderRadius} ml={1}>
-          <Typography align="left" variant="body1" fontWeight={theme.typography.fontWeightBold}>
+        <Grid
+          sx={{
+            height: 300,
+            bgcolor: theme.palette.action.hover,
+            width: '100%',
+            mt: 2,
+            borderRadius: theme.shape.borderRadius,
+            ml: 1,
+          }}
+        >
+          <Typography
+            align="left"
+            variant="body1"
+            sx={{
+              fontWeight: theme.typography.fontWeightBold,
+            }}
+          >
             {data?.description}
           </Typography>
         </Grid>
-        <Grid item width={'100%'}>
+        <Grid
+          sx={{
+            width: '100%',
+          }}
+        >
           <Box>
-            <Typography align="left" variant="h6" fontWeight={theme.typography.fontWeightBold}>
+            <Typography
+              align="left"
+              variant="h6"
+              sx={{
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            >
               Yorumlar
             </Typography>
             <FeedbackCommentField comment={comment} inputRef={inputRef} handleChangeComment={handleChangeComment} handleAddComment={handleAddComment} handleCancel={handleCancel} />
@@ -245,9 +321,22 @@ const FeedbackDetailContainer = () => {
         </Grid>
       </Grid>
       {!isMobile && (
-        <Grid item xs={4}>
-          <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'} mb={2}>
-            <Typography align="left" variant="h6" fontWeight={theme.typography.fontWeightBold}>
+        <Grid size={4}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2,
+            }}
+          >
+            <Typography
+              align="left"
+              variant="h6"
+              sx={{
+                fontWeight: theme.typography.fontWeightBold,
+              }}
+            >
               Ekler
             </Typography>
             <Button onClick={() => setOpen(true)} sx={{ fontSize: 10, borderRadius: 10 }} endIcon={<OpenInFullIcon />} variant="outlined">

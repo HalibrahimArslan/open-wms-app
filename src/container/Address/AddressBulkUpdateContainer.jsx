@@ -2,7 +2,13 @@ import { Alert, Box, Card, Typography } from '@mui/material'
 
 const AddressBulkUpdateContainer = ({ data }) => {
   return (
-    <Box display={'flex'} flexDirection="column" gap={2}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       {Object.keys(data).length > 0 &&
         data.successList.map((address) => (
           <Card sx={{ display: 'flex', flexDirection: 'column', p: 1 }} key={address.adres}>

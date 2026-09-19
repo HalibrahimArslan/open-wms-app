@@ -77,7 +77,12 @@ export default function OrderJustifyMobile({ lists, bulkLists, opType, payload, 
       >
         Kaydet
       </Button>
-      <Box marginTop={5} p={1}>
+      <Box
+        sx={{
+          marginTop: 5,
+          p: 1,
+        }}
+      >
         <Movement order={lists} orderStatus={orderStatus2} />
         {value === 0 && <OrderSuspendItem list={lists} bulkList={bulkLists} opType={opType} />}
         {value === 1 && <OrderJustifyDrawer list={list} opType={opType} cariBaglantiTipi={cariBaglantiTipi} />}

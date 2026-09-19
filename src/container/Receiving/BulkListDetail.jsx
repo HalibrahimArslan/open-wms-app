@@ -39,21 +39,33 @@ const Row = React.memo(function Row({ index, style, items, checkedSet, onToggle,
       >
         <ListItemButton role={undefined} onClick={() => onToggle(value.sipUid)} dense sx={{ '&:hover': { backgroundColor: 'transparent' } }}>
           <ListItemIcon>
-            <Checkbox edge="start" checked={selected} tabIndex={-1} disableRipple inputProps={{ 'aria-labelledby': labelId }} color="primary" />
+            <Checkbox
+              edge="start"
+              checked={selected}
+              tabIndex={-1}
+              disableRipple
+              color="primary"
+              slotProps={{
+                input: { 'aria-labelledby': labelId },
+              }}
+            />
           </ListItemIcon>
           <ListItemText
             id={labelId}
             primary={`${value.orderNo} - ${value.stokAdi}`}
             secondary={`${value.stokKodu}`}
-            primaryTypographyProps={{
-              variant: 'body2',
-              fontWeight: selected ? 600 : 400,
-              color: selected ? 'primary.main' : 'text.primary',
-              noWrap: true,
-            }}
-            secondaryTypographyProps={{
-              variant: 'caption',
-              color: 'text.secondary',
+            slotProps={{
+              primary: {
+                variant: 'body2',
+                fontWeight: selected ? 600 : 400,
+                color: selected ? 'primary.main' : 'text.primary',
+                noWrap: true,
+              },
+
+              secondary: {
+                variant: 'caption',
+                color: 'text.secondary',
+              },
             }}
           />
         </ListItemButton>

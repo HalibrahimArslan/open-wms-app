@@ -16,7 +16,13 @@ export default function PalletBarcodeRows({ row, handlePalletBarcodeList }) {
   return (
     <TableRow key={row.stokKodu} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
       <TableCell align="left">
-        <Checkbox checked={checked} onChange={() => handleChange(row.stokKodu)} inputProps={{ 'aria-label': 'controlled' }} />
+        <Checkbox
+          checked={checked}
+          onChange={() => handleChange(row.stokKodu)}
+          slotProps={{
+            input: { 'aria-label': 'controlled' },
+          }}
+        />
       </TableCell>
       <TableCell align="left">{row.stokAdi}</TableCell>
       <TableCell align="left">{row.stokKodu}</TableCell>

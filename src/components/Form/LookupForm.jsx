@@ -24,7 +24,13 @@ const LookupForm = ({ initialLookup, handleLookup }) => {
   })
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Key</InputLabel>
           <Select
@@ -55,7 +61,14 @@ const LookupForm = ({ initialLookup, handleLookup }) => {
           helperText={formik.touched.lookupCode && formik.errors.lookupCode}
         />
       </Box>
-      <Box display={'flex'} justifyContent={'flex-end'} alignItems={'center'} mt={2}>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          mt: 2,
+        }}
+      >
         <Button type="submit" variant="contained">
           {initialLookup ? 'Güncelle' : 'Oluştur'}
         </Button>

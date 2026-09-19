@@ -96,7 +96,7 @@ const CsvUploader = () => {
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs={4}>
+      <Grid size={4}>
         <FitItem>
           {fileName && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, justifyContent: 'space-between', m: 1 }}>
@@ -181,7 +181,7 @@ const CsvUploader = () => {
         </FitItem>
       </Grid>
 
-      <Grid item xs={8}>
+      <Grid size={8}>
         <FitItem>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
             {data.length > 0 ? (

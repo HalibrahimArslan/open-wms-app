@@ -24,13 +24,6 @@ const OrderPickingInputContainer = ({ orderType, addressBarcode, barcode, situat
           placeholder="Adres okutunuz..."
           value={addressBarcode}
           onChange={onChangeAddressBarcode}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LocationOnIcon color={situation ? 'disabled' : 'primary'} />
-              </InputAdornment>
-            ),
-          }}
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') {
               ev.preventDefault()
@@ -43,6 +36,15 @@ const OrderPickingInputContainer = ({ orderType, addressBarcode, barcode, situat
               backgroundColor: 'background.paper',
             },
           }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LocationOnIcon color={situation ? 'disabled' : 'primary'} />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
 
         <TextField
@@ -53,13 +55,6 @@ const OrderPickingInputContainer = ({ orderType, addressBarcode, barcode, situat
           placeholder="Ürün okutunuz..."
           value={barcode}
           onChange={onChangeBarcode}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <QrCodeScannerIcon color={!focus || orderType !== 'MSK' ? 'primary' : 'disabled'} />
-              </InputAdornment>
-            ),
-          }}
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') {
               ev.preventDefault()
@@ -70,6 +65,15 @@ const OrderPickingInputContainer = ({ orderType, addressBarcode, barcode, situat
             '& .MuiOutlinedInput-root': {
               borderRadius: 3,
               backgroundColor: 'background.paper',
+            },
+          }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <QrCodeScannerIcon color={!focus || orderType !== 'MSK' ? 'primary' : 'disabled'} />
+                </InputAdornment>
+              ),
             },
           }}
         />

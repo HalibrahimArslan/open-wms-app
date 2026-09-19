@@ -15,9 +15,27 @@ export default function PageNotFound() {
   return (
     <FitItem>
       <Seo title="Sayfa Bulunamadı" />
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: 'auto', overflow: 'hidden', px: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 'auto',
+          overflow: 'hidden',
+          px: 2,
+        }}
+      >
         <Container maxWidth="sm" disableGutters>
-          <Box display="flex" flexDirection="column" alignItems="center" textAlign="center" gap={2}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              gap: 2,
+            }}
+          >
             <Box
               component="img"
               src="https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif"
@@ -30,12 +48,23 @@ export default function PageNotFound() {
               }}
             />
             <Box sx={{ animation: `${fadeUp} 0.6s ease-out 0.2s both` }}>
-              <Typography variant="h5" fontWeight={600} color="text.primary">
+              <Typography
+                variant="h5"
+                sx={{
+                  fontWeight: 600,
+                  color: 'text.primary',
+                }}
+              >
                 Sayfa Bulunamadı
               </Typography>
             </Box>
             <Box sx={{ animation: `${fadeUp} 0.6s ease-out 0.4s both` }}>
-              <Typography variant="body1" color="text.secondary">
+              <Typography
+                variant="body1"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 Aradığınız sayfa taşınmış, silinmiş ya da hiç var olmamış olabilir.
               </Typography>
             </Box>

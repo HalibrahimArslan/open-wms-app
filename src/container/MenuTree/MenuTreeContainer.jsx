@@ -64,7 +64,13 @@ function MenuTreeContainer() {
 
   if (loading) {
     return (
-      <Box display={'flex'} flexDirection={'column'} gap={1}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
         {Array.from({ length: 5 }).map((_, index) => (
           <Skeleton variant="rectangular" height={75} />
         ))}

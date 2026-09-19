@@ -57,10 +57,26 @@ function OrdersToBeDispatchedContainer() {
   return (
     <Box>
       <SearchBox search={searchText} handleChangeSearch={handleChangeSearch} zIndex={true} />
-      <Grid container justifyContent="center" direction="row" alignItems="center" spacing={2}>
+      <Grid
+        container
+        direction="row"
+        spacing={2}
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {filteredOrderList && filteredOrderList.length > 0 ? (
           filteredOrderList.map((order) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Grid
+              size={{
+                xs: 12,
+                sm: 6,
+                md: 4,
+                lg: 3,
+                xl: 2,
+              }}
+            >
               <OrderSummaryCard
                 header={order.firmName[0]}
                 subHeader={order.createdDate.slice(0, 10)}

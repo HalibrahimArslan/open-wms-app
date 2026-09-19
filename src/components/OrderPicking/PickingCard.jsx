@@ -56,13 +56,22 @@ export default function PickingCard({ item, adresList }) {
           }}
         >
           <BorderLinearProgress variant="determinate" value={(item.teslimMiktar / item.siparisMiktar) * 100} />
-          <Typography variant="h6" fontWeight={theme.typography.fontWeightBold}>
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: theme.typography.fontWeightBold,
+            }}
+          >
             {item.siparisMiktar} / {item.teslimMiktar}
           </Typography>
         </Box>
       </CardContent>
       <CardContent>
-        <Box display={'flex'}>
+        <Box
+          sx={{
+            display: 'flex',
+          }}
+        >
           <Box>{item.stokAdi.slice(0, 40) + '..'}</Box>
         </Box>
         <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
@@ -71,7 +80,14 @@ export default function PickingCard({ item, adresList }) {
       </CardContent>
       <CardActionArea>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Stack direction={'column'} maxHeight={100} overflow={'auto'} bgcolor={theme.palette.action.hover}>
+          <Stack
+            direction={'column'}
+            sx={{
+              maxHeight: 100,
+              overflow: 'auto',
+              bgcolor: theme.palette.action.hover,
+            }}
+          >
             {adresList && adresList.length > 0 && adresList.filter((todo) => todo.stockCode === item.stokKodu).map((t) => <Typography variant="h6">{t.address}</Typography>)}
           </Stack>
         </Collapse>

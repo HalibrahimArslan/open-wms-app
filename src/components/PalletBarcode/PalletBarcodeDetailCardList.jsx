@@ -23,7 +23,15 @@ export default function PalletBarcodeDetailCardList({ palletInfoList, theme, han
             label: 'Sil',
             value: '1',
             component: (
-              <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2} minWidth={300}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                  minWidth: 300,
+                }}
+              >
                 {palletInfoList && palletInfoList.length > 0 ? (
                   palletInfoList.map((item) => <PalletBarcodeDetailCardItem palletInfo={item} theme={theme} handleDelete={handleDelete} />)
                 ) : (
@@ -36,7 +44,14 @@ export default function PalletBarcodeDetailCardList({ palletInfoList, theme, han
             label: 'Ekle',
             value: '2',
             component: (
-              <Box display={'flex'} flexDirection={'column'} alignItems={'center'} gap={2}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: 2,
+                }}
+              >
                 {addableItemList && addableItemList.length > 0 ? (
                   addableItemList.map((item) => <PalletBarcodeDetailCardItem palletInfo={item} theme={theme} handleAdd={addPalletBarcode} />)
                 ) : (

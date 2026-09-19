@@ -67,7 +67,13 @@ const FeedbackCard = ({ feedback, status, handleForward }) => {
       </Box>
       <Divider sx={{ width: '100%' }} />
       <Box></Box>
-      <Typography variant="body2" textAlign={'start'} fontWeight={theme.typography.fontWeightMedium}>
+      <Typography
+        variant="body2"
+        sx={{
+          textAlign: 'start',
+          fontWeight: theme.typography.fontWeightMedium,
+        }}
+      >
         {feedback.description}
       </Typography>
       <Box

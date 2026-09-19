@@ -112,13 +112,23 @@ export default function CountingWatching() {
               justifyContent: 'center',
             }}
           >
-            <Typography variant="subtitle2" color="text.secondary">
+            <Typography
+              variant="subtitle2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {stat.title}
             </Typography>
             <Typography variant="h3" sx={{ fontWeight: 700, lineHeight: 1.1, my: 0.25 }}>
               {stat.value}
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography
+              variant="body1"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {stat.subtitle}
             </Typography>
           </Paper>

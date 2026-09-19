@@ -4,7 +4,7 @@ import QrCode2Icon from '@mui/icons-material/QrCode2'
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
 import CloseIcon from '@mui/icons-material/Close'
-import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineOutlined'
 
 // Backend stokBirimi kodlarını (DB değerleri: ADET, M2, MT, KG, MTÜL, KOLİ) normalize eder.
 function normalizeUnit(stokBirimi) {
@@ -127,12 +127,14 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
       fullWidth
       size="small"
       autoFocus={autoFocus}
-      inputProps={{ inputMode: integerOnly ? 'numeric' : 'decimal' }}
       onKeyDown={(e) => {
         if (e.key === 'Enter') {
           e.preventDefault()
           onEnter()
         }
+      }}
+      slotProps={{
+        htmlInput: { inputMode: integerOnly ? 'numeric' : 'decimal' },
       }}
     />
   )
@@ -140,7 +142,15 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
   const entryLabel = (e) => (e.en != null ? `${e.en} × ${e.boy} = ${e.quantity} M2` : `${e.quantity} ${isKoli ? 'adet/koli' : unit}`)
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs" PaperProps={{ sx: { borderRadius: 2 } }}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="xs"
+      slotProps={{
+        paper: { sx: { borderRadius: 2 } },
+      }}
+    >
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, pr: 6 }}>
         <QrCode2Icon color="primary" />
         Barkod Oluştur / Yazdır
@@ -150,7 +160,12 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
       </DialogTitle>
 
       <DialogContent dividers>
-        <Stack spacing={3} alignItems="stretch">
+        <Stack
+          spacing={3}
+          sx={{
+            alignItems: 'stretch',
+          }}
+        >
           {/* Ürün bilgi kartı */}
           <Box
             sx={{
@@ -163,14 +178,37 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
               bgcolor: 'action.hover',
             }}
           >
-            <Typography variant="subtitle1" fontWeight={600} sx={{ wordBreak: 'break-word' }}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                fontWeight: 600,
+                wordBreak: 'break-word',
+              }}
+            >
               {row.stokAdi}
             </Typography>
-            <Stack direction="row" spacing={2} mt={0.5} flexWrap="wrap">
-              <Typography variant="body2" color="text.secondary">
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                mt: 0.5,
+                flexWrap: 'wrap',
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 Stok Kodu: <b>{row.stokKodu}</b>
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 Birim: <b>{unit}</b>
               </Typography>
               {isLot && <Chip size="small" color="secondary" variant="outlined" label="Lot'lu" />}
@@ -179,8 +217,18 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
 
           {/* ADET: adet stepper'ı */}
           {isAdet && (
-            <Stack alignItems="center" spacing={1}>
-              <Typography variant="body2" color="text.secondary">
+            <Stack
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 Yazdırılacak Barkod Miktarı
               </Typography>
               <Box
@@ -219,7 +267,13 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
           {/* ADET dışı: çoklu giriş (Ekle ile barkod listesi) */}
           {!isAdet && (
             <Stack spacing={1.5}>
-              <Stack direction="row" spacing={1} alignItems="flex-start">
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'flex-start',
+                }}
+              >
                 {isArea ? (
                   <>
                     {decimalField('En', en, setEn, true, addEntry)}
@@ -234,7 +288,12 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
               </Stack>
 
               {isArea && currentValid && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography
+                  variant="caption"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {`${en} × ${boy} = ${enNum * boyNum} M2`}
                 </Typography>
               )}
@@ -246,9 +305,15 @@ export default function BarcodePrintDialog({ open, onClose, row, onConfirm, load
                     <Stack
                       key={i}
                       direction="row"
-                      alignItems="center"
-                      justifyContent="space-between"
-                      sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1, px: 1, py: 0.25 }}
+                      sx={{
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        borderRadius: 1,
+                        px: 1,
+                        py: 0.25,
+                      }}
                     >
                       <Typography variant="body2">
                         #{i + 1} — {entryLabel(e)}

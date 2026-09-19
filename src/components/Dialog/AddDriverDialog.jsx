@@ -94,7 +94,14 @@ export default function AddDriverDialog({ open, onClose, onSave }) {
       <DialogTitle>Yeni Şoför Ekle</DialogTitle>
 
       <DialogContent dividers>
-        <Box display="flex" flexDirection="column" gap={2} mt={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2,
+            mt: 1,
+          }}
+        >
           <TextField label="Ad Soyad" name="soforAdi" value={formData.soforAdi} onChange={handleChange} error={!!errors.soforAdi} helperText={errors.soforAdi} fullWidth />
 
           <TextField label="T.C. No" name="soforTcno" value={formData.soforTcno} onChange={handleChange} error={!!errors.soforTcno} helperText={errors.soforTcno} fullWidth />
@@ -108,8 +115,10 @@ export default function AddDriverDialog({ open, onClose, onSave }) {
             onChange={handleChange}
             error={!!errors.soforPlaka}
             helperText={errors.soforPlaka || 'Maksimum 15 karakter'}
-            inputProps={{ maxLength: MAX_PLATE_LEN }}
             fullWidth
+            slotProps={{
+              htmlInput: { maxLength: MAX_PLATE_LEN },
+            }}
           />
 
           {/* ✅ trailerPlate input */}
@@ -120,8 +129,10 @@ export default function AddDriverDialog({ open, onClose, onSave }) {
             onChange={handleChange}
             error={!!errors.dorsePlaka}
             helperText={errors.dorsePlaka || 'Maksimum 15 karakter'}
-            inputProps={{ maxLength: MAX_PLATE_LEN }}
             fullWidth
+            slotProps={{
+              htmlInput: { maxLength: MAX_PLATE_LEN },
+            }}
           />
         </Box>
       </DialogContent>

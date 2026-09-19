@@ -168,14 +168,31 @@ export default function RoleMenuRelationContainer() {
   }
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={2}>
-      <Box display={'flex'} justifyContent={'space-between'}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+        }}
+      >
         <Typography align="left" variant="h5">
           Menü Rol Yönetimi
         </Typography>
       </Box>
       <Divider flexItem />
-      <Box flex={1} overflow={'auto'} maxWidth={'100vw'}>
+      <Box
+        sx={{
+          flex: 1,
+          overflow: 'auto',
+          maxWidth: '100vw',
+        }}
+      >
         <Table size="small" sx={{ padding: 1 }}>
           <TableHead>
             <TableRow>

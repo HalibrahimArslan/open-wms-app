@@ -7,7 +7,7 @@ import { getPlacemetHistory, getPlacemetHistoryCount } from '../../services/Plac
 import Iconify from '../../components/Iconify/Iconify'
 import TablePagination from '@mui/material/TablePagination'
 import { notifyError } from '../../layout/Layout'
-import { DataGrid, trTR } from '@mui/x-data-grid'
+import { DataGrid } from '@mui/x-data-grid'
 import ActionHeader from '../../shared/components/ActionHeader'
 import QueryFilterPanel from '../../components/Filter/QueryFilterPanel'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -60,14 +60,16 @@ function SearchToolbar({ value, onApply }) {
         placeholder="Ara (Barkod, Stok Kodu...)"
         value={local}
         onChange={(e) => setLocal(e.target.value)}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon fontSize="small" />
-            </InputAdornment>
-          ),
-        }}
         sx={{ minWidth: 260 }}
+        slotProps={{
+          input: {
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon fontSize="small" />
+              </InputAdornment>
+            ),
+          },
+        }}
       />
     </Box>
   )
@@ -105,21 +107,21 @@ export default function PlacementHistory() {
         headerName: 'Güncelleme Tarihi',
         flex: 1,
         minWidth: 160,
-        valueGetter: getCreatedDate,
+        valueGetter: (value, row) => getCreatedDate({ row }),
       },
       {
         field: 'originAdres',
         headerName: 'Çıkış Adresi',
         flex: 1,
         minWidth: 140,
-        valueGetter: (p) => p.row?.originAddress?.adres ?? '',
+        valueGetter: (value, row) => row?.originAddress?.adres ?? '',
       },
       {
         field: 'placementAdres',
         headerName: 'Yerleşim Adresi',
         flex: 1,
         minWidth: 140,
-        valueGetter: (p) => p.row?.placementAddress?.adres ?? '',
+        valueGetter: (value, row) => row?.placementAddress?.adres ?? '',
       },
       { field: 'processAmount', headerName: 'İşlem Miktarı', flex: 1, minWidth: 120 },
       {
@@ -127,7 +129,7 @@ export default function PlacementHistory() {
         headerName: 'Hareket Tipi',
         flex: 1,
         minWidth: 180,
-        valueGetter: (p) => MOVEMENT_TYPE_LABELS[p.row?.movementType] ?? 'Bilinmeyen',
+        valueGetter: (value, row) => MOVEMENT_TYPE_LABELS[row?.movementType] ?? 'Bilinmeyen',
       },
     ],
     []
@@ -294,7 +296,14 @@ export default function PlacementHistory() {
         {SUMMARY_CARDS.map((card) => {
           const total = tmpList.filter((x) => x.movementType === card.type).length
           return (
-            <Grid item xs={12} sm={6} md={4} key={card.type}>
+            <Grid
+              key={card.type}
+              size={{
+                xs: 12,
+                sm: 6,
+                md: 4,
+              }}
+            >
               <Card
                 elevation={0}
                 sx={{
@@ -324,10 +333,24 @@ export default function PlacementHistory() {
                   <Iconify icon={card.icon} width={26} height={26} />
                 </Box>
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography variant="h4" fontWeight={700} color={blue[900]} lineHeight={1.1}>
+                  <Typography
+                    variant="h4"
+                    color={blue[900]}
+                    sx={{
+                      fontWeight: 700,
+                      lineHeight: 1.1,
+                    }}
+                  >
                     {total}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" noWrap title={card.title}>
+                  <Typography
+                    variant="body2"
+                    noWrap
+                    title={card.title}
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {card.title}
                   </Typography>
                 </Box>
@@ -364,7 +387,13 @@ export default function PlacementHistory() {
               <Paper sx={{ p: 3, mb: 2, backgroundColor: '#F2F5FF' }} elevation={0}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <DatePicker
                         label="Başlangıç"
                         value={filters['createdDate.greaterThanOrEqual'] || null}
@@ -373,7 +402,13 @@ export default function PlacementHistory() {
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <DatePicker
                         label="Bitiş"
                         value={filters['createdDate.lessThanOrEqual'] || null}
@@ -382,18 +417,26 @@ export default function PlacementHistory() {
                       />
                     </Grid>
 
-                    <Grid item xs={12} sm={6} md={4}>
+                    <Grid
+                      size={{
+                        xs: 12,
+                        sm: 6,
+                        md: 4,
+                      }}
+                    >
                       <TextField
                         select
-                        SelectProps={{
-                          multiple: true,
-                          renderValue: (selected) => (selected || []).map((v) => MOVEMENT_TYPE_LABELS[v] ?? v).join(', '),
-                        }}
                         label="Hareket Tipleri"
                         variant="standard"
                         fullWidth
                         value={Array.isArray(filters['addressMovementType.in']) ? filters['addressMovementType.in'] : []}
                         onChange={(e) => setFilter('addressMovementType.in', e.target.value)}
+                        slotProps={{
+                          select: {
+                            multiple: true,
+                            renderValue: (selected) => (selected || []).map((v) => MOVEMENT_TYPE_LABELS[v] ?? v).join(', '),
+                          },
+                        }}
                       >
                         {MOVEMENT_TYPE_OPTIONS.map((option) => (
                           <MenuItem key={option.value} value={option.value}>
@@ -444,9 +487,8 @@ export default function PlacementHistory() {
                     setRowsPerPage(newSize)
                     setPage(0)
                   }}
-                  localeText={trTR.components.MuiDataGrid.defaultProps.localeText}
-                  components={{ Toolbar: SearchToolbar }}
-                  componentsProps={{
+                  slots={{ toolbar: SearchToolbar }}
+                  slotProps={{
                     toolbar: {
                       value: filters['multiSearch.contains'] || '',
                       onApply: (val) => applyFilters({ ...filters, 'multiSearch.contains': val }),
@@ -460,6 +502,7 @@ export default function PlacementHistory() {
                     },
                     '& .MuiDataGrid-virtualScroller': { overflowX: 'hidden' },
                   }}
+                  showToolbar
                 />
               </Box>
             )}

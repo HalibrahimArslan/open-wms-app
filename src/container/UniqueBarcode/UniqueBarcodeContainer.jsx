@@ -18,7 +18,7 @@ import {
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import PrintIcon from '@mui/icons-material/Print'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutlineOutlined'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import UniqueBarcodeOrderList from './UniqueBarcodeOrderList'
@@ -423,18 +423,44 @@ export default function UniqueBarcodeContainer() {
     const badgeColor = (s) => (s === 'ready' ? 'success.main' : s === 'error' ? 'error.main' : s === 'loading' ? 'primary.main' : 'grey.400')
 
     return (
-      <Dialog open={open} onClose={generating ? undefined : closePrintQueue} maxWidth="xs" fullWidth PaperProps={{ sx: { borderRadius: 2 } }}>
+      <Dialog
+        open={open}
+        onClose={generating ? undefined : closePrintQueue}
+        maxWidth="xs"
+        fullWidth
+        slotProps={{
+          paper: { sx: { borderRadius: 2 } },
+        }}
+      >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <PictureAsPdfIcon color="primary" />
           Barkod Yazdırma
         </DialogTitle>
 
         <Box sx={{ px: 3, pb: 1 }}>
-          <Stack direction="row" justifyContent="space-between" alignItems="center" mb={0.5}>
-            <Typography variant="body2" color="text.secondary">
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 0.5,
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {generating ? 'Parçalar hazırlanıyor…' : 'Tüm parçalar hazır'}
             </Typography>
-            <Typography variant="body2" color="text.secondary" fontWeight={600}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+                fontWeight: 600,
+              }}
+            >
               {doneCount} / {total}
             </Typography>
           </Stack>
@@ -442,17 +468,27 @@ export default function UniqueBarcodeContainer() {
         </Box>
 
         <DialogContent dividers sx={{ pt: 1.5 }}>
-          <Typography variant="caption" color="text.secondary">
+          <Typography
+            variant="caption"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             Barkodlar {total} parçaya bölündü. Her parça hazır oldukça açıp yazdırabilirsiniz.
           </Typography>
-          <Stack spacing={1} mt={1.5}>
+          <Stack
+            spacing={1}
+            sx={{
+              mt: 1.5,
+            }}
+          >
             {items.map((it, i) => (
               <Stack
                 key={i}
                 direction="row"
-                alignItems="center"
                 spacing={1.5}
                 sx={{
+                  alignItems: 'center',
                   border: '1px solid',
                   borderColor: it.status === 'ready' ? 'success.light' : 'divider',
                   borderRadius: 1.5,
@@ -467,25 +503,52 @@ export default function UniqueBarcodeContainer() {
                 </Avatar>
 
                 <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-                  <Typography variant="subtitle2" fontWeight={600}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 600,
+                    }}
+                  >
                     Parça {i + 1}
                   </Typography>
-                  <Typography variant="caption" color="text.secondary">
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {it.count} barkod
                   </Typography>
                 </Box>
 
                 {it.status === 'pending' && <Chip size="small" label="Sırada" variant="outlined" />}
                 {it.status === 'loading' && (
-                  <Stack direction="row" spacing={1} alignItems="center">
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <CircularProgress size={20} />
-                    <Typography variant="caption" color="text.secondary">
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                      }}
+                    >
                       Hazırlanıyor…
                     </Typography>
                   </Stack>
                 )}
                 {it.status === 'error' && (
-                  <Typography variant="caption" color="error" fontWeight={600}>
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    sx={{
+                      fontWeight: 600,
+                    }}
+                  >
                     Hata
                   </Typography>
                 )}
@@ -1276,7 +1339,16 @@ export default function UniqueBarcodeContainer() {
 
   return (
     <>
-      <Box component="form" sx={{ display: 'flex', justifyContent: 'center' }} noValidate autoComplete="off" margin={2}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        sx={{
+          margin: 2,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <TextField
           sx={{ flexGrow: '0.5' }}
           disabled={false}
@@ -1285,23 +1357,31 @@ export default function UniqueBarcodeContainer() {
           variant="outlined"
           value={value}
           onChange={handleChange}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <QrCodeScannerIcon color="action" />
-              </InputAdornment>
-            ),
-          }}
           onKeyDown={(ev) => {
             if (ev.key === 'Enter') {
               ev.preventDefault()
               handleScanEnter()
             }
           }}
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <QrCodeScannerIcon color="action" />
+                </InputAdornment>
+              ),
+            },
+          }}
         />
       </Box>
 
-      <Box mb={2} sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box
+        sx={{
+          mb: 2,
+          display: 'flex',
+          justifyContent: 'center',
+        }}
+      >
         <Stack spacing={2} direction="row">
           <Button variant="contained" onClick={handleComplete}>
             İşlem Tamamla
@@ -1390,14 +1470,22 @@ export default function UniqueBarcodeContainer() {
         onClose={() => setPieceSelect({ open: false, candidates: [], scanned: '', data: null })}
         maxWidth="xs"
         fullWidth
-        PaperProps={{ sx: { borderRadius: 2 } }}
+        slotProps={{
+          paper: { sx: { borderRadius: 2 } },
+        }}
       >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <QrCodeScannerIcon color="primary" />
           Hangi kaleme yazılsın?
         </DialogTitle>
         <DialogContent dividers>
-          <Typography variant="body2" color="text.secondary" mb={1.5}>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+              mb: 1.5,
+            }}
+          >
             Bu stok kodu siparişte birden çok yerde bulunuyor. Okutulan barkodun hangisine ait olduğunu seçin.
           </Typography>
           <Stack spacing={1}>
@@ -1410,17 +1498,40 @@ export default function UniqueBarcodeContainer() {
                 sx={{ justifyContent: 'flex-start', textTransform: 'none', borderRadius: 2, p: 1.25, textAlign: 'left' }}
               >
                 <Stack spacing={0.5} sx={{ width: '100%' }}>
-                  <Stack direction="row" spacing={1} alignItems="center">
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <Chip size="small" color={c.type === 'piece' ? 'primary' : 'default'} label={c.type === 'piece' ? 'Parça' : 'Bağımsız Kalem'} />
-                    <Typography variant="body2" fontWeight={700}>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 700,
+                      }}
+                    >
                       {c.stokKodu}
                     </Typography>
                   </Stack>
-                  <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'normal' }}>
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: 'text.secondary',
+                      whiteSpace: 'normal',
+                    }}
+                  >
                     {c.stokAdi}
                   </Typography>
                   {c.type === 'piece' && (
-                    <Typography variant="caption" color="text.secondary" sx={{ whiteSpace: 'normal' }}>
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: 'text.secondary',
+                        whiteSpace: 'normal',
+                      }}
+                    >
                       Ana Ürün: <b>{c.parent.stokAdi}</b> ({c.parent.stokKodu})
                     </Typography>
                   )}
