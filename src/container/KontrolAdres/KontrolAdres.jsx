@@ -1,7 +1,7 @@
 import List from '@mui/material/List'
 import ListSubheader from '@mui/material/ListSubheader'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useFetch from '../../hooks/useFetch'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'

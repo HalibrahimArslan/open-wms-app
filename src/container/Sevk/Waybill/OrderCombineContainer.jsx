@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import { combineOrders, getSameFirmOrders } from '../../../services/OrderDetailService'
 import OrderCombineAccordion from '../../../components/Accordion/OrderCombineAccordion'

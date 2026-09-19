@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CreateNewDefinition from '../../../components/Definitions/CreateNewDefinition'
 import TableWithPagination from '../../../components/Table/TableWithPagination'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import { getUserRoleList } from '../../../services/UserRoleService'
 import { notifyError } from '../../../layout/Layout'

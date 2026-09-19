@@ -1,4 +1,4 @@
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 import BooleanFilter from '../../components/Filter/BooleanFilter'
 import { Box } from '@mui/material'
 

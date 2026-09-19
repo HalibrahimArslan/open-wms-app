@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useSearchParams, useNavigate } from 'react-router-dom'
+import { useSearchParams, useNavigate } from 'react-router'
 import { notify, notifyError } from '../../layout/Layout'
 import ResetPasswordForm from '../../components/Form/ResetPasswordForm'
 import { resetPasswordFinish } from '../../services/AccountService'

@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const validationSchema = Yup.object({
   email: Yup.string('Email giriniz').email('Geçerli bir email giriniz').required('Email gerekli'),

@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogContent, DialogActions, DialogTitle, IconButton, Stack, Typography, Box } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getActiveAurSayimTanim } from '../../services/CountingDetailService'
 import SelectActiveCounting from './SelectActiveCounting'

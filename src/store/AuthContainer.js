@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { createContainer } from 'unstated-next'
 
 const publicPaths = ['/login', '/forget-password', '/reset-password']

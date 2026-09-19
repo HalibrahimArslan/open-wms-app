@@ -3,7 +3,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked'
 import PalletImage from '../../assets/images/cards/palet.jpg'
 import InfoIcon from '@mui/icons-material/Info'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 const PalletMasterList = ({ palletList, selectedPalletList, handlePalletList }) => {
   const theme = useTheme()

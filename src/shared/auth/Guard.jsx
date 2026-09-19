@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import { AuthContainer } from '../../store/AuthContainer'
 import { useEffect } from 'react'
 

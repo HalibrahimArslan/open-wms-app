@@ -2,7 +2,7 @@ import { Dialog, Slide, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import Barcode from 'react-barcode'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router'
 import useDepoCode from '../../hooks/useDepoCode'
 import './print.css'
 

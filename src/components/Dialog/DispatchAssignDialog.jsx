@@ -13,7 +13,7 @@ import ReceivingPerson from '../../container/Receiving/MalKabulPerson/ReceivingP
 import { assignOrder } from '../../services/OrderService'
 import usePayload from '../../hooks/usePayload'
 import SevkiyatPerson from '../../container/Sevk/SevkiyatPerson/SevkiyatPerson'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useDepoCode from '../../hooks/useDepoCode'
 import { getTransGroupCode, getTransGroupName } from '../../utils/Utils'
 import useIsMobile from '../../hooks/useIsMobile'

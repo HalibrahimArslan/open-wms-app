@@ -1,6 +1,6 @@
 import { List, ListSubheader } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { DepoContainer } from '../../store/DepoContainer'
 import DepoItem from '../../components/DepoItem'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'

@@ -3,7 +3,7 @@ import { createContainer } from 'unstated-next'
 import usePersistedToken from '../hooks/usePersistedToken'
 import useAuthHeader from '../hooks/useAuthHeader'
 import { getAccount } from '../services/AccountService'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 export const useStore = () => {
   const [account, setAccount] = useState({})

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router'
 import useSWR from 'swr'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'

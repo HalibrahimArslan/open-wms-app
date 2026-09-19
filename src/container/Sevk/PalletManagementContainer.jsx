@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import produce from 'immer'
 import usePayload from '../../hooks/usePayload'
 import useAuthHeader from '../../hooks/useAuthHeader'

@@ -2,7 +2,7 @@ import React, { Suspense } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router'
 import { ThemeContainer } from './store/ThemeContainer'
 import { CircularProgress } from '@mui/material'
 

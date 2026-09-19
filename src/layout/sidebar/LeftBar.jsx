@@ -1,7 +1,7 @@
 import { Box, ClickAwayListener, List, ListItem, ListItemButton, ListItemText, styled, Typography, useTheme, alpha } from '@mui/material'
 import { useState } from 'react'
 import Iconify from '../../components/Iconify'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import useDepoCode from '../../hooks/useDepoCode'
 import useIsMobile from '../../hooks/useIsMobile'
 import BrandLogo from '../../components/Brand/BrandLogo'

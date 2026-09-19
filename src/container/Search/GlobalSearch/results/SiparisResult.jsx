@@ -1,5 +1,5 @@
 import { Button, Stack } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import ReceiptLongRoundedIcon from '@mui/icons-material/ReceiptLongRounded'
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded'
 import NumbersRoundedIcon from '@mui/icons-material/NumbersRounded'

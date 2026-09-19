@@ -2,7 +2,7 @@ import React from 'react'
 import { Box, Chip, Divider, Typography, useTheme } from '@mui/material'
 import { CgDetailsMore } from 'react-icons/cg'
 import MoreVertButton from '../MenuWrapper/MoreVertButton'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { FaForward } from 'react-icons/fa'
 import BRAND from '../../config/brand'
 

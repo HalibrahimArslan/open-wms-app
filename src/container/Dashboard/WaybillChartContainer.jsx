@@ -5,7 +5,7 @@ import { getWaybillList } from '../../services/MikroService'
 import usePayload from '../../hooks/usePayload'
 import { notifyError } from '../../layout/Layout'
 import { Avatar, Box, Divider, Grid, Skeleton, styled, Typography, useTheme } from '@mui/material'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router'
 import dayjs from 'dayjs'
 import useDepoCode from '../../hooks/useDepoCode'
 

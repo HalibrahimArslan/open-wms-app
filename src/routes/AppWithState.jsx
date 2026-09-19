@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import usePersistedToken from '../hooks/usePersistedToken.js'
 import DepoListView from '../view/DepoList/DepoListView.jsx'
 import KontrolAdres from '../container/KontrolAdres/KontrolAdres.jsx'

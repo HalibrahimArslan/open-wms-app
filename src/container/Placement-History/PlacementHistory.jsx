@@ -1,6 +1,6 @@
 import { Grid, Button, Box, Paper, Card, Typography, Skeleton, MenuItem, TextField, IconButton, Collapse, InputAdornment, useTheme } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router'
 import dayjs from 'dayjs'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getPlacemetHistory, getPlacemetHistoryCount } from '../../services/PlacementHistoryService'

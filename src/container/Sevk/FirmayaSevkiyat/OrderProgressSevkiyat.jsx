@@ -2,7 +2,7 @@ import { Alert, Box, Button, Chip, CircularProgress, Divider, Drawer, Grid, Icon
 import { DataGrid, GridToolbar, trTR } from '@mui/x-data-grid'
 import TablePanel, { dataGridSx } from '../../../shared/components/Table/TablePanel'
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router'
 import { getFirmOrderBulkList, getFirmOrdersByCariKod, getOrderDetailListByOrderNos } from '../../../services/MikroService'
 import DispatchAssignDialog from '../../../components/Dialog/DispatchAssignDialog'
 import useDepoCode from '../../../hooks/useDepoCode'

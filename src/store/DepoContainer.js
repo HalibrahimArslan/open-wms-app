@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 import { createContainer } from 'unstated-next'
 import useAuthHeader from '../hooks/useAuthHeader'
 import { getUserCompanyCode, getUserCompanyInfo } from '../services/MikroService'

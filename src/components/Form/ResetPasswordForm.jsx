@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 import CircularProgress from '@mui/material/CircularProgress'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 const validationSchema = Yup.object({
   password: Yup.string('Şifre giriniz').min(4, 'Şifre en az 4 karakter olmalıdır').max(100, 'Şifre en fazla 100 karakter olmalıdır').required('Şifre gerekli'),

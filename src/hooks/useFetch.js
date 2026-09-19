@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { AuthContainer } from '../store/AuthContainer'
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router'
 
 const useFetch = (url) => {
   const location = useLocation()

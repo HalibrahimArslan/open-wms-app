@@ -1,6 +1,6 @@
 import { CircularProgress } from '@mui/material'
 import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router'
 import OrderDetailForm from '../../components/Form/OrderDetailForm'
 import useOrderDetailById from '../../hooks/useOrderDetailById'
 import Seo from '../../shared/components/Seo'

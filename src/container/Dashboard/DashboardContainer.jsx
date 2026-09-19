@@ -1,6 +1,6 @@
 import { Grid, Paper, Typography, useTheme } from '@mui/material'
 import { useEffect, useMemo } from 'react'
-import { Outlet, useSearchParams } from 'react-router-dom'
+import { Outlet, useSearchParams } from 'react-router'
 import PalletBarcodeContainer from '../Pallet-Barcode/PalletBarcodeContainer'
 import WaybillChartContainer from './WaybillChartContainer'
 import StorageRateContainer from './StorageRateContainer'

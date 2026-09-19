@@ -12,7 +12,7 @@ import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { Typography } from '@mui/material'
 
 // Tema taban punto olarak 12px kullanir; giris ekraninda alanlarin okunakli

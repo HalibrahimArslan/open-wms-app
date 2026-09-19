@@ -1,5 +1,5 @@
 import './App.css'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router'
 import { DepoContainer } from './store/DepoContainer'
 import { AuthContainer } from './store/AuthContainer'
 import { OrderJustifyContainer } from './store/OrderJustifyContainer'

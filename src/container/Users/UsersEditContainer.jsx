@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 import { Box } from '@mui/material'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { updateUser, getUserByLogin } from '../../services/UserService'

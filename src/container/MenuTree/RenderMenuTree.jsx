@@ -5,7 +5,7 @@ import usePersistedToken from '../../hooks/usePersistedToken'
 import { getMenuTree } from '../../services/MenuService'
 import MenuItem from '../../components/Menu/MenuItem'
 import useDepoCode from '../../hooks/useDepoCode'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 import { notifyError } from '../../layout/Layout'
 import LeftBar from '../../layout/sidebar/LeftBar'
 

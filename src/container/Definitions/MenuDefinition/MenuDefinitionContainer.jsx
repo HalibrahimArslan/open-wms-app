@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router'
 import TableWithPagination from '../../../components/Table/TableWithPagination'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import CreateNewDefinition from '../../../components/Definitions/CreateNewDefinition'

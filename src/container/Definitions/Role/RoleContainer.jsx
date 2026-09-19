@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router'
 import { deleteRole, getRoleList } from '../../../services/RoleService'
 import TableWithPagination from '../../../components/Table/TableWithPagination'
 import RoleTable from '../../../components/Table/RoleTable'
