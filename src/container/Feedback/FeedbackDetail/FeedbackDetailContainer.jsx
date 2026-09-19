@@ -1,7 +1,7 @@
 import { Box, Button, Chip, CircularProgress, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material'
 import useSWR from 'swr'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
-import Lightbox from 'yet-another-react-lightbox'
+import ImageViewer from '../../../shared/components/ImageViewer/ImageViewer'
 import OpenInFullIcon from '@mui/icons-material/OpenInFull'
 import { useMemo, useRef, useState } from 'react'
 import useIsMobile from '../../../hooks/useIsMobile'
@@ -350,16 +350,16 @@ const FeedbackDetailContainer = () => {
           )}
         </Grid>
       )}
-      <Lightbox
+      <ImageViewer
         open={open}
-        close={() => setOpen(false)}
+        onClose={() => setOpen(false)}
         slides={
-          data && [
-            ...data.uploads.map((upload) => ({
-              src: upload.url,
-              caption: upload.name,
-            })),
-          ]
+          data
+            ? data.uploads.map((upload) => ({
+                src: upload.url,
+                caption: upload.name,
+              }))
+            : []
         }
       />
     </Grid>
