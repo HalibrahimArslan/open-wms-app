@@ -1,5 +1,5 @@
 # build environment
-FROM node:18 as builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY package.json ./
 COPY package-lock.json ./

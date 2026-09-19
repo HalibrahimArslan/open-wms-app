@@ -80,7 +80,7 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
   // (ör. 30.400000000000002) ham gösterim uzun kuyruk üretebiliyor; hesap değeri sayı kalır, sadece görünüm yuvarlanır.
   const formatMiktar = (v) => {
     const n = Number(v)
-    return Number.isFinite(n) ? n.toFixed(2) : v ?? ''
+    return Number.isFinite(n) ? n.toFixed(2) : (v ?? '')
   }
 
   const scannedTotal = useMemo(() => Object.values(barcodeMap).reduce((acc, arr) => acc + (arr?.filter((b) => b.used).length || 0), 0), [barcodeMap])
@@ -138,8 +138,8 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
         'Stok Kodu': row.stokKodu ?? '',
         'Ürün Adı': row.stokAdi ?? '',
         Barkod: row.barkod ?? '',
-        'Sipariş Miktar': Number.isFinite(siparis) ? siparis : row.siparisMiktar ?? '',
-        'Teslim Miktar': Number.isFinite(teslim) ? teslim : row.teslimMiktar ?? '',
+        'Sipariş Miktar': Number.isFinite(siparis) ? siparis : (row.siparisMiktar ?? ''),
+        'Teslim Miktar': Number.isFinite(teslim) ? teslim : (row.teslimMiktar ?? ''),
         'Kalan Miktar': kalan,
         'Parça Var mı': row.hasPiece ? 'Evet' : 'Hayır',
       }

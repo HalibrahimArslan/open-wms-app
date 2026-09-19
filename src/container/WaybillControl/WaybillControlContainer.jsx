@@ -195,7 +195,7 @@ const WaybillControlContainer = () => {
       Cari: row.cariUnvan ?? '-',
       Tarih: row.tarih ?? '-',
       Kullanıcı: row.kullanici ?? '-',
-      Kaynak: row.kaynak === 'ERP' ? 'Mikro' : row.kaynak ?? '-',
+      Kaynak: row.kaynak === 'ERP' ? 'Mikro' : (row.kaynak ?? '-'),
     }))
 
     const ws = XLSX.utils.json_to_sheet(sheetData.length ? sheetData : [{ 'İrsaliye No': '-', 'Sipariş No': '-', Cari: '-', Tarih: '-', Kullanıcı: '-', Kaynak: '-' }])

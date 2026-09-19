@@ -1,5 +1,5 @@
 import { Box, Button, TextField, useTheme } from '@mui/material'
-import React, { useState, FocusEvent } from 'react'
+import React, { useState } from 'react'
 
 const FeedbackCommentField = ({ comment, inputRef, handleChangeComment, handleAddComment, handleCancel }) => {
   const theme = useTheme()

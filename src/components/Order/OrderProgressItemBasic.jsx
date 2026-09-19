@@ -89,8 +89,8 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
         'Stok Kodu': row.stokKodu ?? '',
         'Ürün Adı': row.stokAdi ?? '',
         Barkod: row.barkod ?? '',
-        'Sipariş Miktar': Number.isFinite(siparis) ? siparis : row.siparisMiktar ?? '',
-        'Teslim Miktar': Number.isFinite(teslim) ? teslim : row.teslimMiktar ?? '',
+        'Sipariş Miktar': Number.isFinite(siparis) ? siparis : (row.siparisMiktar ?? ''),
+        'Teslim Miktar': Number.isFinite(teslim) ? teslim : (row.teslimMiktar ?? ''),
         'Kalan Miktar': kalan,
         'Parça Var mı': row.hasPiece ? 'Evet' : 'Hayır',
       }

@@ -10,7 +10,6 @@ import {
   List,
   Radio,
   RadioGroup,
-  SxProps,
   Table,
   TableBody,
   TableCell,
@@ -18,7 +17,6 @@ import {
   TableHead,
   TableRow,
   TextField,
-  Theme,
   useTheme,
 } from '@mui/material'
 import useIsMobile from '../../../hooks/useIsMobile'
@@ -26,7 +24,7 @@ import { cloneElement, useCallback, useEffect, useMemo, useState } from 'react'
 import ViewColumnIcon from '@mui/icons-material/ViewColumn'
 import { utils, writeFile } from 'xlsx'
 import { ArrowUpward, ArrowDownward, Edit, Save, Cancel } from '@mui/icons-material'
-import produce, { Draft } from 'immer'
+import produce from 'immer'
 import Iconify from '../../../components/Iconify'
 import RepetableSkeleton from '../../../components/Loading/RepetableSkeleton'
 import NotFound from '../NotFound/NotFound'
@@ -207,7 +205,7 @@ const DynamicTable = ({
       ? data.filter((row) =>
           tableColumns.some((column) =>
             column.visible !== false && column.type !== 'actions'
-              ? getValue(row, column.field)?.toString().toLowerCase().includes(debouncedFilterText.toLowerCase()) ?? false
+              ? (getValue(row, column.field)?.toString().toLowerCase().includes(debouncedFilterText.toLowerCase()) ?? false)
               : false
           )
         )
