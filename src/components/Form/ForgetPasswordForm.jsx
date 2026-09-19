@@ -12,7 +12,7 @@ const validationSchema = Yup.object({
   email: Yup.string('Email giriniz').email('Geçerli bir email giriniz').required('Email gerekli'),
 })
 
-export default function ForgetPasswordForm({ onSubmit, isSubmitting }) {
+export default function ForgetPasswordForm({ onSubmit, isSubmitting = false }) {
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -76,6 +76,3 @@ ForgetPasswordForm.propTypes = {
   isSubmitting: PropTypes.bool,
 }
 
-ForgetPasswordForm.defaultProps = {
-  isSubmitting: false,
-}

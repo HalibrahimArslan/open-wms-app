@@ -15,7 +15,7 @@ const validationSchema = Yup.object({
     .required('Şifreyi tekrar girme gerekli'),
 })
 
-export default function ResetPasswordForm({ onSubmit, isSubmitting }) {
+export default function ResetPasswordForm({ onSubmit, isSubmitting = false }) {
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -97,6 +97,3 @@ ResetPasswordForm.propTypes = {
   isSubmitting: PropTypes.bool,
 }
 
-ResetPasswordForm.defaultProps = {
-  isSubmitting: false,
-}

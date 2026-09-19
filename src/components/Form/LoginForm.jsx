@@ -28,7 +28,7 @@ const validationSchema = Yup.object({
   password: Yup.string('Şifre giriniz').required('Şifre gerekli'),
 })
 
-export default function LoginForm({ onSubmit, isSubmitting }) {
+export default function LoginForm({ onSubmit, isSubmitting = false }) {
   const [showPassword, setShowPassword] = useState(false)
 
   const formik = useFormik({
@@ -158,6 +158,3 @@ LoginForm.propTypes = {
   isSubmitting: PropTypes.bool,
 }
 
-LoginForm.defaultProps = {
-  isSubmitting: false,
-}
