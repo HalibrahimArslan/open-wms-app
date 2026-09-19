@@ -1,0 +1,51 @@
+version: 2
+
+updates:
+  # --- npm bağımlılıkları --------------------------------------------------
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: bağımlılık
+      prefix-development: bağımlılık(dev)
+    groups:
+      # Küçük güncellemeler tek PR'da toplanır; ana sürümler ayrı ayrı gelir
+      # ki her biri kırıcı değişiklikleri için tek tek incelenebilsin.
+      kucuk-guncellemeler:
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # xlsx npm'den değil SheetJS CDN'indeki tarball'dan kuruluyor
+      # (npm'deki 0.18.5 açıklı ve SheetJS artık npm'e yayın yapmıyor).
+      # Dependabot bu bağımlılığı güncelleyemez; sürüm takibi elle yapılır.
+      - dependency-name: xlsx
+
+  # --- GitHub Actions adımları ---------------------------------------------
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: bağımlılık(ci)
+
+  # --- Dockerfile temel imajları (node, nginx) -----------------------------
+  - package-ecosystem: docker
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: monday
+      time: '09:00'
+      timezone: Europe/Istanbul
+    open-pull-requests-limit: 3
+    commit-message:
+      prefix: bağımlılık(docker)

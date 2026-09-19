@@ -97,6 +97,20 @@ Ek bir secret tanımlamak gerekmez; GHCR oturumu için Actions'ın kendi
 Settings > Actions > General > Workflow permissions'ın "Read and write" olması
 yeterlidir.
 
+### Bağımlılık güncellemeleri
+
+[.github/dependabot.yml](.github/dependabot.yml) her pazartesi npm paketlerini,
+GitHub Actions adımlarını ve Dockerfile temel imajlarını kontrol edip pull
+request açar. Küçük güncellemeler (minor/patch) tek PR'da toplanır; ana
+sürümler kırıcı değişiklikleri tek tek incelenebilsin diye ayrı ayrı gelir.
+Açılan PR'larda CI iş akışı çalışır, yani Prettier, ESLint ve üretim derlemesi
+güncellemeyi birleştirmeden önce doğrular.
+
+`xlsx` bunun dışındadır: npm'deki son sürüm (0.18.5) güvenlik açığı içerdiği ve
+SheetJS artık npm'e yayın yapmadığı için paket CDN'deki tarball'dan kurulur
+([cdn.sheetjs.com](https://cdn.sheetjs.com)). Dependabot bu tür bağımlılıkları
+takip edemediğinden yeni sürümü elle kontrol etmek gerekir.
+
 ## Dağıtım
 
 [Dockerfile](Dockerfile) çok aşamalı derleme yapar: React çıktısı Nginx imajına
