@@ -96,4 +96,3 @@ ResetPasswordForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool,
 }
-
