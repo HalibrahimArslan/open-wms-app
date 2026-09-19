@@ -6,7 +6,7 @@ import CreateNewDefinition from '../../../components/Definitions/CreateNewDefini
 import { notifyError } from '../../../layout/Layout'
 import { deleteMenu, getCountOfMenuList, getMenuList, updateMenu } from '../../../services/MenuService'
 import MenuTable from '../../../components/Table/MenuTable'
-import produce from 'immer'
+import { produce } from 'immer'
 import CreateMenuForm from '../../../components/Form/CreateMenuForm'
 import { getCompanies } from '../../../services/CompanyService'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'

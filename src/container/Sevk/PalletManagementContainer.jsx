@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import produce from 'immer'
+import { produce } from 'immer'
 import usePayload from '../../hooks/usePayload'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'

@@ -17,7 +17,7 @@ import useIsMobile from '../../hooks/useIsMobile'
 import { notify, notifyError } from '../../layout/Layout'
 import PartialDetailContainer from './PartialDetailContainer'
 import UpdateIcon from '@mui/icons-material/Update'
-import produce from 'immer'
+import { produce } from 'immer'
 import PartialItemContainer from './PartialItemContainer'
 
 const PartailContainer = () => {

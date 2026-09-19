@@ -22,7 +22,7 @@ import useDebounce from '../../hooks/useDebounce'
 import BooleanFilter from '../../components/Filter/BooleanFilter'
 import AddressFilterContainer from './AddressFilterContainer'
 import AddIcon from '@mui/icons-material/Add'
-import produce from 'immer'
+import { produce } from 'immer'
 import { DepoContainer } from '../../store/DepoContainer'
 export default function AddressContainer() {
   const depoCode = useDepoCode()

@@ -8,7 +8,7 @@ import { notify, notifyError } from '../../layout/Layout'
 import { Box } from '@mui/material'
 import FeedbackFilterContainer from './FeedbackFilterContainer'
 import FeedbackStatusBlock from '../../components/Card/FeedbackStatusBlock'
-import produce from 'immer'
+import { produce } from 'immer'
 
 function FeedbackManagementContainer() {
   const [feedbacks, setFeedbacks] = useState([])

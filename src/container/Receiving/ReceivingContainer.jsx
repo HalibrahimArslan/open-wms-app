@@ -12,7 +12,7 @@ import { suspendOrders, getOrderDetailByFirmCodeAndOrderNo, saveOrderWithoutAssi
 import { notify, notifyError } from '../../layout/Layout'
 import InvoiceDialog from '../../components/Dialog/InvoiceDialog'
 import OrderQuantityInput from '../../components/Card/OrderQuantityInput'
-import produce from 'immer'
+import { produce } from 'immer'
 import AurDialog from '../../shared/components/Dialog/AurDialog'
 import ReceivingSummaryModal from './ReceivingSummaryModal'
 import groupBy, { generatePayload } from '../../utils/Utils'

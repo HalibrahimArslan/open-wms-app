@@ -8,7 +8,7 @@ import { useTheme } from '@mui/system'
 import { deletePalletBarcodeDetail, generateOrderPalletBarcodeRelation, getPalletBarcodeList } from '../../services/PalletBarcodeOrderRelService'
 import { getDoneOrderByOrderInfo } from '../../services/OrderService'
 import { requestAddPalletBarcode } from '../../utils/Utils'
-import produce from 'immer'
+import { produce } from 'immer'
 import { notifyError } from '../../layout/Layout'
 import ExtendedDialog from '../../shared/components/Dialog/ExtendedDialog'
 

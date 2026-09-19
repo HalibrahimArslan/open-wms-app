@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import EditIcon from '@mui/icons-material/Edit'
 import { useEffect } from 'react'
-import produce from 'immer'
+import { produce } from 'immer'
 import { useContainer } from 'unstated-next'
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({}))
