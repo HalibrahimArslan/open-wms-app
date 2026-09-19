@@ -133,10 +133,10 @@ const StorageRateContainer = () => {
             textAlign: 'center',
             fontSize: '24px',
             fontWeight: 'bold',
-            color: '#333',
+            color: theme.palette.text.primary,
           }}
         >
-          {data.filledRatio}%<div style={{ fontSize: '12px', fontWeight: 'normal', color: '#666' }}>DYS</div>
+          {data.filledRatio}%<div style={{ fontSize: '12px', fontWeight: 'normal', color: theme.palette.text.secondary }}>DYS</div>
         </div>
       </div>
     </CustomBox>

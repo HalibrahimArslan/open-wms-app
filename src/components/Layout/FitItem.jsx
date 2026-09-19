@@ -5,7 +5,7 @@ const upperItem = '130px'
 const upperItemMobile = '130px'
 
 const Item = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'white',
+  backgroundColor: theme.palette.surface.panel,
   position: 'relative',
   ...theme.typography.body2,
   textAlign: 'center',

@@ -3,7 +3,7 @@ import { Paper } from '@mui/material'
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : theme.palette.background.paper,
+  backgroundColor: theme.palette.surface.panel,
   textAlign: 'left',
   color: theme.palette.text.primary,
   minHeight: `calc(100vh - 130px)`,

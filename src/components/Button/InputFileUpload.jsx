@@ -67,7 +67,7 @@ const InputFileUpload = ({ file, handleFileChange, handleDelete }) => {
         }}
         onDrop={onDrop}
         sx={{
-          backgroundColor: !dragStart ? '#f5f5f5' : 'transparent',
+          backgroundColor: !dragStart ? (theme) => theme.palette.surface.subtle : 'transparent',
           border: dragStart ? `2px dashed ${theme.palette.primary.main}` : `2px dashed ${theme.palette.grey[300]}`,
           width: '100%',
           height: 100,
@@ -76,7 +76,7 @@ const InputFileUpload = ({ file, handleFileChange, handleDelete }) => {
           justifyContent: 'center',
           borderRadius: 2,
           '&:hover': {
-            backgroundColor: '#f5f5f5',
+            backgroundColor: theme.palette.surface.subtle,
           },
           position: 'relative',
         }}

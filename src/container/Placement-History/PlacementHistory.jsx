@@ -384,7 +384,7 @@ export default function PlacementHistory() {
             </Grid>
 
             <Collapse in={filtersOpen} timeout="auto" unmountOnExit>
-              <Paper sx={{ p: 3, mb: 2, backgroundColor: '#F2F5FF' }} elevation={0}>
+              <Paper sx={{ p: 3, mb: 2, backgroundColor: (theme) => theme.palette.surface.filter }} elevation={0}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Grid container spacing={3}>
                     <Grid

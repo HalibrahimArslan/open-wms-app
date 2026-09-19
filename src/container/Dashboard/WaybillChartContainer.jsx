@@ -53,6 +53,7 @@ const StyledBox = styled(Box)(({ theme }) => ({
 }))
 
 const StyledDoughnut = ({ data, dysPercentage, options, onSliceClick }) => {
+  const theme = useTheme()
   const chartOptions = {
     ...options,
     onClick: (_, elements) => {
@@ -83,11 +84,11 @@ const StyledDoughnut = ({ data, dysPercentage, options, onSliceClick }) => {
             textAlign: 'center',
             fontSize: '24px',
             fontWeight: 'bold',
-            color: '#333',
+            color: theme.palette.text.primary,
             pointerEvents: 'none',
           }}
         >
-          {dysPercentage}%<div style={{ fontSize: '12px', fontWeight: 'normal', color: '#666' }}>DYS</div>
+          {dysPercentage}%<div style={{ fontSize: '12px', fontWeight: 'normal', color: theme.palette.text.secondary }}>DYS</div>
         </div>
       </div>
     </>

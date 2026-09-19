@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 
 const StyledDiv = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : 'white',
+  backgroundColor: theme.palette.surface.panel,
   ...theme.typography.body2,
   textAlign: 'center',
   color: theme.palette.text.secondary,

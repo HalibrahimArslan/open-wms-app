@@ -575,7 +575,7 @@ export default function OrderTracingContainer() {
             onFiltersChange={() => {}}
           >
             {({ filters, setFilter, applyFilters, clearFilters }) => (
-              <Paper sx={{ p: 3, backgroundColor: '#F2F5FF' }}>
+              <Paper sx={{ p: 3, backgroundColor: (theme) => theme.palette.surface.filter }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <Grid container spacing={3}>
                     <Grid

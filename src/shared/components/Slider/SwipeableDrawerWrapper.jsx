@@ -2,17 +2,16 @@ import * as React from 'react'
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
 import { Box, Button, Divider, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { grey } from '@mui/material/colors'
 import SearchBox from '../../../components/SearchBox'
 
 const StyledBox = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'light' ? '#fff' : grey[800],
+  backgroundColor: theme.palette.surface.card,
 }))
 
 const Puller = styled('div')(({ theme }) => ({
   width: 30,
   height: 6,
-  backgroundColor: theme.palette.mode === 'light' ? grey[300] : grey[900],
+  backgroundColor: theme.palette.border.rest,
   borderRadius: 3,
   position: 'absolute',
   top: 8,

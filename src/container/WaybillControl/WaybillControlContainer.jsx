@@ -251,7 +251,7 @@ const WaybillControlContainer = () => {
       >
         {({ filters, setFilter, applyFilters, clearFilters }) => (
           <Collapse in={filtersOpen} timeout="auto" unmountOnExit>
-            <Paper sx={{ p: 2, mb: 2, backgroundColor: '#F2F5FF' }}>
+            <Paper sx={{ p: 2, mb: 2, backgroundColor: (theme) => theme.palette.surface.filter }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Grid container spacing={2}>
                   <Grid
