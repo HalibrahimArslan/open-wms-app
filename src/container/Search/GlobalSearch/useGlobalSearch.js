@@ -97,9 +97,7 @@ export default function useGlobalSearch() {
       if (items.length > 0) {
         const barkodList = [...new Set(items.map((it) => it.barcode).filter(Boolean))]
         if (barkodList.length > 0) {
-          const mikroRes = await getProductInfo(
-            generatePayload({ stokKodu: '', stokAdi: '', barkod: '', barkodList, depoNo: depoCode })
-          )
+          const mikroRes = await getProductInfo(generatePayload({ stokKodu: '', stokAdi: '', barkod: '', barkodList, depoNo: depoCode }))
           if (Array.isArray(mikroRes)) {
             for (const row of mikroRes) {
               const bc = row?.barkod ?? row?.barcode

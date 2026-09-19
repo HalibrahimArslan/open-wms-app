@@ -9,8 +9,8 @@ yazılmaz, marka bilgileri build anında ortam değişkenleriyle verilir.
 
 ## Gereksinimler
 
-- Node.js 18+
-- npm 9+
+- Node.js 22+ (önerilen sürüm `.nvmrc` içinde: 24)
+- npm 10+
 - Erişilebilir bir WMS API sunucusu (geliştirmede proxy ile bağlanılır)
 
 ## Kurulum

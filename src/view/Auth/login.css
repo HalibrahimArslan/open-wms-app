@@ -172,7 +172,9 @@
    Iki animasyon da transform kullandigi icin float, rise-in bittikten sonra
    basliyacak sekilde geciktirilir; aksi halde ikisi birbirini ezer. */
 .login-mark {
-  animation: rise-in 0.7s ease 0.05s forwards, float-mark 6s ease-in-out 0.75s infinite;
+  animation:
+    rise-in 0.7s ease 0.05s forwards,
+    float-mark 6s ease-in-out 0.75s infinite;
   filter: drop-shadow(0 0 26px rgba(255, 255, 255, 0.35));
 }
 
@@ -233,7 +235,9 @@
   border-radius: 2px;
   cursor: pointer;
   background: rgba(255, 255, 255, 0.3);
-  transition: background 0.25s ease, width 0.25s ease;
+  transition:
+    background 0.25s ease,
+    width 0.25s ease;
 }
 
 .login-dot:hover {

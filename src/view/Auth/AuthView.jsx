@@ -55,10 +55,7 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
           <Typography className="login-title" sx={{ color: '#FFFFFF', fontSize: 58, fontWeight: 800, letterSpacing: '0.14em', lineHeight: 1 }}>
             {BRAND.name}
           </Typography>
-          <Typography
-            className="login-title"
-            sx={{ color: 'rgba(255, 255, 255, 0.92)', fontSize: 17, fontWeight: 600, letterSpacing: '0.24em', textTransform: 'uppercase' }}
-          >
+          <Typography className="login-title" sx={{ color: 'rgba(255, 255, 255, 0.92)', fontSize: 17, fontWeight: 600, letterSpacing: '0.24em', textTransform: 'uppercase' }}>
             {BRAND.tagline}
           </Typography>
         </Stack>
@@ -68,9 +65,7 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
 
           <Box key={activeQuote} className="login-quote login-title">
             <Typography sx={{ color: '#FFFFFF', fontSize: 21, lineHeight: 1.6, fontWeight: 600 }}>{testimonial.quote}</Typography>
-            <Typography
-              sx={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: '0.9rem' }}
-            >
+            <Typography sx={{ color: 'rgba(255, 255, 255, 0.85)', fontSize: 13, fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: '0.9rem' }}>
               {testimonial.author}
             </Typography>
           </Box>
@@ -92,11 +87,7 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
 
       <Box className="login-panel" sx={{ backgroundColor: 'background.paper' }}>
         <Box className="login-form-wrap" sx={{ padding: '2.5rem 0' }}>
-          <BrandLogo
-            variant="stacked"
-            size={48}
-            sx={{ marginBottom: '1.5rem', alignItems: 'flex-start', display: { xs: 'flex', md: 'none' } }}
-          />
+          <BrandLogo variant="stacked" size={48} sx={{ marginBottom: '1.5rem', alignItems: 'flex-start', display: { xs: 'flex', md: 'none' } }} />
 
           {/* Dar ekranda ust taraftaki dikey marka kilidi zaten adi gosteriyor. */}
           <Typography
@@ -111,12 +102,8 @@ const AuthView = ({ title = 'Hoş geldiniz', subtitle = 'Devam etmek için hesab
           >
             {BRAND.name}
           </Typography>
-          <Typography sx={{ fontSize: 36, fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.01em', color: 'text.primary', marginTop: '0.4rem' }}>
-            {title}
-          </Typography>
-          <Typography sx={{ fontSize: 15, lineHeight: 1.6, color: 'text.secondary', marginBottom: '1.75rem', marginTop: '0.5rem' }}>
-            {subtitle}
-          </Typography>
+          <Typography sx={{ fontSize: 36, fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.01em', color: 'text.primary', marginTop: '0.4rem' }}>{title}</Typography>
+          <Typography sx={{ fontSize: 15, lineHeight: 1.6, color: 'text.secondary', marginBottom: '1.75rem', marginTop: '0.5rem' }}>{subtitle}</Typography>
 
           {children}
         </Box>

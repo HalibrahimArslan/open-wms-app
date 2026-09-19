@@ -100,12 +100,7 @@ export default function LoginForm({ onSubmit, isSubmitting }) {
           ),
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton
-                aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'}
-                onClick={() => setShowPassword((prev) => !prev)}
-                edge="end"
-                size="small"
-              >
+              <IconButton aria-label={showPassword ? 'Şifreyi gizle' : 'Şifreyi göster'} onClick={() => setShowPassword((prev) => !prev)} edge="end" size="small">
                 {showPassword ? <VisibilityOffRoundedIcon fontSize="small" /> : <VisibilityRoundedIcon fontSize="small" />}
               </IconButton>
             </InputAdornment>
@@ -115,9 +110,7 @@ export default function LoginForm({ onSubmit, isSubmitting }) {
 
       <Box sx={{ alignSelf: 'flex-end', mt: 1, mb: 2 }}>
         <Link to="/forget-password" style={{ textDecoration: 'none' }}>
-          <Typography sx={{ fontSize: 13.5, fontWeight: 600, color: 'primary.main', '&:hover': { textDecoration: 'underline' } }}>
-            Şifremi Unuttum
-          </Typography>
+          <Typography sx={{ fontSize: 13.5, fontWeight: 600, color: 'primary.main', '&:hover': { textDecoration: 'underline' } }}>Şifremi Unuttum</Typography>
         </Link>
       </Box>
 

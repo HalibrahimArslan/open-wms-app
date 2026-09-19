@@ -21,25 +21,8 @@ const BrandMark = ({ size = 40, color }) => {
 
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" role="img" aria-hidden="true" focusable="false" style={{ display: 'block' }}>
-      <path
-        d="M24 2.5 L42.5 13 L42.5 35 L24 45.5 L5.5 35 L5.5 13 Z"
-        fill={fill}
-        fillOpacity="0.14"
-        stroke={fill}
-        strokeWidth="2.75"
-        strokeLinejoin="round"
-      />
-      <text
-        x="24"
-        y="24"
-        fill={fill}
-        fontSize="20"
-        fontWeight="700"
-        letterSpacing="0.5"
-        textAnchor="middle"
-        dominantBaseline="central"
-        fontFamily="inherit"
-      >
+      <path d="M24 2.5 L42.5 13 L42.5 35 L24 45.5 L5.5 35 L5.5 13 Z" fill={fill} fillOpacity="0.14" stroke={fill} strokeWidth="2.75" strokeLinejoin="round" />
+      <text x="24" y="24" fill={fill} fontSize="20" fontWeight="700" letterSpacing="0.5" textAnchor="middle" dominantBaseline="central" fontFamily="inherit">
         {monogram}
       </text>
     </svg>
