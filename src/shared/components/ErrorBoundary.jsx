@@ -35,7 +35,7 @@ class ErrorBoundary extends React.Component {
     const { error, errorInfo, hasError } = this.state
 
     if (hasError && errorInfo) {
-      const isDevelopment = process.env.NODE_ENV === 'development'
+      const isDevelopment = import.meta.env.DEV
 
       return (
         <Container maxWidth="md" sx={{ py: 4 }}>

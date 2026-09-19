@@ -1,15 +1,12 @@
 /**
  * Uygulamanin sunucu tarafiyla konustugu yollar.
  *
- * WebSocket yolu yapilandirilabilir olmak zorunda: webpack-dev-server kendi
- * hot-reload soketini "/ws" yolunda acar ve upgrade isteklerini proxy'den once
- * yakalar. Bu yuzden gelistirme ortaminda uygulamanin bildirim soketi "/ws"
- * uzerinden backend'e ulasamaz; .env.local icinde REACT_APP_WS_PATH ile
- * cakismayan bir yol (ornegin /wsapi) verilir. Uretimde dev-server olmadigi
- * icin varsayilan "/ws" oldugu gibi kullanilir.
+ * WebSocket yolu varsayilan olarak "/ws"dir; gerekirse REACT_APP_WS_PATH ile
+ * degistirilir. Gelistirmede Vite proxy'si ayni degiskeni okudugu icin tarayici
+ * ve proxy her zaman ayni yolu kullanir (bkz. vite.config.js).
  */
 
-export const WS_PATH = process.env.REACT_APP_WS_PATH || '/ws'
+export const WS_PATH = import.meta.env.REACT_APP_WS_PATH || '/ws'
 
 /** Tarayicinin baglanacagi tam WebSocket adresi (sayfayla ayni host/protokol). */
 export const getWebSocketUrl = () => {

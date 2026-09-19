@@ -1,7 +1,7 @@
 # WMS · Depo Yönetim Sistemi
 
 Depo operasyonlarının uçtan uca yönetildiği web arayüzü: mal kabul, adresleme,
-toplama, sayım, sevkiyat ve raporlama. React (Create React App) + MUI ile
+toplama, sayım, sevkiyat ve raporlama. React (Vite) + MUI ile
 geliştirilir, üretimde statik olarak build edilip Nginx üzerinden sunulur.
 
 Ürün **white-label** çalışır: uygulama içinde hiçbir müşteri/firma adı sabit
@@ -22,22 +22,18 @@ npm start
 ```
 
 Uygulama http://localhost:3000 adresinde açılır. `npm start` sırasında `/api` ve
-WebSocket istekleri [src/setupProxy.js](src/setupProxy.js) üzerinden `.env.local`
-içindeki `API_PROXY_TARGET` / `WS_PROXY_TARGET` adreslerine yönlendirilir.
-Yazdırma isteklerinin (`/api/print`) hedefi ayrıdır: döküman servisi başka bir
-portta çalıştığı için bu yol `PRINT_PROXY_TARGET` (varsayılan
+WebSocket istekleri [vite.config.mjs](vite.config.mjs) içindeki proxy ile
+`.env.local` dosyasındaki `API_PROXY_TARGET` / `WS_PROXY_TARGET` adreslerine
+yönlendirilir. Yazdırma isteklerinin (`/api/print`) hedefi ayrıdır: döküman
+servisi başka bir portta çalıştığı için bu yol `PRINT_PROXY_TARGET` (varsayılan
 `http://localhost:3200`) adresine gider.
 
-### WebSocket yolu hakkında
-
-webpack-dev-server kendi hot-reload soketini `/ws` yolunda açar ve upgrade
-isteklerini proxy'den **önce** yakalar. Bu yüzden geliştirmede uygulamanın
-bildirim soketi `/ws` üzerinden backend'e ulaşamaz; sessizce hot-reload
-soketine bağlanır. Çözüm olarak yol yapılandırılabilir yapılmıştır:
-`.env.local` içine `REACT_APP_WS_PATH=/wsapi` yazıldığında hem tarayıcı tarafı
-([src/config/api.js](src/config/api.js)) hem de proxy aynı yolu kullanır.
-Üretimde dev-server olmadığı için değişken tanımlanmaz ve varsayılan `/ws`
-geçerlidir.
+Bildirim soketi varsayılan olarak `/ws` yolunu kullanır. Farklı bir yol
+gerekirse `REACT_APP_WS_PATH` ile verilir; hem tarayıcı tarafı
+([src/config/api.js](src/config/api.js)) hem de geliştirme proxy'si aynı değeri
+okur. (CRA döneminde webpack-dev-server `/ws` yolunu sahiplendiği için
+geliştirmede `/wsapi` gibi bir yol gerekiyordu; Vite'ın hot-reload soketi bu
+yolu kullanmadığı için artık zorunlu değil.)
 
 ## Komutlar
 
@@ -45,7 +41,7 @@ geçerlidir.
 | --- | --- |
 | `npm start` | Geliştirme sunucusu |
 | `npm run build` | Üretim derlemesi (`build/`) |
-| `npm test` | Testler |
+| `npm run preview` | Üretim derlemesini yerelde, proxy ile birlikte sunar |
 | `npm run lint` / `npm run lint:fix` | ESLint |
 | `npm run format` / `npm run format:check` | Prettier |
 
@@ -66,7 +62,7 @@ için değerleri `npm run build` / `docker build` adımında verin.
 
 Favicon ve PWA ikonları `public/` altındadır (`favicon.ico`, `brand-mark.svg`,
 `logo192.png`, `logo512.png`, `apple-touch-icon.png`); müşteriye özel imajda bu
-dosyalar ve [public/index.html](public/index.html) içindeki `<title>` ile
+dosyalar ve [index.html](index.html) içindeki `<title>` ile
 `manifest.json` değerleri değiştirilir. Uygulama içi başlıklar Helmet ile
 `BRAND` üzerinden yazıldığı için ayrıca elle düzenlenmez.
 
@@ -110,7 +106,7 @@ Bu Nginx yalnızca statik dosya sunmaz, **aynı zamanda ters vekildir**. Uygulam
 `/api` ve `/ws` çağrılarını sayfayla aynı origin'e relative yapar
 ([src/config/api.js](src/config/api.js)), dolayısıyla bu yolların backend'e
 iletilmesi gerekir. Yönlendirme tablosu geliştirmedeki
-[src/setupProxy.js](src/setupProxy.js) ile birebir aynıdır:
+[vite.config.mjs](vite.config.mjs) proxy'si ile birebir aynıdır:
 
 | Yol | Hedef |
 | --- | --- |

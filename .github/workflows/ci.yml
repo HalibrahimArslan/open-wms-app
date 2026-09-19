@@ -36,8 +36,6 @@ jobs:
 
       - name: Üretim derlemesi
         run: npm run build
-        env:
-          CI: true
 
   docker:
     name: Docker imajı

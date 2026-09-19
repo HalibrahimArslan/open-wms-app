@@ -8,7 +8,7 @@
  */
 
 const readEnv = (key, fallback) => {
-  const value = process.env[key]
+  const value = import.meta.env[key]
   return value === undefined || value === '' ? fallback : value
 }
 
