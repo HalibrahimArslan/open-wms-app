@@ -261,15 +261,21 @@ const FeedbackDetailContainer = () => {
             <Chip label={data?.status ? FeedbackStatus[data.status] : ''} color={data?.status === 'Tamamlandı' ? 'success' : 'warning'} />
           </Box>
         </Grid>
-        <Divider flexItem />
         <Grid
           sx={{
-            height: 300,
+            width: '100%',
+          }}
+        >
+          <Divider />
+        </Grid>
+        <Grid
+          sx={{
+            minHeight: 300,
             bgcolor: theme.palette.action.hover,
             width: '100%',
             mt: 2,
             borderRadius: theme.shape.borderRadius,
-            ml: 1,
+            p: 2,
           }}
         >
           <Typography

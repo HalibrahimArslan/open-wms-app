@@ -25,7 +25,7 @@ const FeedbackStatusBlock = ({ status, feedbacks, hasFilter, handleForward }) =>
     <Box
       sx={{
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: theme.palette.grey[100],
+        backgroundColor: theme.palette.surface.subtle,
         position: 'relative',
         minWidth: '375px',
         overflow: 'overlay',
@@ -35,8 +35,8 @@ const FeedbackStatusBlock = ({ status, feedbacks, hasFilter, handleForward }) =>
     >
       <Box
         sx={{
-          background: '#FFFFFF',
-          border: `2px solid ${theme.palette.grey[200]}`,
+          background: theme.palette.surface.card,
+          border: `2px solid ${theme.palette.border.subtle}`,
           borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px  0 0`,
           padding: 1,
           display: 'flex',
