@@ -1,72 +1,82 @@
-import React from 'react'
-import { Box, Typography, useTheme } from '@mui/material'
+import { Box, Chip, Stack, Typography, useTheme } from '@mui/material'
+import InboxRoundedIcon from '@mui/icons-material/InboxRounded'
 import FeedbackCard from './FeedbackCard'
-import { BsHourglass, BsHourglassBottom, BsHourglassSplit } from 'react-icons/bs'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
+import { FeedbackStatus } from '../../utils/Utils'
 
-const FeedbackStatusBlock = ({ status, feedbacks, hasFilter, handleForward }) => {
+/**
+ * Panonun tek durum sutunu.
+ *
+ * Sutun basligi durumu renkli bir nokta ve kayit sayisiyla anlatir. Onceden
+ * uc durumun ucunde de kum saati ikonu vardi (dolu, yarim, bos) ve hangisinin
+ * hangi durum oldugu birbirinden ayirt edilemiyordu; ustelik "tamamlandi"
+ * durumuna yarim kum saati dusuyordu.
+ *
+ * Durum etiketleri Utils'teki FeedbackStatus haritasindan okunur. Sutun
+ * kendi sozlugunu tutuyordu ("OLUSTURULDU") ve ayni durum detay ekraninda
+ * baska turlu ("Acik") yaziyordu.
+ *
+ * Sutun kendi icinde kayar; yuksekligi disaridan gelen flex alanina uyar.
+ */
+const STATUS_COLOR = {
+  CREATED: 'warning.main',
+  IN_PROGRESS: 'primary.main',
+  COMPLETED: 'success.main',
+}
+
+const FeedbackStatusBlock = ({ status, feedbacks, handleForward }) => {
   const theme = useTheme()
-
-  const statusTextMap = {
-    CREATED: 'OLUŞTURULDU',
-    IN_PROGRESS: 'BAŞLANILDI',
-    COMPLETED: 'TAMAMLANDI',
-  }
-
-  const statusIconMap = {
-    CREATED: <BsHourglass style={{ color: theme.palette.primary.main }} />,
-    IN_PROGRESS: <BsHourglassBottom style={{ color: theme.palette.primary.main }} />,
-    COMPLETED: <BsHourglassSplit style={{ color: theme.palette.primary.main }} />,
-  }
-
-  const statusText = statusTextMap[status] || 'Bilinmeyen Durum'
-  const statusIcon = statusIconMap[status] || null
 
   return (
     <Box
       sx={{
-        borderRadius: theme.shape.borderRadius,
+        flex: '1 1 0',
+        minWidth: 320,
+        maxWidth: 460,
+        minHeight: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: theme.radius.section,
         backgroundColor: theme.palette.surface.subtle,
-        position: 'relative',
-        minWidth: '375px',
-        overflow: 'overlay',
-        height: hasFilter ? 'calc(100dvh - 250px)' : 'calc(100dvh - 185px)',
-        padding: 1,
+        border: `1px solid ${theme.palette.border.subtle}`,
+        overflow: 'hidden',
       }}
     >
-      <Box
+      <Stack
+        direction="row"
+        spacing={1}
         sx={{
-          background: theme.palette.surface.card,
-          border: `2px solid ${theme.palette.border.subtle}`,
-          borderRadius: `${theme.shape.borderRadius}px ${theme.shape.borderRadius}px  0 0`,
-          padding: 1,
-          display: 'flex',
           alignItems: 'center',
-          justifyContent: 'center',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-          left: 0,
-          right: 0,
-          mb: 2,
+          flexShrink: 0,
+          paddingX: 1.75,
+          paddingY: 1.25,
+          borderBottom: `1px solid ${theme.palette.border.subtle}`,
         }}
       >
-        {statusIcon}
-        <Typography variant="subtitle1" sx={{ marginLeft: 1 }}>
-          {statusText}
+        <Box sx={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: STATUS_COLOR[status] ?? 'text.disabled', flexShrink: 0 }} />
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, flexGrow: 1 }}>
+          {FeedbackStatus[status] ?? status}
         </Typography>
-      </Box>
+        <Chip size="small" label={feedbacks.length} sx={{ borderRadius: theme.radius.control, fontWeight: 700 }} />
+      </Stack>
+
       <Box
         sx={{
+          flexGrow: 1,
+          minHeight: 0,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          padding: 1.25,
           display: 'flex',
-          justifyContent: 'center',
           flexDirection: 'column',
-          alignItems: 'center',
-          gap: 2,
+          gap: 1.25,
         }}
       >
-        {feedbacks.map((feedback, index) => (
-          <FeedbackCard status={status} key={index} feedback={feedback} handleForward={handleForward} />
-        ))}
+        {feedbacks.length === 0 ? (
+          <EmptyState dense icon={<InboxRoundedIcon />} title="Kayıt yok" description="Bu durumda bekleyen geri bildirim bulunmuyor." />
+        ) : (
+          feedbacks.map((feedback) => <FeedbackCard key={feedback.id} feedback={feedback} handleForward={handleForward} />)
+        )}
       </Box>
     </Box>
   )
