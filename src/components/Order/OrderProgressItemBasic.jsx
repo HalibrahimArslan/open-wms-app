@@ -1,6 +1,6 @@
 import { Table, TableContainer, TableHead, TableCell, TableBody, TableRow, Box, useMediaQuery, Chip, Tooltip } from '@mui/material'
 import { Button, Stack, Typography } from '@mui/material'
-import TablePanel, { tableHeadSx } from '../../shared/components/Table/TablePanel'
+import TablePanel, { orderRowTint, tableHeadSx } from '../../shared/components/Table/TablePanel'
 import TableSearchField from '../../shared/components/Table/TableSearchField'
 import React, { useCallback, useMemo } from 'react'
 import { useEffect } from 'react'
@@ -12,8 +12,11 @@ import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
 import excelimg from '../../assets/images/cards/excel.png'
 import * as XLSX from 'xlsx'
 
-const StyledTableRow = styled(TableRow)(({ theme, siparisMiktar, teslimMiktar, isPiece }) => ({
-  backgroundColor: teslimMiktar <= 0 ? '#D77676  !important' : teslimMiktar < siparisMiktar ? 'antiquewhite' : '#EAFAF1 !important',
+// Ozel proplar DOM'a sizmasin: <tr siparisMiktar="..."> React uyarisi uretir.
+const StyledTableRow = styled(TableRow, {
+  shouldForwardProp: (prop) => !['siparisMiktar', 'teslimMiktar', 'isPiece'].includes(prop),
+})(({ theme, siparisMiktar, teslimMiktar }) => ({
+  backgroundColor: orderRowTint(theme, siparisMiktar, teslimMiktar),
 }))
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({

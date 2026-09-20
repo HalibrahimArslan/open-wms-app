@@ -1,4 +1,5 @@
 import { Paper, Stack, Typography, useTheme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
 
 /**
  * Listelerin ortak cercevesi: cerceveli bir Paper, ustunde baslik + sayac
@@ -92,3 +93,24 @@ export const dataGridSx = (theme) => ({
     fontWeight: 700,
   },
 })
+
+/**
+ * Siparis satirinin teslim durumuna gore zemin rengi.
+ *
+ * Bu zeminler sabit aciklarla yaziliyordu (#D77676, antiquewhite, #EAFAF1) ya
+ * da palet renginin tam `light` tonuyla veriliyordu. Ikisi de karanlik temada
+ * bozuk: satir acik pastel kaliyor, uzerindeki text.primary da acik oldugu
+ * icin yazi okunmuyordu. Ustelik renkler marka paletinin disindaydi.
+ *
+ * Cozum, durum renginin dusuk opaklikli bir katmani: zemin hangi temada olursa
+ * olsun altindaki yuzeyin uzerine ince bir renk katiyor, metin rengi
+ * degismedigi icin kontrast korunuyor.
+ *
+ * teslim yok -> error, eksik -> warning, tamam -> success.
+ */
+export const orderRowTint = (theme, orderedAmount, receivedAmount) => {
+  const ordered = Number(orderedAmount) || 0
+  const received = Number(receivedAmount) || 0
+  const status = received <= 0 ? 'error' : received < ordered ? 'warning' : 'success'
+  return alpha(theme.palette[status].main, theme.palette.mode === 'dark' ? 0.22 : 0.3)
+}

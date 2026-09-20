@@ -87,6 +87,12 @@ overlay'i kapatılır. Bu ayar temada tanımlıdır.
 Durum yalnızca renkle anlatılmaz; yanında metin ya da ikon bulunur. Renk körü
 kullanıcılar ve düşük kontrastlı ekranlar için gereklidir.
 
+Tablo satırı durumla renklendirilecekse, rengin tam tonu değil düşük opaklıklı
+bir katmanı kullanılır
+([orderRowTint](src/shared/components/Table/TablePanel.jsx)). Tam ton, karanlık
+temada satırı açık pastel bırakıyor ve üzerindeki `text.primary` de açık olduğu
+için yazı okunmuyordu.
+
 ### Kontrast
 
 Metin ve zemin arasında en az WCAG AA (normal metin 4.5:1, büyük metin 3:1)
