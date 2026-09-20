@@ -1,75 +1,46 @@
-import { Box, Button, Checkbox, FormControl, FormControlLabel, Grid, InputLabel, MenuItem, Select, Typography, FormHelperText, useTheme } from '@mui/material'
+import { Box, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
-import React from 'react'
 import { AddressFieldType } from '../../utils/Utils'
 
+/**
+ * Gonder dugmesi formun icinde degil, diyalogun alt seridinde durur; ikisini
+ * bu kimlik baglar (<button form="...">). Onceden form kendi "Olustur"
+ * dugmesini tasiyordu ve hemen altinda diyalogun "Geri / Ilerle" seridi
+ * geldigi icin diyalogda iki ayri aksiyon satiri olusuyordu.
+ */
+export const ADDRESS_CREATE_FORM_ID = 'address-create-form'
+
 const validationSchema = yup.object({
-  firstDepartmentId: yup.number().required('Bölüm boş bırakılamaz'),
-  lastDepartmentId: yup.number().required('Bölüm boş bırakılamaz'),
-  firstHallId: yup.number().required('Kat boş bırakılamaz'),
-  lastHallId: yup.number().required('Kat boş bırakılamaz'),
-  addressType: yup.number().required('Kat boş bırakılamaz'),
+  addressType: yup.number().required('Adres tipi seçilmelidir'),
+  firstDepartmentId: yup.number().required('Bölüm başlangıcı boş bırakılamaz'),
+  lastDepartmentId: yup.number().required('Bölüm bitişi boş bırakılamaz'),
+  firstHallId: yup.number().required('Koridor başlangıcı boş bırakılamaz'),
+  lastHallId: yup.number().required('Koridor bitişi boş bırakılamaz'),
 })
 
 const items = [
-  {
-    key: 'departments',
-    label: 'Bölüm',
-    values: {
-      first: 'firstDepartmentId',
-      last: 'lastDepartmentId',
-    },
-  },
-  {
-    key: 'halls',
-    label: 'Koridor',
-    values: {
-      first: 'firstHallId',
-      last: 'lastHallId',
-    },
-  },
-  {
-    key: 'units',
-    label: 'Ünite',
-    values: {
-      first: 'firstUnitId',
-      last: 'lastUnitId',
-    },
-  },
-  {
-    key: 'flats',
-    label: 'Kat',
-    values: {
-      first: 'firstFlatId',
-      last: 'lastFlatId',
-    },
-  },
-  {
-    key: 'rooms',
-    label: 'Oda',
-    values: {
-      first: 'firstRoomId',
-      last: 'lastRoomId',
-    },
-  },
+  { key: 'departments', label: 'Bölüm', values: { first: 'firstDepartmentId', last: 'lastDepartmentId' } },
+  { key: 'halls', label: 'Koridor', values: { first: 'firstHallId', last: 'lastHallId' } },
+  { key: 'units', label: 'Ünite', values: { first: 'firstUnitId', last: 'lastUnitId' } },
+  { key: 'flats', label: 'Kat', values: { first: 'firstFlatId', last: 'lastFlatId' } },
+  { key: 'rooms', label: 'Oda', values: { first: 'firstRoomId', last: 'lastRoomId' } },
 ]
 
 const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
-  const theme = useTheme()
   const formik = useFormik({
     initialValues: {
-      firstDepartmentId: null,
-      lastDepartmentId: null,
-      firstHallId: null,
-      lastHallId: null,
-      firstUnitId: null,
-      lastUnitId: null,
-      firstFlatId: null,
-      lastFlatId: null,
-      firstRoomId: null,
-      lastRoomId: null,
-      addressType: null,
+      firstDepartmentId: '',
+      lastDepartmentId: '',
+      firstHallId: '',
+      lastHallId: '',
+      firstUnitId: '',
+      lastUnitId: '',
+      firstFlatId: '',
+      lastFlatId: '',
+      firstRoomId: '',
+      lastRoomId: '',
+      addressType: '',
       geciciAdres: false,
       toplamaGozu: true,
       kontrolAdres: false,
@@ -77,12 +48,8 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      let selectedFields = addressModel.map((model) => {
-        if (model.visible) {
-          return model.field
-        }
-      })
-      handleSubmit({ ...values, selectedFields: selectedFields })
+      const selectedFields = addressModel.filter((model) => model.visible).map((model) => model.field)
+      handleSubmit({ ...values, selectedFields })
     },
   })
 
@@ -97,130 +64,91 @@ const AddressCreateForm = ({ data, addressModel, handleSubmit }) => {
     return true
   }
 
+  const hasError = (field) => Boolean(formik.errors[field] && formik.touched[field])
+
+  const renderOptions = (list) => {
+    if (!list || list.length === 0) {
+      return (
+        <MenuItem value="" disabled>
+          Tanımlı kayıt yok
+        </MenuItem>
+      )
+    }
+    return list.map((option) => (
+      <MenuItem key={option.id} value={option.id}>
+        {option.code}
+      </MenuItem>
+    ))
+  }
+
+  const visibleItems = items.filter((item) => getVisibility(item.label))
+
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Grid container spacing={1} sx={{ flexDirection: 'column' }}>
-        <Grid size={2}>
-          <Typography>Adres Tipi</Typography>
-        </Grid>
-        <Grid size={10}>
-          <FormControl fullWidth error={Boolean(formik.values.addressType && formik.touched.addressType)}>
-            <InputLabel id="address-type-simple-select-label">Adres Tipi</InputLabel>
-            <Select
-              labelId="address-type-simple-select-label"
-              id={'addressType'}
-              value={formik.values.addressType}
-              label="Başlangıç"
-              onChange={(event) => {
-                formik.setFieldValue('addressType', event.target.value)
-              }}
-              onBlur={formik.handleBlur}
-            >
-              {data.addressTypes.map((addressType) => (
-                <MenuItem key={addressType.code} value={addressType.id}>
-                  {addressType.code}
-                </MenuItem>
-              ))}
-            </Select>
-            {formik.errors.addressType && formik.touched.addressType && <FormHelperText>{formik.errors.addressType}</FormHelperText>}
-          </FormControl>
-        </Grid>
-        {items.map((item) => (
-          <>
-            {getVisibility(item.label) ? (
-              <React.Fragment key={item.key}>
-                <Grid>
-                  <Typography>{item.label}</Typography>
-                </Grid>
-                <Grid>
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      gap: 1,
-                    }}
-                  >
-                    <FormControl fullWidth error={Boolean(formik.errors[item.values.first] && formik.touched[item.values.first])}>
-                      <InputLabel id={`first-${item.key}-simple-select-label`}>Başlangıç</InputLabel>
-                      <Select
-                        labelId={`first-${item.key}-simple-select-label`}
-                        id={item.values.first}
-                        value={formik.values[item.values.first]}
-                        label="Başlangıç"
-                        sx={{ minWidth: 150 }}
-                        onChange={(event) => {
-                          formik.setFieldValue(item.values.first, event.target.value)
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        {data[item.key].map((department) => (
-                          <MenuItem key={department.id} value={department.id}>
-                            {department.code}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {formik.errors[item.values.first] && formik.touched[item.values.first] && <FormHelperText>{formik.errors[item.values.first]}</FormHelperText>}
-                    </FormControl>
-                    <FormControl fullWidth error={Boolean(formik.errors[item.values.last] && formik.touched[item.values.last])}>
-                      <InputLabel id={`last-${item.key}-simple-select-label`}>Bitiş</InputLabel>
-                      <Select
-                        labelId={`last-${item.key}-simple-select-label`}
-                        id={item.values.last}
-                        value={formik.values[item.values.last]}
-                        label="Bitiş"
-                        sx={{ minWidth: 150 }}
-                        onChange={(event) => {
-                          formik.setFieldValue(item.values.last, event.target.value)
-                        }}
-                        onBlur={formik.handleBlur}
-                      >
-                        {data[item.key].map((department) => (
-                          <MenuItem key={department.id} value={department.id}>
-                            {department.code}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                      {formik.errors[item.values.last] && formik.touched[item.values.last] && <FormHelperText>{formik.errors[item.values.last]}</FormHelperText>}
-                    </FormControl>
-                  </Box>
-                </Grid>
-              </React.Fragment>
-            ) : (
-              <></>
-            )}
-          </>
-        ))}
-      </Grid>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1,
-        }}
-      >
-        <FormControlLabel
-          label="Geçici Adres"
-          control={<Checkbox checked={formik.values.geciciAdres} onChange={formik.handleChange} name="geciciAdres" id="geciciAdres" />}
-          labelPlacement="end"
-        />
-        <FormControlLabel
-          label="Toplama Gözü"
-          control={<Checkbox checked={formik.values.toplamaGozu} onChange={formik.handleChange} name="toplamaGozu" id="toplamaGozu" />}
-          labelPlacement="end"
-        />
+    <Box component="form" id={ADDRESS_CREATE_FORM_ID} onSubmit={formik.handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, minWidth: { sm: 420 } }}>
+      {/* Adres tipinin ustunde ayrica bir baslik yaziliyordu; alanin kendi
+          etiketi zaten "Adres Tipi" oldugu icin ayni yazi iki kere cikiyor,
+          ustelik dar bir izgara hucresine dustugu icin iki satira boluniyordu. */}
+      <FormControl fullWidth size="small" error={hasError('addressType')}>
+        <InputLabel id="address-type-label">Adres Tipi</InputLabel>
+        <Select
+          labelId="address-type-label"
+          id="addressType"
+          name="addressType"
+          value={formik.values.addressType}
+          label="Adres Tipi"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          {renderOptions(data.addressTypes)}
+        </Select>
+        {hasError('addressType') && <FormHelperText>{formik.errors.addressType}</FormHelperText>}
+      </FormControl>
+
+      {visibleItems.map((item) => (
+        <Box key={item.key} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+            {item.label}
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1.5 }}>
+            <FormControl fullWidth size="small" error={hasError(item.values.first)}>
+              <InputLabel id={`first-${item.key}-label`}>Başlangıç</InputLabel>
+              <Select
+                labelId={`first-${item.key}-label`}
+                id={item.values.first}
+                name={item.values.first}
+                value={formik.values[item.values.first]}
+                label="Başlangıç"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {renderOptions(data[item.key])}
+              </Select>
+              {hasError(item.values.first) && <FormHelperText>{formik.errors[item.values.first]}</FormHelperText>}
+            </FormControl>
+            <FormControl fullWidth size="small" error={hasError(item.values.last)}>
+              <InputLabel id={`last-${item.key}-label`}>Bitiş</InputLabel>
+              <Select
+                labelId={`last-${item.key}-label`}
+                id={item.values.last}
+                name={item.values.last}
+                value={formik.values[item.values.last]}
+                label="Bitiş"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              >
+                {renderOptions(data[item.key])}
+              </Select>
+              {hasError(item.values.last) && <FormHelperText>{formik.errors[item.values.last]}</FormHelperText>}
+            </FormControl>
+          </Box>
+        </Box>
+      ))}
+
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <FormControlLabel label="Geçici Adres" control={<Checkbox checked={formik.values.geciciAdres} onChange={formik.handleChange} name="geciciAdres" id="geciciAdres" />} />
+        <FormControlLabel label="Toplama Gözü" control={<Checkbox checked={formik.values.toplamaGozu} onChange={formik.handleChange} name="toplamaGozu" id="toplamaGozu" />} />
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'flex-end',
-          alignItems: 'center',
-          mt: 2,
-        }}
-      >
-        <Button type="submit" variant="contained">
-          Oluştur
-        </Button>
-      </Box>
-    </form>
+    </Box>
   )
 }
 

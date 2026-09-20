@@ -43,7 +43,7 @@ export default function AddressContainer() {
   const [selectedAddress, setSelectedAddress] = useState({})
   const [createDialog, setCreateDialog] = useState(false)
   const [addressModel, setAddressModel] = useState(enumToCustomList(AddressFieldType))
-  const [loading, setLoading] = useState(true)
+  const [componentsLoading, setComponentsLoading] = useState(false)
   const [modifiedData, setModifiedData] = useState([])
   const [bulkUpdateResponse, setBulkUpdateResponse] = useState({})
   const [components, setComponents] = useState({
@@ -211,6 +211,7 @@ export default function AddressContainer() {
 
   const handleOpenCreateDialog = () => {
     setCreateDialog(true)
+    fetchComponents()
   }
 
   const handleCloseCreateDialog = () => {
@@ -318,40 +319,42 @@ export default function AddressContainer() {
     }
   }
 
+  /**
+   * Adres bilesenlerini (bolum, koridor, unite, kat, oda, adres tipi) yukler.
+   *
+   * Eskiden sekmeye girilir girilmez calisiyordu, yani adres olusturmayacak
+   * kullanici icin de alti istek atiliyordu. Artik yalnizca olusturma diyalogu
+   * acilinca cagriliyor.
+   *
+   * Istekler birbirinden bagimsiz oldugu icin sirayla degil paralel atiliyor;
+   * sirali hali diyalogun acilisini alti gidis-donus kadar bekletiyordu.
+   */
   const fetchComponents = async () => {
+    if (!account?.companyCode || !depoCode) {
+      return
+    }
     try {
-      if (account?.companyCode && depoCode) {
-        setLoading(true)
-        const departments = await getAddressDepartments(headers, account?.companyCode, depoCode)
-        const halls = await getAddressHalls(headers, account?.companyCode, depoCode)
-        const units = await getAddressUnits(headers, account?.companyCode, depoCode)
-        const flats = await getAddressFlats(headers, account?.companyCode, depoCode)
-        const rooms = await getAddressRooms(headers, account?.companyCode, depoCode)
-        const addressTypes = await getAddressTypes(headers, account?.companyCode, depoCode)
+      setComponentsLoading(true)
+      const [departments, halls, units, flats, rooms, addressTypes] = await Promise.all([
+        getAddressDepartments(headers, account.companyCode, depoCode),
+        getAddressHalls(headers, account.companyCode, depoCode),
+        getAddressUnits(headers, account.companyCode, depoCode),
+        getAddressFlats(headers, account.companyCode, depoCode),
+        getAddressRooms(headers, account.companyCode, depoCode),
+        getAddressTypes(headers, account.companyCode, depoCode),
+      ])
 
-        setComponents({
-          departments,
-          halls,
-          units,
-          flats,
-          rooms,
-          addressTypes,
-        })
-      }
+      setComponents({ departments, halls, units, flats, rooms, addressTypes })
     } catch (error) {
       notifyError(error)
     } finally {
-      setLoading(false)
+      setComponentsLoading(false)
     }
   }
 
   useEffect(() => {
     getCountList()
   }, [query])
-
-  useEffect(() => {
-    fetchComponents()
-  }, [depoCode, account?.companyCode])
 
   if (error) {
     return <NotFound msg={error.toString()} />
@@ -403,7 +406,7 @@ export default function AddressContainer() {
         <DynamicTable
           data={data}
           columns={columns}
-          loading={isLoading || loading}
+          loading={isLoading}
           handleChangeColumn={handleChangeColumn}
           tableSx={{ height: gridHeight }}
           search={search}
@@ -433,6 +436,7 @@ export default function AddressContainer() {
         createDialog={createDialog}
         handleCloseCreateDialog={handleCloseCreateDialog}
         data={components}
+        loading={componentsLoading}
         handleSubmit={handleCreateAddress}
       />
     </Box>

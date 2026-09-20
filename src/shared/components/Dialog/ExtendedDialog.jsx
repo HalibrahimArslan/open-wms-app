@@ -52,8 +52,15 @@ export default function ExtendedDialog({ open, handleClose, dialogContent, dialo
           </Box>
         </DialogTitle>
       )}
-      <DialogContent dividers={scroll === 'paper'} sx={{ position: 'relative', minWidth: '300px' }}>
+      {/* dividers icin "scroll === 'paper'" yaziliyordu; scroll burada bir
+          degisken degil, tarayicinin global window.scroll fonksiyonu. Kosul her
+          zaman false donuyordu, yani ayraclar hic cizilmiyordu. */}
+      <DialogContent dividers sx={{ position: 'relative', minWidth: '300px' }}>
+        {/* DialogContentText varsayilan olarak <p> cizer; icine form, izgara,
+            liste gibi blok ogeler konuldugu icin hem gecersiz HTML olusuyor hem
+            de paragraf tipografisi cocuklara siziyordu. */}
         <DialogContentText
+          component="div"
           id="scroll-dialog-description"
           ref={descriptionElementRef}
           tabIndex={-1}
