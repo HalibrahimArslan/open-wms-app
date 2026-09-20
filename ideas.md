@@ -3,3 +3,5 @@
 - [x] Ekranlarda header ksımlarında sayfa başlınlarının karşılarında ekrana ait filtre ikonu orada olmalı tam altında sağda olmasın standartlaşmamız lazım
 - [x] Tema değiştir butonunda renk değişimi yapılmalı, kullanıcıya hangi temada olduğunu gösterecek şekilde tasarlanmalı. Örneğin, açık tema için açık renkli bir ikon ve koyu tema için koyu renkli bir ikon kullanılabilir. Bu sayede kullanıcılar temayı değiştirdiklerinde görsel olarak da farkı anlayabilirler.
 - [x] yet another lightbox paketi yerine daha güncel bir paket ile değişiklik yapman lazım
+- [x] Seçilen tema kalıcı olmalı; sayfa yenilendiğinde açık temaya dönmemeli.
+- [ ] src/context/ColorModeContext.jsx ölü kod: hiçbir yerden import edilmiyor, gerçek tema state'i src/store/ThemeContainer.js içinde tutuluyor. Kaldırılmalı.
