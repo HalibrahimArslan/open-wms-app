@@ -1,6 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useContainer } from 'unstated-next'
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid'
 import { CircularProgress, Button, Box } from '@mui/material'
+import { DepoContainer } from '../../store/DepoContainer'
 import * as XLSX from 'xlsx'
 import { getDepoStockAddresses } from '../../services/AdressService'
 import useAuthHeader from '../../hooks/useAuthHeader'
@@ -19,17 +21,37 @@ export default function ProductAddressContainer() {
   let gridHeight = isMobile ? 'calc(100dvh)' : 'calc(100dvh - 375px)'
 
   const headers = useAuthHeader()
+  const { allDepoList } = useContainer(DepoContainer)
 
-  function getDepoName(params) {
-    if (params.row.depoCode === '8' || params.row.depoCode === '15') {
-      return 'KAYNARCA LOJISTIK DEPO'
-    }
-    if (params.row.depoCode === '99') {
-      return 'İHRACAT DEPO'
-    }
-    if (params.row.depoCode === '98') {
-      return 'HASARLI URUNLER'
-    }
+  /**
+   * Depo kodu -> depo adi eslemesi.
+   *
+   * Adlar daha once dogrudan koda gomuluydu ve yalnizca dort kodu taniyordu
+   * (8, 15, 98, 99). Ustelik karsilastirma metin uzerinden yapiliyordu
+   * (depoCode === '8'); depo kodu servisten sayi olarak geldiginde hicbir
+   * kosul tutmuyor ve fonksiyon undefined dondurup sutunu bos birakiyordu.
+   * Artik adlar depo listesinden okunuyor ve karsilastirma tip farkina
+   * takilmasin diye iki taraf da metne cevriliyor.
+   *
+   * Satirdaki kod, deponun kendi kodu ya da ERP tarafindaki transfer kodu
+   * olabildigi icin ikisi de anahtar olarak yazilir.
+   */
+  const depoNameByCode = useMemo(() => {
+    const map = new Map()
+    ;(allDepoList ?? []).forEach((depo) => {
+      if (depo?.name === undefined || depo?.name === null) return
+      if (depo.code !== undefined && depo.code !== null) map.set(String(depo.code), depo.name)
+      if (depo.transferCode !== undefined && depo.transferCode !== null) map.set(String(depo.transferCode), depo.name)
+    })
+    return map
+  }, [allDepoList])
+
+  // Eslesme bulunamazsa hucre bos birakilmaz; en azindan kod gosterilir ki
+  // eksik tanim gorunur olsun.
+  const getDepoName = (row) => {
+    const code = row?.depoCode
+    if (code === undefined || code === null || code === '') return ''
+    return depoNameByCode.get(String(code)) ?? `Depo ${code}`
   }
 
   const columns = [
@@ -37,8 +59,9 @@ export default function ProductAddressContainer() {
       field: 'depoAdi',
       headerName: 'Depo Adi',
       width: 200,
-      editable: true,
-      valueGetter: (value, row) => getDepoName({ row }),
+      // Turetilmis sutun: duzenlenen deger valueGetter tarafindan hemen
+      // ezildigi icin editable isaretinin bir karsiligi yoktu.
+      valueGetter: (value, row) => getDepoName(row),
     },
     {
       field: 'stokKodu',
@@ -82,7 +105,7 @@ export default function ProductAddressContainer() {
   ]
 
   const excelDataArray = addressList.map((row) => ({
-    'Depo Adi': getDepoName({ row }),
+    'Depo Adi': getDepoName(row),
     'Stok Kodu': row.stokKodu,
     'Stok Adi': row.stockName,
     'Güncelleme Tarihi': String(row.lastUpdateDate).slice(0, 16).replace('T', ' '),
