@@ -9,20 +9,30 @@ import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
 import { notifyError } from '../Layout'
 
+/**
+ * Ikon rayi.
+ *
+ * Ray kendi icinde kaymaz: logo tepede sabit kalir, yalnizca ikon listesi
+ * kayar. Onceden logo ve liste tek scroll alanindaydi, bu yuzden menu sayisi
+ * ekrana sigmadiginda logo da yukari kacip gozden kayboluyordu.
+ *
+ * Yatay padding raya degil ikon ogelerine verilir; secili menunun sol
+ * kenardaki cizgisi ray kenarina dayanmali ve scroll alani tarafindan
+ * kirpilmamali.
+ */
 const StyledBox = styled(Box)(({ theme }) => ({
   flexShrink: 0,
-  width: '100px',
+  width: '100%',
   height: '100vh',
   backgroundColor: theme.palette.secondary.main,
   boxSizing: 'border-box',
-  padding: '16px',
+  padding: '16px 0',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-start',
   flexDirection: 'column',
   zIndex: 1000,
-  overflowY: 'auto',
-  overflowX: 'hidden',
+  overflow: 'hidden',
 }))
 
 const LeftBar = ({ menus }) => {
@@ -74,6 +84,7 @@ const LeftBar = ({ menus }) => {
               sx={{
                 cursor: 'pointer',
                 lineHeight: 0,
+                flexShrink: 0,
               }}
               onClick={() => {
                 if (depoCode === 1) {
@@ -92,9 +103,25 @@ const LeftBar = ({ menus }) => {
             <Box
               sx={{
                 marginTop: 4,
+                alignSelf: 'stretch',
+                flex: 1,
+                minHeight: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 3,
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                // Raydaki 96 pikselin 15'ini native kaydirma cubuguna vermemek
+                // icin ince bir cubuk cizilir; tamamen gizlenirse asagida baska
+                // menu oldugu hic belli olmaz.
+                '&::-webkit-scrollbar': { width: 4 },
+                '&::-webkit-scrollbar-track': { backgroundColor: 'transparent' },
+                '&::-webkit-scrollbar-thumb': {
+                  backgroundColor: alpha(theme.palette.secondary.contrastText, 0.2),
+                  borderRadius: 4,
+                },
+                scrollbarWidth: 'thin',
+                scrollbarColor: `${alpha(theme.palette.secondary.contrastText, 0.2)} transparent`,
               }}
             >
               {menuList.map((menu) => {
@@ -110,6 +137,7 @@ const LeftBar = ({ menus }) => {
                       color: isSelected ? 'primary.main' : (theme) => theme.palette.secondary.contrastText,
                       position: 'relative',
                       gap: 0.5,
+                      paddingX: 1,
                       '&:hover': {
                         color: 'primary.main',
                         '& .menu-icon-bg': {
@@ -149,7 +177,7 @@ const LeftBar = ({ menus }) => {
                       <Box
                         sx={{
                           position: 'absolute',
-                          left: -16,
+                          left: 0,
                           top: '50%',
                           transform: 'translateY(-50%)',
                           width: 3,

@@ -175,6 +175,24 @@ Filtre alanı `Collapse` içinde, `surface.filter` zeminli bir `Paper` olarak
 başlığın hemen altında açılır. Sorgu parametresine bağlı filtreler için
 [QueryFilterPanel](src/components/Filter/QueryFilterPanel.jsx) kullanılır.
 
+### Sol menü rayı
+
+Uygulama kabuğu ([Layout.jsx](src/layout/Layout.jsx)) `height: 100vh` ve
+`overflow: hidden`'dır; sayfa gövdesi hiç kaymaz, scroll eden tek alan
+`<main>`'dir. Bu yüzden sol raya ya da header'a `position: sticky` vermeye
+gerek yoktur, ikisi de zaten yerinde kalır.
+
+Rayın kendi içinde ([LeftBar.jsx](src/layout/sidebar/LeftBar.jsx)) iki bölge
+vardır: tepede sabit duran logo ve altında kendi içinde kayan ikon listesi.
+Logo asla scroll ile gözden kaybolmaz — ana sayfaya dönmenin tek yolu odur.
+Yeni bir öğe eklenirken hangi bölgeye girdiğine karar verilir; rayın tamamını
+tek scroll alanı yapmak logoyu da kaydırır.
+
+Yatay boşluk raya değil ikon öğelerine verilir. Seçili menünün sol kenarındaki
+çizgi `left: 0` ile ray kenarına dayanır; ray yatay padding alsaydı çizgi
+scroll alanı tarafından kırpılırdı. Ray genişliği tek yerde, dış kolonda
+(`96px`) tanımlıdır, iç kutu `width: 100%` ile ona uyar.
+
 ### Boş durum
 
 Liste boşken tablo boş bırakılmaz;
