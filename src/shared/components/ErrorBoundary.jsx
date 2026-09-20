@@ -1,7 +1,19 @@
 import React from 'react'
-import { Box, Typography, Paper, Accordion, AccordionSummary, AccordionDetails, Alert, AlertTitle, Button, Container } from '@mui/material'
-import { ExpandMore as ExpandMoreIcon, ErrorOutlineOutlined as ErrorIcon, Refresh as RefreshIcon, BugReport as BugIcon } from '@mui/icons-material'
+import { Accordion, AccordionDetails, AccordionSummary, Alert, AlertTitle, Box, Button, Container, Paper, Stack, Typography } from '@mui/material'
+import { BugReport as BugIcon, ErrorOutlineOutlined as ErrorIcon, ExpandMore as ExpandMoreIcon, Refresh as RefreshIcon } from '@mui/icons-material'
 
+/**
+ * Beklenmeyen bir render hatasinda tum uygulama yerine bu ekrani gosterir.
+ *
+ * Ekranin tamami sabit aciklarla boyanmisti: panel beyaz bir gradyandi,
+ * acilir bolumun basligi grey.50, bilesen yigini grey.100 zemin uzerine
+ * text.primary ile yaziliyordu. Karanlik temada panel beyaz kaliyor, yigin ise
+ * acik zemin uzerine acik metin dustugu icin hic okunmuyordu. Butun renkler
+ * palet token'larina baglandi.
+ *
+ * Bu bir sinif bileseni oldugu icin useTheme kullanilamaz; sx'e verilen
+ * fonksiyonlar temayi baglamdan aldigi icin ayni isi goruyor.
+ */
 class ErrorBoundary extends React.Component {
   state = {
     error: undefined,
@@ -9,7 +21,7 @@ class ErrorBoundary extends React.Component {
     hasError: false,
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError() {
     return { hasError: true }
   }
 
@@ -34,198 +46,137 @@ class ErrorBoundary extends React.Component {
   render() {
     const { error, errorInfo, hasError } = this.state
 
-    if (hasError && errorInfo) {
-      const isDevelopment = import.meta.env.DEV
+    // Yalnizca hasError'a bakilir. Once "hasError && errorInfo" araniyordu;
+    // errorInfo componentDidCatch'te bir adim sonra geldigi icin arada cocuklar
+    // yeniden ciziliyor ve ayni hata tekrar firlatilabiliyordu.
+    if (!hasError) {
+      return this.props.children
+    }
 
-      return (
-        <Container maxWidth="md" sx={{ py: 4 }}>
-          <Paper
-            elevation={3}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              background: 'linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%)',
-            }}
-          >
-            <Box sx={{ textAlign: 'center', mb: 3 }}>
-              <ErrorIcon
-                sx={{
-                  fontSize: 64,
-                  color: 'error.main',
-                  mb: 2,
-                  animation: 'pulse 2s infinite',
-                }}
-              />
+    const isDevelopment = import.meta.env.DEV
 
-              <Typography
-                variant="h4"
-                component="h1"
-                gutterBottom
-                sx={{
-                  color: 'error.main',
-                  fontWeight: 'bold',
-                  mb: 1,
-                }}
-              >
-                Oops! Bir Hata Oluştu
-              </Typography>
+    return (
+      <Container maxWidth="md" sx={{ paddingY: 4 }}>
+        <Paper
+          variant="outlined"
+          sx={{
+            padding: { xs: 3, sm: 4 },
+            borderRadius: (theme) => theme.radius.section,
+            backgroundColor: 'surface.card',
+            textAlign: 'left',
+          }}
+        >
+          <Box sx={{ textAlign: 'center', marginBottom: 3 }}>
+            <ErrorIcon
+              sx={{
+                fontSize: 64,
+                color: 'error.main',
+                marginBottom: 2,
+                '@keyframes errorPulse': {
+                  '0%': { opacity: 1 },
+                  '50%': { opacity: 0.6 },
+                  '100%': { opacity: 1 },
+                },
+                animation: 'errorPulse 2s infinite',
+              }}
+            />
 
-              <Typography
-                variant="body1"
-                sx={{
-                  color: 'text.secondary',
-                  mb: 3,
-                }}
-              >
-                UI tarafında beklenmeyen bir problem meydana geldi. Lütfen sayfayı yenilemeyi deneyin.
-              </Typography>
+            {/* Baslik daha once error.main ile yaziliyordu; acik temada bu ton
+                beyaz zeminde 2.3 kontrasta dusup okunmuyordu. Renk vurgusu
+                ikonda kaldi, baslik normal metin rengini kullaniyor. */}
+            <Typography variant="h5" component="h1" sx={{ fontWeight: 700, marginBottom: 1 }}>
+              Beklenmeyen bir hata oluştu
+            </Typography>
 
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<RefreshIcon />}
-                onClick={this.handleRetry}
-                sx={{
-                  mr: 2,
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  px: 3,
-                }}
-              >
-                Tekrar Dene
+            <Typography variant="body2" sx={{ color: 'text.secondary', marginBottom: 3 }}>
+              Arayüzde beklenmeyen bir sorun çıktı. Tekrar deneyebilir ya da sayfayı yenileyebilirsiniz.
+            </Typography>
+
+            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ justifyContent: 'center' }}>
+              <Button variant="contained" startIcon={<RefreshIcon />} onClick={this.handleRetry}>
+                Tekrar dene
               </Button>
-
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => window.location.reload()}
-                sx={{
-                  borderRadius: 2,
-                  textTransform: 'none',
-                  px: 3,
-                }}
-              >
-                Sayfayı Yenile
+              <Button variant="outlined" onClick={() => window.location.reload()}>
+                Sayfayı yenile
               </Button>
-            </Box>
+            </Stack>
+          </Box>
 
-            {isDevelopment && (
-              <Alert
-                severity="warning"
-                icon={<BugIcon />}
-                sx={{
-                  mb: 2,
-                  borderRadius: 2,
-                  '& .MuiAlert-message': {
-                    width: '100%',
-                  },
-                }}
-              >
-                <AlertTitle sx={{ fontWeight: 'bold' }}>Geliştirici Modu</AlertTitle>
-                Aşağıda hata detaylarını görebilirsiniz.
+          {isDevelopment && (
+            <>
+              <Alert severity="warning" icon={<BugIcon />} sx={{ marginBottom: 2, borderRadius: (theme) => theme.radius.card }}>
+                <AlertTitle sx={{ fontWeight: 700 }}>Geliştirici modu</AlertTitle>
+                Hata detayları yalnızca geliştirme ortamında gösterilir.
               </Alert>
-            )}
 
-            {isDevelopment && (
               <Accordion
+                defaultExpanded
+                disableGutters
                 sx={{
-                  borderRadius: 2,
-                  '&:before': {
-                    display: 'none',
-                  },
+                  borderRadius: (theme) => theme.radius.card,
                   boxShadow: 'none',
                   border: '1px solid',
-                  borderColor: 'divider',
+                  borderColor: 'border.subtle',
+                  '&:before': { display: 'none' },
                 }}
               >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  sx={{
-                    backgroundColor: 'grey.50',
-                    borderRadius: '8px 8px 0 0',
-                    '&.Mui-expanded': {
-                      borderRadius: '8px 8px 0 0',
-                    },
-                  }}
-                >
-                  <Typography
-                    variant="subtitle1"
-                    sx={{
-                      fontWeight: 'medium',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 1,
-                    }}
-                  >
+                <AccordionSummary expandIcon={<ExpandMoreIcon />} sx={{ backgroundColor: 'surface.subtle' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 700, display: 'flex', alignItems: 'center', gap: 1 }}>
                     <BugIcon fontSize="small" />
-                    Hata Detayları
+                    Hata detayları
                   </Typography>
                 </AccordionSummary>
 
-                <AccordionDetails sx={{ p: 3 }}>
-                  <Box
-                    component="pre"
+                <AccordionDetails sx={{ padding: 2.5 }}>
+                  {/* Hata metni Alert ile ciziliyor: her iki temada da dogru
+                      zemin ve kontrasti MUI'nin kendisi hesapliyor. */}
+                  <Alert
+                    severity="error"
+                    variant="outlined"
+                    icon={false}
                     sx={{
-                      backgroundColor: 'grey.900',
-                      color: 'common.white',
-                      p: 2,
-                      borderRadius: 1,
-                      fontSize: '0.875rem',
+                      marginBottom: 2,
+                      borderRadius: (theme) => theme.radius.control,
                       fontFamily: 'monospace',
-                      overflow: 'auto',
+                      fontSize: '0.8125rem',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',
-                      mb: 2,
                     }}
                   >
-                    {error && error.toString()}
-                  </Box>
+                    {error ? error.toString() : 'Hata bilgisi alınamadı.'}
+                  </Alert>
 
-                  <Typography variant="subtitle2" gutterBottom sx={{ fontWeight: 'bold' }}>
-                    Component Stack:
+                  <Typography variant="caption" sx={{ display: 'block', fontWeight: 700, marginBottom: 0.75, color: 'text.secondary' }}>
+                    Bileşen yığını
                   </Typography>
 
                   <Box
                     component="pre"
                     sx={{
-                      backgroundColor: 'grey.100',
-                      color: 'text.primary',
-                      p: 2,
-                      borderRadius: 1,
+                      margin: 0,
+                      maxHeight: 320,
+                      padding: 2,
+                      borderRadius: (theme) => theme.radius.control,
+                      backgroundColor: 'surface.subtle',
+                      color: 'text.secondary',
+                      border: '1px solid',
+                      borderColor: 'border.subtle',
                       fontSize: '0.75rem',
                       fontFamily: 'monospace',
                       overflow: 'auto',
                       whiteSpace: 'pre-wrap',
                       wordBreak: 'break-word',
-                      border: '1px solid',
-                      borderColor: 'divider',
                     }}
                   >
-                    {errorInfo.componentStack}
+                    {errorInfo?.componentStack ?? 'Bileşen yığını alınamadı.'}
                   </Box>
                 </AccordionDetails>
               </Accordion>
-            )}
-          </Paper>
-
-          <style jsx>{`
-            @keyframes pulse {
-              0% {
-                opacity: 1;
-              }
-              50% {
-                opacity: 0.7;
-              }
-              100% {
-                opacity: 1;
-              }
-            }
-          `}</style>
-        </Container>
-      )
-    }
-
-    return this.props.children
+            </>
+          )}
+        </Paper>
+      </Container>
+    )
   }
 }
 

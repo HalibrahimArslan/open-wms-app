@@ -53,10 +53,13 @@ export default function ProductAddressContainer() {
       field: 'lastUpdateDate',
       headerName: 'Güncelleme Tarihi',
       width: 200,
+      // MUI X 7 ile valueFormatter'in imzasi (params) yerine (value, row, ...)
+      // oldu; govde eski imzadaki params'i okumaya devam ettigi icin sutun
+      // cizilirken ReferenceError firlatiyor ve tum sayfa hata ekranina
+      // dusuyordu.
       valueFormatter: (value) => {
-        const v = params?.value
-        if (!v) return ''
-        return String(v).slice(0, 16).replace('T', ' ')
+        if (!value) return ''
+        return String(value).slice(0, 16).replace('T', ' ')
       },
     },
     {
