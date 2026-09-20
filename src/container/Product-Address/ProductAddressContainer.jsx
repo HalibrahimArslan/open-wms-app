@@ -147,7 +147,7 @@ export default function ProductAddressContainer() {
     // Ciplak spinner sol uste yapisiyordu; tablonun kaplayacagi alan kadar
     // yer tutulup ortalaniyor ki yukleme sirasinda sayfa ziplamasin.
     return (
-      <Box sx={{ height: gridHeight, minHeight: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ paddingX: 2, height: gridHeight, minHeight: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <CircularProgress />
       </Box>
     )
@@ -163,7 +163,9 @@ export default function ProductAddressContainer() {
   }
 
   return (
-    <>
+    // Baslik da tablo da panelin kenarina yapisiyordu. Yatay bosluk burada, tek
+    // yerde verilir; basligin ve tablonun ayni hizada durmasi da bundan gelir.
+    <Box sx={{ paddingX: 2, paddingBottom: 1 }}>
       <ActionHeader
         title="Ürün Adres Gözlem"
         subtitle={`${rows.length} ürün adresi`}
@@ -194,12 +196,13 @@ export default function ProductAddressContainer() {
           height: gridHeight,
           minHeight: 400,
           border: 'none',
-          // Ilk ve son sutunun dis kenar boslugu kaldirilir; aksi halde baslik
-          // ile ilk sutun basligi birbirinden 10 piksel kayiyor.
+          // Ilk ve son sutunun dis kenar boslugu kaldirilir: bosluk zaten
+          // saricidan geliyor, hucre de kendi 10 pikselini eklerse baslik ile
+          // ilk sutun basligi birbirinden kayiyor.
           '& .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': { paddingLeft: 0 },
           '& .MuiDataGrid-columnHeader:last-of-type, & .MuiDataGrid-cell:last-of-type': { paddingRight: 0 },
         }}
       />
-    </>
+    </Box>
   )
 }

@@ -232,9 +232,13 @@ satırı açılmaz; ekrandan ekrana değişen yerleşim bu yüzden ortaya çık�
 düğmeler, en sağda filtre düğmesi, ondan sonra `ActionHeader`'ın kendi ekle
 düğmesi.
 
-Başlık şeridi yatay boşluk almaz, çünkü hemen altındaki tablo ya da kart da
-almaz; aldığı anda başlık ile ilk sütun başlığı birbirinden kayar. Tablonun dış
-kenarındaki hücre boşluğu da sıfırlanır:
+Yatay boşluk `ActionHeader`'da değil, ekranın sarıcısında verilir. İçerik
+panelin kenarına yapışmaz; sarıcı en az `paddingX: 2` alır ve başlık da tablo
+da aynı sarıcının içinde durduğu için kendiliğinden aynı hizaya gelir.
+`ActionHeader` kendi yatay boşluğunu hiç vermez, verseydi başlık tablodan
+kayardı. Tablonun dış kenarındaki hücre boşluğu da sıfırlanır; boşluk zaten
+sarıcıdan geliyor, hücre kendi 10 pikselini eklerse ilk sütun başlığı başlıktan
+kayar:
 
 ```jsx
 '& .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': { paddingLeft: 0 },
