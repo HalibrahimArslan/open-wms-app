@@ -153,6 +153,8 @@ export default function ProductAddressContainer() {
     )
   }
 
+  const rows = addressList.filter((item) => item.status === true)
+
   const searchValue = (filterModel.quickFilterValues ?? []).join(' ')
 
   const handleSearchChange = (event) => {
@@ -164,7 +166,12 @@ export default function ProductAddressContainer() {
     <>
       <ActionHeader
         title="Ürün Adres Gözlem"
+        subtitle={`${rows.length} ürün adresi`}
         hide
+        // Tablonun kendi sutun basligi zaten bir cizgi ciziyor; ayrac da
+        // kalsaydi birbirine paralel iki cizgi ve aralarinda bos bir bant
+        // olusuyordu.
+        divider={false}
         actions={
           <>
             <TableSearchField placeholder="Stok, barkod ya da adres ara" value={searchValue} onChange={handleSearchChange} />
@@ -175,7 +182,7 @@ export default function ProductAddressContainer() {
         }
       />
       <DataGrid
-        rows={addressList.filter((item) => item.status === true)}
+        rows={rows}
         columns={columns}
         disableRowSelectionOnClick
         filterModel={filterModel}

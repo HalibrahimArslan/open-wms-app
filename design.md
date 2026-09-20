@@ -240,6 +240,14 @@ kenarındaki hücre boşluğu da sıfırlanır:
 '& .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': { paddingLeft: 0 },
 ```
 
+`subtitle` başlığın altına tek satır açıklama ya da kayıt sayısı koyar; tek
+başına duran bir başlık şeridi boş görünür, alt satır şeride ağırlık verir ve
+ekranın ne gösterdiğini söyler.
+
+`divider={false}`, altında kendi başlık satırı olan bir tablo varken kullanılır.
+Ayraç da kalsaydı birbirine paralel iki çizgi ve aralarında amaçsız bir bant
+oluşur.
+
 Liste ekranında arama kutusu tablonun üstünde ayrı bir şeride değil, başlığın
 karşısına konur ve [TableSearchField](src/shared/components/Table/TableSearchField.jsx)
 kullanılır. Ayrı şerit, içi boş bir bant gibi göründüğü ve ekranda ikinci bir

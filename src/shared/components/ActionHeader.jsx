@@ -14,10 +14,17 @@ import AddCircleIcon from '@mui/icons-material/AddCircle'
  * Onceden yatay bosluk `hide` prop'una bagliydi (p: hide ? 1 : 0), yani ekle
  * dugmesinin gizli olup olmamasi baslik hizasini degistiriyordu.
  *
- * actions: baslik satirinin sagina yerlesen ogeler (genelde Stack icinde).
- * hide: ekle dugmesini gizler.
+ * title    : ekran adi.
+ * subtitle : baslik altinda tek satir aciklama ya da kayit sayisi. Tek basina
+ *            duran bir baslik seridi bos gorunuyor; bir alt satir seride agirlik
+ *            veriyor ve ekranin ne gosterdigini soyluyor.
+ * actions  : baslik satirinin sagina yerlesen ogeler.
+ * hide     : ekle dugmesini gizler.
+ * divider  : basligin altindaki ayrac. Altinda kendi baslik satiri olan bir
+ *            tablo varsa false verilir; yoksa birbirine paralel iki cizgi
+ *            olusuyor ve aralarinda amacsiz bir bant kaliyor.
  */
-function ActionHeader({ handleClick, title, Icon, hide, actions }) {
+function ActionHeader({ handleClick, title, subtitle, Icon, hide, actions, divider = true }) {
   const theme = useTheme()
   return (
     <>
@@ -29,17 +36,26 @@ function ActionHeader({ handleClick, title, Icon, hide, actions }) {
           gap: 1.5,
           // Aksiyon olsun olmasin serit ayni yukseklikte kalsin diye.
           minHeight: 48,
+          marginBottom: divider ? 0 : 1.5,
         }}
       >
-        <Typography
-          variant="h5"
-          sx={{
-            fontWeight: theme.typography.fontWeightMedium,
-          }}
-        >
-          {title}
-        </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ minWidth: 0 }}>
+          <Typography
+            variant="h5"
+            sx={{
+              fontWeight: theme.typography.fontWeightMedium,
+              lineHeight: 1.2,
+            }}
+          >
+            {title}
+          </Typography>
+          {subtitle && (
+            <Typography variant="body2" sx={{ color: 'text.secondary', marginTop: 0.5 }}>
+              {subtitle}
+            </Typography>
+          )}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}>
           {actions}
           {handleClick && Icon ? (
             <IconButton onClick={handleClick}>{cloneElement(Icon, { sx: { fontSize: 35 } })}</IconButton>
@@ -52,7 +68,7 @@ function ActionHeader({ handleClick, title, Icon, hide, actions }) {
       </Box>
       {/* Ayracin altindaki bosluk once <br /> ile veriliyordu; satir yuksekligi
           kadar, yani yazi tipine gore degisen bir bosluktu. Artik olcekten. */}
-      <Divider flexItem sx={{ marginBottom: 2 }} />
+      {divider && <Divider flexItem sx={{ marginBottom: 2 }} />}
     </>
   )
 }
