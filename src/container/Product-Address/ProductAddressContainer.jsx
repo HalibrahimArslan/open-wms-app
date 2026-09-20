@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useContainer } from 'unstated-next'
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid'
-import { CircularProgress, Button, Box } from '@mui/material'
+import { Box, Button, CircularProgress, Paper } from '@mui/material'
 import { DepoContainer } from '../../store/DepoContainer'
 import * as XLSX from 'xlsx'
 import { getDepoStockAddresses } from '../../services/AdressService'
@@ -18,7 +18,7 @@ export default function ProductAddressContainer() {
   const [addressList, setAddressList] = useState([])
   const [loading, setLoading] = useState(false)
   const isMobile = useIsMobile()
-  let gridHeight = isMobile ? 'calc(100dvh)' : 'calc(100dvh - 375px)'
+  const gridHeight = isMobile ? 'calc(100dvh - 260px)' : 'calc(100dvh - 400px)'
 
   const headers = useAuthHeader()
   const { allDepoList } = useContainer(DepoContainer)
@@ -138,25 +138,45 @@ export default function ProductAddressContainer() {
   }, [])
 
   if (loading) {
-    return <CircularProgress />
+    // Ciplak spinner sol uste yapisiyordu; tablonun kaplayacagi alan kadar
+    // yer tutulup ortalaniyor ki yukleme sirasinda sayfa ziplamasin.
+    return (
+      <Box sx={{ height: gridHeight, minHeight: 400, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <CircularProgress />
+      </Box>
+    )
   }
 
   return (
-    <>
-      <Box>
-        <ActionHeader title="Ürün Adres Gözlem" handleClick={handleExport} Icon={<img src={excelimg} alt="Excel indir" width={40} height={40} />} />
+    // Baslik ile tablo iki ayri blok halinde duruyordu; aralarinda tablonun
+    // arama seridiyle birlesen bos bir bant olusuyordu. Ikisi artik tek bir
+    // kart icinde ve tablonun kendi kenarligi kaldirildi, cerceveyi kart
+    // veriyor.
+    <Paper variant="outlined" sx={{ borderRadius: (theme) => theme.radius.section, overflow: 'hidden' }}>
+      <Box sx={{ paddingX: 2, paddingTop: 1.5 }}>
+        <ActionHeader
+          title="Ürün Adres Gözlem"
+          hide
+          actions={
+            <Button variant="outlined" size="medium" startIcon={<img src={excelimg} alt="" width={20} height={20} />} onClick={handleExport} disabled={addressList.length === 0}>
+              Excel
+            </Button>
+          }
+        />
       </Box>
       <DataGrid
         rows={addressList.filter((item) => item.status === true)}
         columns={columns}
-        disableSelectionOnClick
+        disableRowSelectionOnClick
         slots={{
           toolbar: CustomToolbar,
           noRowsOverlay: CustomNoRowsOverlay,
         }}
-        style={{ minHeight: gridHeight }}
+        // minHeight verildiginde tablo satir sayisindan bagimsiz olarak
+        // uzuyor ve son satirin altinda genis bir bosluk kaliyordu.
+        sx={{ height: gridHeight, minHeight: 400, border: 'none' }}
         showToolbar
       />
-    </>
+    </Paper>
   )
 }
