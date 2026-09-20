@@ -14,7 +14,7 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree'
 import ViewInArIcon from '@mui/icons-material/ViewInAr'
 import excelimg from '../../assets/images/cards/excel.png'
 import * as XLSX from 'xlsx'
-import TablePanel, { orderRowTint, tableHeadSx } from '../../shared/components/Table/TablePanel'
+import TablePanel, { tableHeadSx } from '../../shared/components/Table/TablePanel'
 import TableSearchField from '../../shared/components/Table/TableSearchField'
 
 // Parçalı bir ürünün partialList'inden düz parça listesi çıkarır.
@@ -41,11 +41,8 @@ const extractPieces = (row) => {
   )
 }
 
-// Ozel proplar DOM'a sizmasin: <tr siparisMiktar="..."> React uyarisi uretir.
-const StyledTableRow = styled(TableRow, {
-  shouldForwardProp: (prop) => !['siparisMiktar', 'teslimMiktar', 'isPiece'].includes(prop),
-})(({ theme, siparisMiktar, teslimMiktar }) => ({
-  backgroundColor: orderRowTint(theme, siparisMiktar, teslimMiktar),
+const StyledTableRow = styled(TableRow)(({ theme, siparisMiktar, teslimMiktar, isPiece }) => ({
+  backgroundColor: teslimMiktar <= 0 ? '#D77676  !important' : teslimMiktar < siparisMiktar ? 'antiquewhite' : '#EAFAF1 !important',
 }))
 
 const StickyActionCell = styled(TableCell)(({ theme }) => ({
