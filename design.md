@@ -116,12 +116,12 @@ başlık yazılmaz.
 `theme.radius` ölçeği dıştan içe azalır. İç kutu dış kutudan daha oval
 olmamalıdır.
 
-| Token            | Değer  | Kullanım             |
-| ---------------- | ------ | -------------------- |
-| `radius.panel`   | `24px` | Sayfa gövdesi        |
-| `radius.section` | `16px` | Gövde içindeki panel |
-| `radius.card`    | `12px` | Panel içindeki kart  |
-| `radius.control` | `8px`  | Buton, input, chip   |
+| Token            | Değer  | Kullanım                   |
+| ---------------- | ------ | -------------------------- |
+| `radius.panel`   | `24px` | Sayfa gövdesi              |
+| `radius.section` | `16px` | Gövde içindeki panel       |
+| `radius.card`    | `12px` | Panel içindeki kart        |
+| `radius.control` | `10px` | Buton, input, select, chip |
 
 Değerler bilerek string tutulur. MUI'nin `sx` prop'u `borderRadius`'a verilen
 sayıyı `theme.shape.borderRadius` ile çarpar; sayı verilseydi aynı token `sx`

@@ -19,7 +19,7 @@ const radius = {
   panel: '24px', // sayfa govdesi (en distaki cerceve)
   section: '16px', // govde icindeki panel
   card: '12px', // panel icindeki kart
-  control: '8px', // buton, input, chip
+  control: '10px', // buton, input, select, chip
 }
 
 const typography = {
