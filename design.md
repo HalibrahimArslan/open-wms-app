@@ -138,6 +138,64 @@ ve `styled()` içinde farklı sonuç üretirdi.
 - Yalnızca ikondan oluşan her düğmede `aria-label` ve `Tooltip` bulunur.
   Ekran okuyucu için metin, fare kullanıcısı için ipucu gerekir.
 
+## Marka
+
+### İşaret
+
+Marka işareti solda bir tam raf bayı, sağda iki bölmeli gözdür; üstteki göz
+dolu, diğerleri boştur. Anlattığı şey adreslenmiş bir raf ve içindeki birimdir,
+yani ürünün yaptığı işin kendisi.
+
+İşaret marka adından **türetilmez**. Önceden altıgen bir rozetin içine marka
+adının baş harfi yazılıyordu; ürün beyaz etiketli çalıştığı için bu her
+kurulumda farklı bir harf demekti ve işaret şablondan çıkmış gibi duruyordu.
+Üstelik sekmede görünen işaret (izometrik küp) ile uygulama içindeki işaret
+(altıgen + harf) birbirinden bağımsız iki ayrı çizimdi. Artık tek bir işaret
+vardır.
+
+Derinlik ikinci bir renkle değil aynı rengin opaklık basamaklarıyla verilir:
+dolu göz tam opak, diğer iki parça `0.45`. Böylece işaret tek renk baskıda,
+kargo etiketinde ve faturada da bozulmaz. `0.45` keyfi değil; daha açık
+değerlerde ikincil parçalar 16 pikselde kayboluyor ve işaret tek bir kareye
+düşüyor.
+
+Renk temadan gelir: açık temada `primary.main`, koyu temada
+`secondary.contrastText`. Koyu zeminde marka bordosu 1.3 kontrastta kalıp
+kayboluyor, bu yüzden koyu temada bordo kullanılmaz.
+
+### Kilitler
+
+[BrandLogo](src/components/Brand/BrandLogo.jsx) üç kilit sunar:
+
+| variant   | Nerede                                                                                         |
+| --------- | ---------------------------------------------------------------------------------------------- |
+| `full`    | İşaret + ayraç + ad + alt başlık. Giriş ekranı, evrak başlığı, yatay yerin bol olduğu her yer. |
+| `stacked` | İşaret üstte, ad altta. Sol menü rayı gibi dar kolonlar; alt başlık düşer.                     |
+| `mark`    | Yalnızca işaret. Favicon, uygulama ikonu, ürün adının bağlamda zaten yazılı olduğu yerler.     |
+
+İşaretin çevresinde her zaman en az işaret yüksekliğinin yarısı kadar boşluk
+kalır. İşaret 16 pikselin altında kullanılmaz.
+
+Kurulum `REACT_APP_BRAND_LOGO_URL` tanımlarsa müşterinin kendi görseli basılır
+ve bu kuralların hiçbiri uygulanmaz; ürünün kendi işareti yalnızca varsayılan
+haldir.
+
+### Varlıklar
+
+Tek kaynak [BrandMark.jsx](src/components/Brand/BrandMark.jsx)'teki geometridir.
+`public/` altındaki dosyalar ondan türetilir ve elle düzenlenmez:
+
+```
+python3 scripts/brand-assets.py
+```
+
+Bu komut `brand-mark.svg` (sekme ikonu, koyu tarayıcı arayüzü için açık tona
+döner), `favicon.ico` (16/32/48), `logo192.png`, `logo512.png` ve
+`apple-touch-icon.png` dosyalarını yeniden üretir. Uygulama ikonlarında işaret
+beyaza döner ve bordo geçişli bir kaba oturur; gövde içinde ise kapsız, düz
+renk kullanılır. `BrandMark.jsx` içindeki ölçüler değişirse bu betik yeniden
+çalıştırılır, yoksa sekmedeki işaret ile uygulamadaki işaret yine ayrışır.
+
 ## Ekran düzeni
 
 ### Başlık ve ekran aksiyonları
