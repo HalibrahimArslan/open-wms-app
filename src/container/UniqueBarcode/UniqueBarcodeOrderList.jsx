@@ -41,7 +41,12 @@ const extractPieces = (row) => {
   )
 }
 
-const StyledTableRow = styled(TableRow)(({ theme, siparisMiktar, teslimMiktar, isPiece }) => ({
+// Satirin durumunu tasiyan proplar styled bilesenden DOM'a suzuluyordu, yani
+// tarayicida <tr siparisMiktar="..."> olusup React uyarisi veriyordu. Bu
+// proplar yalnizca zemin rengini hesaplamak icin var, elemana gecmemeli.
+const StyledTableRow = styled(TableRow, {
+  shouldForwardProp: (prop) => !['siparisMiktar', 'teslimMiktar', 'isPiece'].includes(prop),
+})(({ siparisMiktar, teslimMiktar }) => ({
   backgroundColor: teslimMiktar <= 0 ? '#D77676  !important' : teslimMiktar < siparisMiktar ? 'antiquewhite' : '#EAFAF1 !important',
 }))
 
