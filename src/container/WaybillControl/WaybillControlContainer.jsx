@@ -1,16 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import ActionHeader from '../../shared/components/ActionHeader'
+import FilterToggleButton from '../../shared/components/FilterToggleButton'
 import { getWaybillList } from '../../services/MikroService'
 import { DataGrid } from '@mui/x-data-grid'
 import QueryFilterPanel from '../../components/Filter/QueryFilterPanel'
-import { Box, Button, Chip, CircularProgress, Collapse, Grid, IconButton, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Chip, CircularProgress, Collapse, Grid, MenuItem, Paper, Stack, TextField, Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useLocation, useNavigate } from 'react-router'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import CloseIcon from '@mui/icons-material/Close'
 import * as XLSX from 'xlsx'
 import excelimg from '../../assets/images/cards/excel.png'
 import { generatePayload } from '../../utils/Utils'
@@ -224,23 +223,30 @@ const WaybillControlContainer = () => {
 
   return (
     <>
-      <ActionHeader title={'İrsaliye Kontrol'} hide={true} />
-      <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            alignItems: 'center',
-          }}
-        >
-          <IconButton size="small" onClick={handleExportExcel} aria-label="Excel indir" sx={{ opacity: waybillList.length === 0 ? 0.5 : 1 }} disabled={waybillList.length === 0}>
-            <img src={excelimg} alt="Excel indir" width={24} height={24} />
-          </IconButton>
-          <IconButton size="small" onClick={() => setFiltersOpen((prev) => !prev)}>
-            {filtersOpen ? <CloseIcon /> : <FilterListIcon />}
-          </IconButton>
-        </Stack>
-      </Grid>
+      <ActionHeader
+        title={'İrsaliye Kontrol'}
+        hide={true}
+        actions={
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Button
+              variant="outlined"
+              size="medium"
+              onClick={handleExportExcel}
+              disabled={waybillList.length === 0}
+              startIcon={<img src={excelimg} alt="" width={20} height={20} />}
+            >
+              Excel
+            </Button>
+            <FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />
+          </Stack>
+        }
+      />
       <QueryFilterPanel
         initialFilters={initialFilters}
         filterKeys={filterKeys}

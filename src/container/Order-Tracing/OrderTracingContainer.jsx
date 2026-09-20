@@ -1,9 +1,10 @@
-import { Box, Button, Collapse, Grid, IconButton, Paper, Skeleton, Stack, TextField, Typography, MenuItem } from '@mui/material'
+import { Box, Button, Collapse, Grid, Paper, Skeleton, Stack, TextField, Typography, MenuItem } from '@mui/material'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getOrderMasterList } from '../../services/OrderDetailService'
 import { DataGrid, GridActionsCellItem, GridToolbar } from '@mui/x-data-grid'
 import { selectionModelToIds } from '../../shared/components/DataGrid/selection'
+import FilterToggleButton from '../../shared/components/FilterToggleButton'
 import MouseIcon from '@mui/icons-material/Mouse'
 import TracingItem from '../../components/TracingItem'
 import { useTheme } from '@mui/material/styles'
@@ -20,8 +21,6 @@ import useIsMobile from '../../hooks/useIsMobile'
 import ExtendedDialog from '../../shared/components/Dialog/ExtendedDialog'
 import { generateDocument } from '../../services/PrintService'
 import { generatePayload } from '../../utils/Utils'
-import CloseIcon from '@mui/icons-material/Close'
-import FilterListIcon from '@mui/icons-material/FilterList'
 import PrintIcon from '@mui/icons-material/Print'
 import ActionHeader from '../../shared/components/ActionHeader'
 import QueryFilterPanel from '../../components/Filter/QueryFilterPanel'
@@ -526,40 +525,40 @@ export default function OrderTracingContainer() {
 
   return (
     <>
-      <ActionHeader title={'Sipariş Takip'} hide={true} />
-
-      <Grid sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', mb: 2 }}>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            alignItems: 'center',
-          }}
-        >
-          <SplitButton
-            variant="outlined"
-            size="medium"
-            disabled={selectedRows.length === 0 || printLoading}
-            ariaLabel="Dışa aktarma aksiyonları"
-            primary={{
-              label: 'Excel',
-              icon: <img src={excelimg} alt="Excel" width={20} height={20} />,
-              onClick: handleExportExcel,
+      <ActionHeader
+        title={'Sipariş Takip'}
+        hide={true}
+        actions={
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
             }}
-            options={[
-              {
-                label: printLoading ? 'Yazdırılıyor...' : 'Yazdır',
-                icon: <PrintIcon fontSize="small" />,
-                onClick: handlePrint,
-                disabled: printLoading,
-              },
-            ]}
-          />
-          <IconButton size="small" onClick={() => setFiltersOpen((prev) => !prev)}>
-            {filtersOpen ? <CloseIcon /> : <FilterListIcon />}
-          </IconButton>
-        </Stack>
-      </Grid>
+          >
+            <SplitButton
+              variant="outlined"
+              size="medium"
+              disabled={selectedRows.length === 0 || printLoading}
+              ariaLabel="Dışa aktarma aksiyonları"
+              primary={{
+                label: 'Excel',
+                icon: <img src={excelimg} alt="Excel" width={20} height={20} />,
+                onClick: handleExportExcel,
+              }}
+              options={[
+                {
+                  label: printLoading ? 'Yazdırılıyor...' : 'Yazdır',
+                  icon: <PrintIcon fontSize="small" />,
+                  onClick: handlePrint,
+                  disabled: printLoading,
+                },
+              ]}
+            />
+            <FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />
+          </Stack>
+        }
+      />
 
       <Grid sx={{ mb: 2 }}>
         <Collapse in={filtersOpen} timeout="auto" unmountOnExit>

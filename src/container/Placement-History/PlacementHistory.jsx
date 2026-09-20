@@ -1,4 +1,4 @@
-import { Grid, Button, Box, Paper, Card, Typography, Skeleton, MenuItem, TextField, IconButton, Collapse, InputAdornment, useTheme } from '@mui/material'
+import { Grid, Stack, Button, Box, Paper, Card, Typography, Skeleton, MenuItem, TextField, Collapse, InputAdornment, useTheme } from '@mui/material'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import dayjs from 'dayjs'
@@ -9,12 +9,11 @@ import TablePagination from '@mui/material/TablePagination'
 import { notifyError } from '../../layout/Layout'
 import { DataGrid } from '@mui/x-data-grid'
 import ActionHeader from '../../shared/components/ActionHeader'
+import FilterToggleButton from '../../shared/components/FilterToggleButton'
 import QueryFilterPanel from '../../components/Filter/QueryFilterPanel'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import CloseIcon from '@mui/icons-material/Close'
-import FilterListIcon from '@mui/icons-material/FilterList'
 import SearchIcon from '@mui/icons-material/Search'
 import { blue } from '@mui/material/colors'
 import XLSX from 'xlsx-js-style'
@@ -289,7 +288,24 @@ export default function PlacementHistory() {
 
   return (
     <>
-      <ActionHeader title={'Yerleştirme Geçmişi'} hide={true} />
+      <ActionHeader
+        title={'Yerleştirme Geçmişi'}
+        hide={true}
+        actions={
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Button variant="outlined" size="medium" disabled={exporting} startIcon={<img src={excelimg} alt="Excel" width={20} height={20} />} onClick={handleExportExcel}>
+              {exporting ? 'Hazırlanıyor...' : 'Excel'}
+            </Button>
+            <FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />
+          </Stack>
+        }
+      />
 
       {/* ---------------- Özet kartları ---------------- */}
       <Grid container spacing={2} sx={{ mb: 3 }}>
@@ -373,16 +389,6 @@ export default function PlacementHistory() {
       >
         {({ filters, setFilter, applyFilters, clearFilters }) => (
           <>
-            {/* ---------------- Excel + Filtre aç/kapa ---------------- */}
-            <Grid sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1, mb: 1 }}>
-              <Button variant="outlined" size="medium" disabled={exporting} startIcon={<img src={excelimg} alt="Excel" width={20} height={20} />} onClick={handleExportExcel}>
-                {exporting ? 'Hazırlanıyor...' : 'Excel'}
-              </Button>
-              <IconButton size="small" onClick={() => setFiltersOpen((prev) => !prev)}>
-                {filtersOpen ? <CloseIcon /> : <FilterListIcon />}
-              </IconButton>
-            </Grid>
-
             <Collapse in={filtersOpen} timeout="auto" unmountOnExit>
               <Paper sx={{ p: 3, mb: 2, backgroundColor: (theme) => theme.palette.surface.filter }} elevation={0}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
