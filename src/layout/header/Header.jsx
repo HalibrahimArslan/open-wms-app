@@ -23,7 +23,6 @@ import { DepoContainer } from '../../store/DepoContainer'
 import { AuthContainer } from '../../store/AuthContainer'
 import { useSWRConfig } from 'swr'
 import { Avatar, Button, Divider, ListItemText, useMediaQuery, alpha } from '@mui/material'
-import { ThemeContainer } from '../../store/ThemeContainer'
 import { useTheme } from '@mui/system'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
@@ -40,7 +39,6 @@ export default function Header() {
   const { depoCode, depoName, allDepoList, handleDepoCode, handleDepoName, handleDepoCombo, handleDepoMenu } = useContainer(DepoContainer)
   const { account, dock, handleChangeDock } = useContainer(DataStore)
   const { cache } = useSWRConfig()
-  const { handleChangeMode } = ThemeContainer.useContainer()
   const { auth, handleAuth } = AuthContainer.useContainer()
 
   const navigate = useNavigate()
@@ -240,20 +238,7 @@ export default function Header() {
             }}
           >
             <Typography variant="subtitle2">Tema</Typography>
-            <Button
-              sx={{
-                '&:hover': {
-                  background: 'transparent',
-                },
-                '&:active': {
-                  background: 'transparent',
-                },
-              }}
-              onClick={() => handleChangeMode()}
-              aria-controls={menuId}
-            >
-              <ThemeSwitchButton />
-            </Button>
+            <ThemeSwitchButton />
           </MenuItem>
           <MenuItem
             sx={{
