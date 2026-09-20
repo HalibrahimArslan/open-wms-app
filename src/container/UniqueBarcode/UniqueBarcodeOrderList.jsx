@@ -332,10 +332,14 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                         <></>
                       )}
 
+                      {/* Satirin tamami kalinken, baslik satiri da kalin
+                          oldugu icin basliklar ile veriler ayni agirlikta
+                          duruyor ve hicbir sey one cikmiyordu. Yalnizca satirin
+                          kimligi olan stok kodu kalin kalir. */}
                       <TableCell sx={{ fontWeight: 'bold' }} align="left">
                         {row.stokKodu}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      <TableCell align="left">
                         <Stack
                           direction="row"
                           spacing={1}
@@ -372,26 +376,20 @@ function UniqueBarcodeOrderList({ list, opType, adresList, handleBarcode, barcod
                           <Chip size="small" variant="outlined" color="primary" label={row.stokBirimi || '-'} />
                         )}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }} align="left">
+                      <TableCell align="left">
                         {(() => {
                           // Sadece ilk (en güncel) toplanmış barkodu göster; seed + okutulanlar barcodeMap'te
                           const code = (barcodeMap[row.stokKodu] || []).filter((b) => b.used).map((b) => b.code)[0]
                           return code ? (
-                            <Typography variant="caption" sx={{ fontFamily: 'monospace', fontWeight: 'bold' }}>
+                            <Typography variant="caption" sx={{ fontFamily: 'monospace' }}>
                               {code}
                             </Typography>
                           ) : null
                         })()}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                        {formatMiktar(row.siparisMiktar)}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                        {formatMiktar(teslimVal)}
-                      </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                        {formatMiktar(kalanVal)}
-                      </TableCell>
+                      <TableCell align="left">{formatMiktar(row.siparisMiktar)}</TableCell>
+                      <TableCell align="left">{formatMiktar(teslimVal)}</TableCell>
+                      <TableCell align="left">{formatMiktar(kalanVal)}</TableCell>
                       {opType === 'FMK' ? renderBarcodeCell(row) : <></>}
                     </StyledTableRow>
 

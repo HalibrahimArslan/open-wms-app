@@ -179,7 +179,7 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
             </TableHead>
             <TableBody>
               {data.map((row) => (
-                <>
+                <React.Fragment key={row.stokKodu}>
                   {row.isPiece ? (
                     <StyledTableRow>
                       <TableCell align="left">Parça Sahibi</TableCell>
@@ -200,7 +200,13 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
                       <TableCell align="right">
                         <Stack sx={{ overflow: 'auto', height: '100px' }}>
                           {adresList && adresList.length > 0 ? (
-                            adresList.filter((todo) => todo.stockCode === row.stokKodu).map((cycle) => <Typography align="left">{cycle.address}</Typography>)
+                            adresList
+                              .filter((todo) => todo.stockCode === row.stokKodu)
+                              .map((cycle) => (
+                                <Typography key={cycle.id ?? cycle.address} align="left">
+                                  {cycle.address}
+                                </Typography>
+                              ))
                           ) : (
                             <></>
                           )}
@@ -210,24 +216,18 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
                       <></>
                     )}
 
+                    {/* Satirin tamami kalinken hicbir sey one cikmiyordu:
+                        baslik satiri da kalin oldugu icin basliklar ile veriler
+                        ayni agirliktaydi. Yalnizca satirin kimligi olan stok
+                        kodu kalin kalir; OrderProgressItem de ayni sekilde. */}
                     <TableCell sx={{ fontWeight: 'bold' }} align="left">
                       {row.stokKodu}
                     </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                      {row.stokAdi}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                      {row.barkod}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                      {row.siparisMiktar}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                      {row.teslimMiktar}
-                    </TableCell>
-                    <TableCell sx={{ fontWeight: 'bold' }} align="left">
-                      {(row.siparisMiktar - row.teslimMiktar).toFixed(2)}
-                    </TableCell>
+                    <TableCell align="left">{row.stokAdi}</TableCell>
+                    <TableCell align="left">{row.barkod}</TableCell>
+                    <TableCell align="left">{row.siparisMiktar}</TableCell>
+                    <TableCell align="left">{row.teslimMiktar}</TableCell>
+                    <TableCell align="left">{(row.siparisMiktar - row.teslimMiktar).toFixed(2)}</TableCell>
                     {opType === 'FMK' && pieceSize > 0 ? (
                       <StyledTableCell align="left">
                         {row.hasPiece ? (
@@ -238,7 +238,7 @@ function OrderProgressItemBasic({ list, opType, adresList, handleStart }) {
                       </StyledTableCell>
                     ) : null}
                   </StyledTableRow>
-                </>
+                </React.Fragment>
               ))}
             </TableBody>
           </Table>
