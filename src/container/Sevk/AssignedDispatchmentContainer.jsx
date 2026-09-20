@@ -58,7 +58,6 @@ function AssignedDispatchmentContainer() {
   const [selectedControlAddress, setSelectedControlAddress] = useState(null)
   const [erpAmount, setErpAmount] = useState()
   const [loading, setLoading] = useState(true)
-  const [viewMode, setViewMode] = useState('list')
 
   const handleDialog = (name, isOpen) => {
     setDialogs((prev) => ({ ...prev, [name]: isOpen }))
@@ -330,8 +329,6 @@ function AssignedDispatchmentContainer() {
     }
   }
 
-  console.log(apiList)
-
   const fetchAddressListData = async (query) => {
     const res = await getProductAddresses(headers, query)
     res && setAdresList(res)
@@ -382,14 +379,7 @@ function AssignedDispatchmentContainer() {
 
   return (
     <Box sx={{ position: 'relative', display: 'flex', flexDirection: 'column', minHeight: '80vh', gap: 3 }}>
-      <OrderPreparationHeader
-        orderType={orderType}
-        orderNumber={orderNumber}
-        orderInfo={orderInfo}
-        viewMode={viewMode}
-        onViewModeChange={setViewMode}
-        onEdit={navigateToOrderEdit}
-      />
+      <OrderPreparationHeader orderType={orderType} orderNumber={orderNumber} orderInfo={orderInfo} />
 
       <OrderPickingInputContainer
         orderType={orderType}
@@ -428,7 +418,6 @@ function AssignedDispatchmentContainer() {
                 })}
               adresList={adresList}
               opType={'MSK'}
-              viewMode={viewMode}
               handleNavigate={navigateToOrderEdit}
             />
           )}

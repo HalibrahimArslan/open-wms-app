@@ -3,15 +3,13 @@ import ViewListIcon from '@mui/icons-material/ViewList'
 import ViewModuleIcon from '@mui/icons-material/ViewModule'
 import ToggleButton from '@mui/material/ToggleButton'
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup'
-import { Box, Paper, Button, Stack, Divider } from '@mui/material'
+import { Box, Paper, Button, Stack, Divider, Typography, useTheme } from '@mui/material'
 import OrderProgressItem from '../Order/OrderProgressItem'
 import Picking from './Picking'
 import EditIcon from '@mui/icons-material/Edit'
 
-import Typography from '@mui/material/Typography'
-import ListAltIcon from '@mui/icons-material/ListAlt'
-
 export default function PickingSelect({ list, adresList, opType, handleNavigate }) {
+  const theme = useTheme()
   const [view, setView] = React.useState('list')
 
   const handleChange = (event, nextView) => {
@@ -27,12 +25,11 @@ export default function PickingSelect({ list, adresList, opType, handleNavigate 
       elevation={0}
       sx={{
         position: 'relative',
-        borderRadius: 4,
+        borderRadius: theme.radius.section,
         border: '1px solid',
         borderColor: 'divider',
         overflow: 'hidden',
         backgroundColor: 'background.paper',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.05)',
         mb: 4,
       }}
     >
@@ -44,7 +41,7 @@ export default function PickingSelect({ list, adresList, opType, handleNavigate 
           justifyContent: 'space-between',
           alignItems: { xs: 'stretch', sm: 'center' },
           gap: { xs: 1.5, sm: 0 },
-          backgroundColor: (theme) => (theme.palette.mode === 'light' ? 'rgba(0,0,0,0.02)' : 'rgba(255,255,255,0.02)'),
+          backgroundColor: (theme) => theme.palette.surface.subtle,
           borderBottom: '1px solid',
           borderColor: 'divider',
         }}
@@ -78,7 +75,7 @@ export default function PickingSelect({ list, adresList, opType, handleNavigate 
               backgroundColor: 'background.paper',
               '& .MuiToggleButton-root': {
                 border: 'none',
-                borderRadius: 2,
+                borderRadius: theme.radius.control,
                 px: { xs: 1.25, sm: 2 },
                 '&.Mui-selected': {
                   backgroundColor: 'primary.main',
@@ -108,7 +105,7 @@ export default function PickingSelect({ list, adresList, opType, handleNavigate 
             onClick={handleNavigate}
             startIcon={<EditIcon />}
             sx={{
-              borderRadius: 2.5,
+              borderRadius: theme.radius.control,
               textTransform: 'none',
               fontWeight: 700,
               px: { xs: 2, sm: 3 },

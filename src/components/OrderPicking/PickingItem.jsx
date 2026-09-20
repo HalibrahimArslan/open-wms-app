@@ -1,70 +1,65 @@
-import { Box, Paper, Typography, useTheme } from '@mui/material'
-import React from 'react'
+import { Box, Chip, Stack, Typography, useTheme } from '@mui/material'
 import PickingCard from './PickingCard'
-import BasicSlider from '../../shared/components/Slider/BasicSlider'
 
+/**
+ * Kutu gorunumunde bir parcali urun grubu: ust satirda ana urun, altinda o
+ * ana uruna bagli parcalarin kartlari.
+ *
+ * Grup basligi "Parçalı Ürün" yazan, 270 derece dondurulmus ve kutunun 50
+ * piksel soluna tasirilmis bir etiketti. Solda yer olmadigi icin ya kirpiliyor
+ * ya da sayfa govdesinin uzerine biniyordu; ustelik dikey konumu yuzdeyle
+ * ayarlandigi icin grup buyudukce kayiyordu. Etiket artik basligin icinde,
+ * duz duran bir cip.
+ */
 export default function PickingItem({ list, master, adresList }) {
   const theme = useTheme()
+
+  const items = (list ?? []).filter((item) => item.pieceMaster?.stokKodu === master)
+  const pieceMaster = items[0]?.pieceMaster
+
+  if (items.length === 0) {
+    return null
+  }
+
   return (
     <Box
       sx={{
-        p: 0.5,
-        borderRadius: theme.shape.borderRadius,
-        position: 'relative',
-        mb: 1,
-        backgroundColor: theme.palette.action.hover,
+        marginBottom: 2,
+        borderRadius: theme.radius.section,
+        border: `1px solid ${theme.palette.border.subtle}`,
+        backgroundColor: theme.palette.surface.subtle,
+        overflow: 'hidden',
       }}
     >
-      <Box
+      <Stack
+        direction="row"
+        spacing={1.5}
         sx={{
-          display: 'flex',
-          gap: 1,
+          alignItems: 'center',
+          paddingX: 2,
+          paddingY: 1.25,
+          borderBottom: `1px solid ${theme.palette.border.subtle}`,
         }}
       >
-        {list
-          .filter((todo) => todo.pieceMaster.stokKodu === master)
-          .slice(0, 1)
-          .map((item) => (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'row',
-                gap: 2,
-                bgcolor: theme.palette.action.focus,
-                borderRadius: theme.shape.borderRadius,
-                m: 'auto',
-                p: '0 1rem',
-                alignItems: 'center',
-              }}
-            >
-              <Typography variant="subtitle1">{item.pieceMaster.stokKodu}</Typography>
-              <Typography variant="subtitle2">{item.pieceMaster.stokAdi}</Typography>
-            </Box>
-          ))}
-      </Box>
-      <Typography
-        variant="h6"
-        sx={{
-          position: 'absolute',
-          top: '37.5%',
-          left: -50,
-          transform: 'rotate(270deg) ',
-          zIndex: 999,
-          bgcolor: theme.palette.primary.main,
-          color: theme.palette.primary.contrastText,
-          borderTopLeftRadius: theme.shape.borderRadius,
-          borderTopRightRadius: theme.shape.borderRadius,
-          padding: 0.5,
-          marginRight: 1,
-        }}
-      >
-        Parçalı Ürün
-      </Typography>
+        <Chip size="small" color="primary" label="Parçalı Ürün" sx={{ borderRadius: theme.radius.control, fontWeight: 700, flexShrink: 0 }} />
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, flexShrink: 0 }}>
+          {pieceMaster?.stokKodu}
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary', minWidth: 0 }} noWrap>
+          {pieceMaster?.stokAdi}
+        </Typography>
+      </Stack>
 
-      <BasicSlider
-        bgImage={false}
-        children={list && list.length > 0 && list.filter((todo) => todo.pieceMaster.stokKodu === master).map((t) => <PickingCard item={t} adresList={adresList} />)}
-      />
+      {/* Parcalar yan yana kayar. Onceden ortak kaydirma bileseni kullaniliyordu
+          ama o bilesen sabit bir DOM id'si tasiyor; sayfada birden fazla
+          parcali urun oldugunda ayni id tekrar ediyordu. */}
+      <Box sx={{ display: 'flex', gap: 2, overflowX: 'auto', padding: 2 }}>
+        {items.map((item) => (
+          <Box key={item.id} sx={{ flex: '0 0 260px' }}>
+            <PickingCard item={item} adresList={adresList} />
+          </Box>
+        ))}
+      </Box>
     </Box>
   )
 }

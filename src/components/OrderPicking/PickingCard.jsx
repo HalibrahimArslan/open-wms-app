@@ -1,97 +1,152 @@
-import { Box, Card, CardActionArea, CardContent, CardHeader, Collapse, IconButton, Stack, Typography, styled, useMediaQuery, useTheme } from '@mui/material'
-import React from 'react'
+import { useMemo, useState } from 'react'
+import { Box, Card, Chip, Collapse, IconButton, LinearProgress, Stack, Tooltip, Typography, useTheme } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded'
+import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined'
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props
-  return <IconButton {...other} />
-})(({ theme, expand }) => ({
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}))
-
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
-  },
-}))
-
+/**
+ * Kutu gorunumundeki tek urun karti.
+ *
+ * Kart ustte urunu (stok kodu, barkod, ad), ortada toplama ilerlemesini,
+ * altta urunun bulundugu adresleri gosterir. Uc blok her kartta ayni sirada
+ * ve ayni yerde durur; kartlar esit yukseklikte oldugu icin izgarada satirlar
+ * hizali kalir.
+ *
+ * Ilerleme cubugu sabit mavi (#1a90ff) ile ciziliyordu, yani markanin disinda
+ * bir renkti ve karanlik temada da degismiyordu. Artik durumdan geliyor:
+ * tamamlandiysa yesil, devam ediyorsa marka rengi.
+ */
 export default function PickingCard({ item, adresList }) {
-  const [expanded, setExpanded] = React.useState(false)
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const handleExpandClick = () => {
-    setExpanded(!expanded)
-  }
+  const [expanded, setExpanded] = useState(false)
+
+  const ordered = Number(item.siparisMiktar) || 0
+  const picked = Number(item.teslimMiktar) || 0
+  // Siparis miktari 0 gelebiliyor; bolme dogrudan yapilirsa deger NaN oluyor
+  // ve LinearProgress sessizce bos cubuk ciziyor.
+  const percent = ordered > 0 ? Math.min(100, Math.max(0, (picked / ordered) * 100)) : 0
+  const isComplete = ordered > 0 && picked >= ordered
+
+  const addresses = useMemo(() => (adresList ?? []).filter((address) => address.stockCode === item.stokKodu), [adresList, item.stokKodu])
+
   return (
     <Card
+      variant="outlined"
       sx={{
-        border: '1px solid',
-        borderRadius: 2,
-        position: 'relative',
-        p: isMobile && 2,
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        borderRadius: theme.radius.card,
+        borderColor: isComplete ? theme.palette.success.main : theme.palette.border.subtle,
+        backgroundColor: 'background.paper',
+        textAlign: 'left',
       }}
     >
-      <CardHeader title={item.stokKodu} subheader={item.barkod} />
-      <CardContent>
-        <Box
+      <Box sx={{ padding: 1.75, display: 'flex', flexDirection: 'column', gap: 1.5, flexGrow: 1 }}>
+        <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }} noWrap>
+              {item.stokKodu}
+            </Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }} noWrap component="div">
+              {item.barkod}
+            </Typography>
+          </Box>
+          {isComplete && (
+            <Tooltip title="Toplama tamamlandı">
+              <CheckCircleRoundedIcon fontSize="small" sx={{ color: 'success.main', flexShrink: 0 }} />
+            </Tooltip>
+          )}
+        </Stack>
+
+        {/* Urun adi iki satirda kirpilir. Onceden 40 karakterde kesilip sonuna
+            her zaman ".." ekleniyordu; kisa adlar da kesilmis gorunuyordu. */}
+        <Typography
+          variant="body2"
           sx={{
-            bgcolor: theme.palette.secondary.main,
-            p: 0.25,
-            borderRadius: theme.shape.borderRadius,
-            m: 'auto',
+            color: 'text.secondary',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            minHeight: 34,
           }}
         >
-          <BorderLinearProgress variant="determinate" value={(item.teslimMiktar / item.siparisMiktar) * 100} />
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: theme.typography.fontWeightBold,
-            }}
-          >
-            {item.siparisMiktar} / {item.teslimMiktar}
-          </Typography>
-        </Box>
-      </CardContent>
-      <CardContent>
-        <Box
-          sx={{
-            display: 'flex',
-          }}
-        >
-          <Box>{item.stokAdi.slice(0, 40) + '..'}</Box>
-        </Box>
-        <ExpandMore expand={expanded} onClick={handleExpandClick} aria-expanded={expanded} aria-label="show more">
-          <ExpandMoreIcon />
-        </ExpandMore>
-      </CardContent>
-      <CardActionArea>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Stack
-            direction={'column'}
-            sx={{
-              maxHeight: 100,
-              overflow: 'auto',
-              bgcolor: theme.palette.action.hover,
-            }}
-          >
-            {adresList && adresList.length > 0 && adresList.filter((todo) => todo.stockCode === item.stokKodu).map((t) => <Typography variant="h6">{t.address}</Typography>)}
+          {item.stokAdi}
+        </Typography>
+
+        <Box sx={{ marginTop: 'auto' }}>
+          <Stack direction="row" sx={{ alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 0.5 }}>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              Toplanan
+            </Typography>
+            <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
+              {picked} / {ordered}
+            </Typography>
           </Stack>
-        </Collapse>
-      </CardActionArea>
+          <LinearProgress
+            variant="determinate"
+            value={percent}
+            sx={{
+              height: 8,
+              borderRadius: theme.radius.control,
+              backgroundColor: theme.palette.surface.subtle,
+              '& .MuiLinearProgress-bar': {
+                borderRadius: theme.radius.control,
+                backgroundColor: isComplete ? theme.palette.success.main : theme.palette.primary.main,
+              },
+            }}
+          />
+        </Box>
+      </Box>
+
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+          paddingX: 1.75,
+          paddingY: 0.75,
+          borderTop: `1px solid ${theme.palette.border.subtle}`,
+        }}
+      >
+        <PlaceOutlinedIcon sx={{ fontSize: 16, color: 'text.secondary' }} />
+        <Typography variant="caption" sx={{ color: 'text.secondary', flexGrow: 1 }}>
+          {addresses.length > 0 ? `${addresses.length} adres` : 'Adres yok'}
+        </Typography>
+        {addresses.length > 0 && (
+          <IconButton
+            size="small"
+            onClick={() => setExpanded((prev) => !prev)}
+            aria-expanded={expanded}
+            aria-label={expanded ? 'Adresleri gizle' : 'Adresleri göster'}
+            sx={{
+              transform: expanded ? 'rotate(180deg)' : 'rotate(0deg)',
+              transition: theme.transitions.create('transform', { duration: theme.transitions.duration.shortest }),
+            }}
+          >
+            <ExpandMoreIcon fontSize="small" />
+          </IconButton>
+        )}
+      </Stack>
+
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Box
+          sx={{
+            maxHeight: 120,
+            overflowY: 'auto',
+            padding: 1.25,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 0.75,
+            backgroundColor: theme.palette.surface.subtle,
+          }}
+        >
+          {addresses.map((address) => (
+            <Chip key={address.id ?? address.address} size="small" label={address.address} sx={{ borderRadius: theme.radius.control }} />
+          ))}
+        </Box>
+      </Collapse>
     </Card>
   )
 }

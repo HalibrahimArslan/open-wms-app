@@ -1,86 +1,50 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
+import { Box, Grid } from '@mui/material'
+import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined'
 import groupBy from '../../utils/Utils'
 import PickingItem from './PickingItem'
 import PickingCard from './PickingCard'
-import { Box, Grid, useTheme } from '@mui/material'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 
-export default function Picking({ list, adresList, opType }) {
-  const theme = useTheme()
-  const [enable, setEnable] = useState(true)
-  const excelDataArray = useMemo(() => {
-    return []
-  }, [])
+/**
+ * Siparis detayinin kutu gorunumu.
+ *
+ * Once parcali urun gruplari, sonra tekil urunlerin izgarasi gelir. Izgara
+ * ogeleri esnek kutu cocuklaridir ve kartlar height: 100% tasidigi icin ayni
+ * satirdaki kartlar esit yukseklikte durur.
+ */
+export default function Picking({ list, adresList }) {
+  const { partialList, notPartialList, partialMasters } = useMemo(() => {
+    const grouped = groupBy(list ?? [], (item) => item.isPiece)
+    const partial = grouped.get(true) ?? []
+    const masters = [...new Set(partial.map((item) => item.pieceMaster?.stokKodu).filter(Boolean))]
+    return { partialList: partial, notPartialList: grouped.get(false) ?? [], partialMasters: masters }
+  }, [list])
 
-  let partialList = groupBy(list, (criteria) => criteria.isPiece).get(true)
-  let notPartialList = groupBy(list, (criteria) => criteria.isPiece).get(false)
-
-  let distinctPartialItems = partialList && partialList.length > 0 ? [...new Set(partialList.map((item) => item.pieceMaster.stokKodu))] : []
-
-  function generateExcelBody(address, stokKodu, stokAdi, siparisMiktar, teslimMiktar, onay) {
-    let dto = {
-      address: address,
-      stokKodu: stokKodu,
-      stokAdi: stokAdi,
-      siparisMiktar: siparisMiktar,
-      teslimMiktar: teslimMiktar,
-      onay: onay,
-    }
-    return dto
+  if (partialMasters.length === 0 && notPartialList.length === 0) {
+    return <EmptyState icon={<Inventory2OutlinedIcon />} title="Ürün yok" description="Bu siparişte gösterilecek ürün bulunmuyor." />
   }
 
-  useEffect(() => {
-    if (opType === 'MSK') {
-      if (adresList.length > 0 && list.length > 0) {
-        list.forEach((todo) => {
-          let adressesList = adresList.filter((row) => row.stockCode === todo.stokKodu)
-          adressesList.forEach((cycle) => {
-            let response = false
-
-            if (excelDataArray.length > 0) {
-              excelDataArray.forEach((excelData) => {
-                if (excelData.stokKodu === todo.stokKodu && excelData.address === cycle.address) {
-                  response = true
-                }
-              })
-            }
-
-            if (response === false) {
-              excelDataArray.push(generateExcelBody(cycle.address, todo.stokKodu, todo.stokAdi, todo.siparisMiktar, todo.teslimMiktar, ''))
-            }
-          })
-        })
-        setEnable(false)
-      }
-    }
-  }, [adresList, list, opType, excelDataArray])
-
-  const handleOnExport = () => {
-    var wb = utils.book_new()
-    var ws = utils.json_to_sheet(excelDataArray)
-    utils.book_append_sheet(wb, ws, 'AdresListesi')
-    writeFile(wb, 'adresler.xlsx')
-  }
   return (
-    <Box>
-      {distinctPartialItems &&
-        distinctPartialItems.length > 0 &&
-        distinctPartialItems.map((item) => <PickingItem key={item} master={item} list={partialList} adresList={adresList} />)}
+    <Box sx={{ padding: 2 }}>
+      {partialMasters.map((master) => (
+        <PickingItem key={master} master={master} list={partialList} adresList={adresList} />
+      ))}
+
       <Grid container spacing={2}>
-        {notPartialList &&
-          notPartialList.length > 0 &&
-          notPartialList.map((item) => (
-            <Grid
-              key={item.id}
-              size={{
-                xs: 12,
-                sm: 6,
-                md: 4,
-                lg: 3,
-              }}
-            >
-              <PickingCard key={item.id} item={item} opType={opType} enable={enable} adresList={adresList} />
-            </Grid>
-          ))}
+        {notPartialList.map((item) => (
+          <Grid
+            key={item.id}
+            size={{
+              xs: 12,
+              sm: 6,
+              md: 4,
+              lg: 3,
+            }}
+          >
+            <PickingCard item={item} adresList={adresList} />
+          </Grid>
+        ))}
       </Grid>
     </Box>
   )
