@@ -5,11 +5,17 @@ import AddCircleIcon from '@mui/icons-material/AddCircle'
 /**
  * Ekran basligi ve ekrana ait aksiyonlar.
  *
- * Standart: aksiyonlar (filtre ac/kapa, disa aktar, ekle) basligin TAM
+ * Standart: aksiyonlar (arama, filtre ac/kapa, disa aktar, ekle) basligin TAM
  * KARSISINDA, ayni satirda durur. Baslik altinda ayri bir aksiyon satiri
  * acilmaz; ekrandan ekrana degisen yerlesim olmamasi icin bu bilesen kullanilir.
  *
- * actions: baslik satirinin sagina yerlesen dugmeler (genelde Stack icinde).
+ * Baslik hicbir zaman yatay bosluk almaz, cunku hemen altindaki tablo ya da
+ * kart da almaz; aldigi anda baslik ile ilk sutun basligi birbirinden kayiyor.
+ * Onceden yatay bosluk `hide` prop'una bagliydi (p: hide ? 1 : 0), yani ekle
+ * dugmesinin gizli olup olmamasi baslik hizasini degistiriyordu.
+ *
+ * actions: baslik satirinin sagina yerlesen ogeler (genelde Stack icinde).
+ * hide: ekle dugmesini gizler.
  */
 function ActionHeader({ handleClick, title, Icon, hide, actions }) {
   const theme = useTheme()
@@ -20,8 +26,9 @@ function ActionHeader({ handleClick, title, Icon, hide, actions }) {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          gap: 1,
-          p: hide ? 1 : 0,
+          gap: 1.5,
+          // Aksiyon olsun olmasin serit ayni yukseklikte kalsin diye.
+          minHeight: 48,
         }}
       >
         <Typography
@@ -43,8 +50,9 @@ function ActionHeader({ handleClick, title, Icon, hide, actions }) {
           )}
         </Box>
       </Box>
-      <Divider flexItem />
-      <br />
+      {/* Ayracin altindaki bosluk once <br /> ile veriliyordu; satir yuksekligi
+          kadar, yani yazi tipine gore degisen bir bosluktu. Artik olcekten. */}
+      <Divider flexItem sx={{ marginBottom: 2 }} />
     </>
   )
 }

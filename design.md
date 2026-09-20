@@ -127,6 +127,14 @@ Değerler bilerek string tutulur. MUI'nin `sx` prop'u `borderRadius`'a verilen
 sayıyı `theme.shape.borderRadius` ile çarpar; sayı verilseydi aynı token `sx`
 ve `styled()` içinde farklı sonuç üretirdi.
 
+Bu ölçeğin yazılı olması tek başına yetmez: **MUI bileşenlerinin varsayılan
+yarıçapları da [theme.js](src/theme/theme.js) içinde bu ölçeğe bağlıdır.**
+Buton, input, select ve chip `radius.control`, alert `radius.card` kullanır.
+Bir süre bu bloklar kendi sabitlerini taşıdı (buton 15, input 10); ölçek
+belgede doğru, ekranda yanlıştı ve aynı kartta üç farklı yarıçap yan yana
+geliyordu. Bu yüzden ekranlarda butona ya da input'a `borderRadius` verilmez;
+gerekiyorsa önce temadaki blok değişir.
+
 ## İkonografi
 
 - İkonlar `@mui/icons-material` setinden gelir. Aynı ekranda başka bir ikon
@@ -220,8 +228,22 @@ satırı açılmaz; ekrandan ekrana değişen yerleşim bu yüzden ortaya çık�
 />
 ```
 
-`actions` içinde sıralama soldan sağa: önce dışa aktarma ve ikincil düğmeler,
-en sağda filtre düğmesi, ondan sonra `ActionHeader`'ın kendi ekle düğmesi.
+`actions` içinde sıralama soldan sağa: arama kutusu, dışa aktarma ve ikincil
+düğmeler, en sağda filtre düğmesi, ondan sonra `ActionHeader`'ın kendi ekle
+düğmesi.
+
+Başlık şeridi yatay boşluk almaz, çünkü hemen altındaki tablo ya da kart da
+almaz; aldığı anda başlık ile ilk sütun başlığı birbirinden kayar. Tablonun dış
+kenarındaki hücre boşluğu da sıfırlanır:
+
+```jsx
+'& .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': { paddingLeft: 0 },
+```
+
+Liste ekranında arama kutusu tablonun üstünde ayrı bir şeride değil, başlığın
+karşısına konur ve [TableSearchField](src/shared/components/Table/TableSearchField.jsx)
+kullanılır. Ayrı şerit, içi boş bir bant gibi göründüğü ve ekranda ikinci bir
+başlık hizası yarattığı için tercih edilmez.
 
 ### Filtre
 
@@ -261,15 +283,16 @@ bulunamadı" demez.
 
 ### Sık kullanılan bileşenler
 
-| Bileşen                                                                           | Ne zaman                                |
-| --------------------------------------------------------------------------------- | --------------------------------------- |
-| [ActionHeader](src/shared/components/ActionHeader.jsx)                            | Her liste ekranının başlığı             |
-| [FilterToggleButton](src/shared/components/FilterToggleButton.jsx)                | Filtre aç/kapa                          |
-| [EmptyState](src/shared/components/EmptyState/EmptyState.jsx)                     | Boş liste, sonuçsuz arama               |
-| [SplitButton](src/components/Button/SplitButton.jsx)                              | Birincil eylem + yanında alternatifleri |
-| [SearchBox](src/components/SearchBox.jsx)                                         | Liste içi arama kutusu                  |
-| [ImageViewer](src/shared/components/ImageViewer/ImageViewer.jsx)                  | Görsel önizleme                         |
-| [SwipeableDrawerWrapper](src/shared/components/Slider/SwipeableDrawerWrapper.jsx) | Mobilde alttan açılan panel             |
+| Bileşen                                                                           | Ne zaman                                            |
+| --------------------------------------------------------------------------------- | --------------------------------------------------- |
+| [ActionHeader](src/shared/components/ActionHeader.jsx)                            | Her liste ekranının başlığı                         |
+| [FilterToggleButton](src/shared/components/FilterToggleButton.jsx)                | Filtre aç/kapa                                      |
+| [EmptyState](src/shared/components/EmptyState/EmptyState.jsx)                     | Boş liste, sonuçsuz arama                           |
+| [SplitButton](src/components/Button/SplitButton.jsx)                              | Birincil eylem + yanında alternatifleri             |
+| [TableSearchField](src/shared/components/Table/TableSearchField.jsx)              | Tablo araması; ActionHeader'ın actions alanında     |
+| [SearchBox](src/components/SearchBox.jsx)                                         | Mobil listelerde kendi satırında duran arama kutusu |
+| [ImageViewer](src/shared/components/ImageViewer/ImageViewer.jsx)                  | Görsel önizleme                                     |
+| [SwipeableDrawerWrapper](src/shared/components/Slider/SwipeableDrawerWrapper.jsx) | Mobilde alttan açılan panel                         |
 
 Yeni bir düğme ya da kutu yazmadan önce bu listeye bakılır. Aynı işi yapan
 ikinci bir bileşen eklendiğinde iki ekran birbirinden ayrışır.

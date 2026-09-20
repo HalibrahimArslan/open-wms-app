@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 import { useContainer } from 'unstated-next'
 import { DataGrid, GridToolbarQuickFilter } from '@mui/x-data-grid'
-import { Box, Button, CircularProgress, Paper } from '@mui/material'
+import { Box, Button, CircularProgress } from '@mui/material'
 import { DepoContainer } from '../../store/DepoContainer'
 import * as XLSX from 'xlsx'
 import { getDepoStockAddresses } from '../../services/AdressService'
@@ -10,13 +10,19 @@ import excelimg from '../../assets/images/cards/excel.png'
 import { useState } from 'react'
 import { notifyError } from '../../layout/Layout'
 import CustomNoRowsOverlay from '../../shared/components/DataGrid/CustomNoRowsOverlay'
-import CustomToolbar from '../../shared/components/DataGrid/CustomToolbar'
+import TableSearchField from '../../shared/components/Table/TableSearchField'
 import useIsMobile from '../../hooks/useIsMobile'
 import ActionHeader from '../../shared/components/ActionHeader'
 
 export default function ProductAddressContainer() {
   const [addressList, setAddressList] = useState([])
   const [loading, setLoading] = useState(false)
+  // Arama kutusu tablonun ustundeki ayri bir seritteydi; serit bos kaldigi ve
+  // kutunun cercevesi olmadigi icin tablo ile baslik arasinda amacsiz bir bant
+  // gibi duruyordu. Arama artik baslik satirinda, tablonun hizli filtresine
+  // bagli. Sutun filtreleri de ayni modeli kullandigi icin model state'te
+  // tutulur.
+  const [filterModel, setFilterModel] = useState({ items: [], quickFilterValues: [] })
   const isMobile = useIsMobile()
   const gridHeight = isMobile ? 'calc(100dvh - 260px)' : 'calc(100dvh - 400px)'
 
@@ -147,36 +153,46 @@ export default function ProductAddressContainer() {
     )
   }
 
+  const searchValue = (filterModel.quickFilterValues ?? []).join(' ')
+
+  const handleSearchChange = (event) => {
+    const text = event.target.value
+    setFilterModel((prev) => ({ ...prev, quickFilterValues: text.trim() ? text.trim().split(/\s+/) : [] }))
+  }
+
   return (
-    // Baslik ile tablo iki ayri blok halinde duruyordu; aralarinda tablonun
-    // arama seridiyle birlesen bos bir bant olusuyordu. Ikisi artik tek bir
-    // kart icinde ve tablonun kendi kenarligi kaldirildi, cerceveyi kart
-    // veriyor.
-    <Paper variant="outlined" sx={{ borderRadius: (theme) => theme.radius.section, overflow: 'hidden' }}>
-      <Box sx={{ paddingX: 2, paddingTop: 1.5 }}>
-        <ActionHeader
-          title="Ürün Adres Gözlem"
-          hide
-          actions={
-            <Button variant="outlined" size="medium" startIcon={<img src={excelimg} alt="" width={20} height={20} />} onClick={handleExport} disabled={addressList.length === 0}>
+    <>
+      <ActionHeader
+        title="Ürün Adres Gözlem"
+        hide
+        actions={
+          <>
+            <TableSearchField placeholder="Stok, barkod ya da adres ara" value={searchValue} onChange={handleSearchChange} />
+            <Button variant="outlined" startIcon={<img src={excelimg} alt="" width={20} height={20} />} onClick={handleExport} disabled={addressList.length === 0}>
               Excel
             </Button>
-          }
-        />
-      </Box>
+          </>
+        }
+      />
       <DataGrid
         rows={addressList.filter((item) => item.status === true)}
         columns={columns}
         disableRowSelectionOnClick
-        slots={{
-          toolbar: CustomToolbar,
-          noRowsOverlay: CustomNoRowsOverlay,
+        filterModel={filterModel}
+        onFilterModelChange={setFilterModel}
+        slots={{ noRowsOverlay: CustomNoRowsOverlay }}
+        sx={{
+          // minHeight verildiginde tablo satir sayisindan bagimsiz uzuyor ve
+          // son satirin altinda genis bir bosluk kaliyordu.
+          height: gridHeight,
+          minHeight: 400,
+          border: 'none',
+          // Ilk ve son sutunun dis kenar boslugu kaldirilir; aksi halde baslik
+          // ile ilk sutun basligi birbirinden 10 piksel kayiyor.
+          '& .MuiDataGrid-columnHeader:first-of-type, & .MuiDataGrid-cell:first-of-type': { paddingLeft: 0 },
+          '& .MuiDataGrid-columnHeader:last-of-type, & .MuiDataGrid-cell:last-of-type': { paddingRight: 0 },
         }}
-        // minHeight verildiginde tablo satir sayisindan bagimsiz olarak
-        // uzuyor ve son satirin altinda genis bir bosluk kaliyordu.
-        sx={{ height: gridHeight, minHeight: 400, border: 'none' }}
-        showToolbar
       />
-    </Paper>
+    </>
   )
 }

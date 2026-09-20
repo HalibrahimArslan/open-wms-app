@@ -206,13 +206,17 @@ const darkPalette = {
 const buildComponents = (theme) => {
   const { palette } = theme
   const isDark = palette.mode === 'dark'
+  // Bilesen yariçaplari olcekten okunur. Once her biri kendi sabitini
+  // tasiyordu (buton 15, input/select/alert 10) ve hicbiri yukaridaki
+  // olcege uymuyordu; ayni ekranda uc dort farkli yariçap yan yana geliyordu.
+  const { control, card } = theme.radius
 
   return {
     MuiTextField: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: 10,
+            borderRadius: control,
             '& fieldset': {
               borderColor: palette.border.rest,
             },
@@ -232,7 +236,7 @@ const buildComponents = (theme) => {
         root: {
           '&:hover': {
             backgroundColor: palette.surface.hover,
-            borderRadius: 10,
+            borderRadius: control,
           },
         },
       },
@@ -241,7 +245,7 @@ const buildComponents = (theme) => {
     MuiAlert: {
       styleOverrides: {
         root: {
-          borderRadius: 10,
+          borderRadius: card,
         },
       },
     },
@@ -249,7 +253,7 @@ const buildComponents = (theme) => {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 15,
+          borderRadius: control,
           textTransform: 'capitalize',
         },
         containedSecondary: {
@@ -298,7 +302,7 @@ const buildComponents = (theme) => {
     MuiSelect: {
       styleOverrides: {
         root: {
-          borderRadius: 10,
+          borderRadius: control,
         },
       },
     },
