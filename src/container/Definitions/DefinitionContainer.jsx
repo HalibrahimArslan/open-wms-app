@@ -1,19 +1,14 @@
 import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
 import { Outlet } from 'react-router'
-import { useMediaQuery, useTheme } from '@mui/material'
 import DefinationsMenu from './DefinitionsMenu'
 
 export default function DefinitionContainer() {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-
   return (
-    <Grid container direction={isMobile ? 'column' : 'row'} spacing={{ xs: 2, sm: 2, md: 5 }}>
-      <Grid size={2.5}>
+    <Grid container spacing={{ xs: 2, md: 5 }}>
+      <Grid size={{ xs: 12, md: 2.5 }}>
         <DefinationsMenu />
       </Grid>
-      <Grid size={9.5}>
+      <Grid size={{ xs: 12, md: 9.5 }} sx={{ minWidth: 0 }}>
         <Outlet />
       </Grid>
     </Grid>
