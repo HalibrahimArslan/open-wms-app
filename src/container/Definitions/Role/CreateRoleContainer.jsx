@@ -5,10 +5,13 @@ import { notify, notifyError } from '../../../layout/Layout'
 import { saveRole } from '../../../services/RoleService'
 import usePayload from '../../../hooks/usePayload'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
+import { useContainer } from 'unstated-next'
+import { DataStore } from '../../../store/DataStore'
 
 const CreateRoleContainer = () => {
   const [roleName, setRoleName] = useState('')
-  const payload = usePayload({ roleName })
+  const { account } = useContainer(DataStore)
+  const payload = usePayload({ roleName, companyCode: account?.companyCode })
   const nav = useNavigate()
 
   const fetchSaveRole = async () => {

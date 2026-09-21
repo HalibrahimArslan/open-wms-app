@@ -5,7 +5,7 @@ import TableWithPagination from '../../../components/Table/TableWithPagination'
 import RoleTable from '../../../components/Table/RoleTable'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import CreateNewDefinition from '../../../components/Definitions/CreateNewDefinition'
-import { notify } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../../store/DataStore'
 
