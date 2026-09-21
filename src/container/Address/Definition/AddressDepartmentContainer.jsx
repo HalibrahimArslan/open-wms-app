@@ -4,7 +4,6 @@ import { useContainer } from 'unstated-next'
 import { DataStore } from '../../../store/DataStore'
 import useDepoCode from '../../../hooks/useDepoCode'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
-import * as yup from 'yup'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
 import { Chip } from '@mui/material'
@@ -15,11 +14,9 @@ import { generatePayload } from '../../../utils/Utils'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 import ActionHeader from '../../../shared/components/ActionHeader'
+import { addressComponentSchema } from '../../../schemas/schemas'
 
-const validationSchema = yup.object({
-  code: yup.string().max(2).required('Bölüm boş bırakılamaz'),
-  description: yup.string().required('Açıklama boş bırakılamaz'),
-})
+const validationSchema = addressComponentSchema('Bölüm')
 
 const AddressDepartmentContainer = () => {
   const [departments, setDepartments] = useState([])

@@ -24,7 +24,7 @@ const AddressComponentForm = ({ initialValues, validationSchema, handleSubmit })
           fullWidth
           id="code"
           name="code"
-          label="Kod Girniz"
+          label="Kod Giriniz"
           placeholder="Kod Giriniz"
           value={formik.values.code}
           onChange={formik.handleChange}
