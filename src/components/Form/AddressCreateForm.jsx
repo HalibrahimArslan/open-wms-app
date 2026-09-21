@@ -11,12 +11,19 @@ import { AddressFieldType } from '../../utils/Utils'
  */
 export const ADDRESS_CREATE_FORM_ID = 'address-create-form'
 
+const selectedId = (message) =>
+  yup
+    .number()
+    .transform((value, original) => (original === '' || original === null ? undefined : value))
+    .typeError(message)
+    .required(message)
+
 const validationSchema = yup.object({
-  addressType: yup.number().required('Adres tipi seçilmelidir'),
-  firstDepartmentId: yup.number().required('Bölüm başlangıcı boş bırakılamaz'),
-  lastDepartmentId: yup.number().required('Bölüm bitişi boş bırakılamaz'),
-  firstHallId: yup.number().required('Koridor başlangıcı boş bırakılamaz'),
-  lastHallId: yup.number().required('Koridor bitişi boş bırakılamaz'),
+  addressType: selectedId('Adres tipi seçilmelidir.'),
+  firstDepartmentId: selectedId('Bölüm başlangıcı boş bırakılamaz.'),
+  lastDepartmentId: selectedId('Bölüm bitişi boş bırakılamaz.'),
+  firstHallId: selectedId('Koridor başlangıcı boş bırakılamaz.'),
+  lastHallId: selectedId('Koridor bitişi boş bırakılamaz.'),
 })
 
 const items = [

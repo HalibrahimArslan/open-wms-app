@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 const validationSchema = yup.object({
   customerCode: yup.string().required('Cari kodu boş bırakılamaz'),
-  districtCode: yup.number().required('Bölge kodu boş bırakılamaz'),
+  districtCode: yup.number().nullable().typeError('Bölge kodu sayı olmalıdır').required('Bölge kodu boş bırakılamaz'),
   mail: yup.string().email('Geçerli bir email adresi giriniz').required('Email boş bırakılamaz'),
 })
 

@@ -4,7 +4,7 @@ import * as yup from 'yup'
 
 const validationSchema = yup.object({
   mailAdres: yup.string().required('Mail boş bırakılamaz'),
-  grupKodu: yup.number().required('Stok Grup Kodu boş bırakılamaz'),
+  grupKodu: yup.number().nullable().typeError('Stok Grup Kodu sayı olmalıdır').required('Stok Grup Kodu boş bırakılamaz'),
 })
 
 const StockGroupMailCreateForm = ({ handleCreateEmail }) => {
