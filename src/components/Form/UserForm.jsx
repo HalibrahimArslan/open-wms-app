@@ -15,7 +15,7 @@ let UserFormFields = {
   email: 'Email',
   authorities: 'Yetkiler',
   roles: 'Roller',
-  warehouses: 'Depolar',
+  depots: 'Depolar',
   newPasswordConfirm: 'Parola Onayı',
   newPassword: 'Yeni Parola',
   currentPassword: 'Mevcut Parola',
@@ -29,7 +29,7 @@ const UserForm = ({
   saveButtonLabel,
   authorities = [],
   roles = [],
-  warehouses = [],
+  depoList = [],
   userAuthorities = [],
 }) => {
   const nav = useNavigate()
@@ -106,33 +106,33 @@ const UserForm = ({
                       {touched.roles && errors.roles ? <FormHelperText>{errors.roles}</FormHelperText> : null}
                     </FormControl>
                   )
-                ) : fieldName === 'warehouses' ? (
-                  <FormControl fullWidth error={touched.warehouses && Boolean(errors.warehouses)}>
-                    <InputLabel id="warehouses-label">Depolar</InputLabel>
+                ) : fieldName === 'depots' ? (
+                  <FormControl fullWidth error={touched.depots && Boolean(errors.depots)}>
+                    <InputLabel id="depots-label">Depolar</InputLabel>
                     <Select
-                      labelId="warehouses-label"
-                      id="warehouses"
-                      name="warehouses"
+                      labelId="depots-label"
+                      id="depots"
+                      name="depots"
                       multiple
                       label="Depolar"
-                      value={values.warehouses || []}
+                      value={values.depots || []}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       renderValue={(selected) =>
-                        warehouses
-                          .filter((warehouse) => (selected || []).includes(warehouse.id))
-                          .map((warehouse) => warehouse.name || warehouse.code)
+                        depoList
+                          .filter((depo) => (selected || []).includes(depo.code))
+                          .map((depo) => depo.name || depo.code)
                           .join(', ')
                       }
                     >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse.id} value={warehouse.id}>
-                          {warehouse.name || warehouse.code}
+                      {depoList.map((depo) => (
+                        <MenuItem key={depo.code} value={depo.code}>
+                          {depo.name || depo.code}
                         </MenuItem>
                       ))}
                     </Select>
 
-                    {touched.warehouses && errors.warehouses ? <FormHelperText>{errors.warehouses}</FormHelperText> : null}
+                    {touched.depots && errors.depots ? <FormHelperText>{errors.depots}</FormHelperText> : null}
                   </FormControl>
                 ) : (
                   <TextField

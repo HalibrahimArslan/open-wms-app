@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { Box, Typography, Divider, useTheme } from '@mui/material'
 import { getAuthorities } from '../../services/AccountService'
 import { createUser } from '../../services/UserService'
+import { getDepoListFromErp } from '../../services/MikroService'
+import { assignUserDepos } from '../../services/UserDepoRelService'
 import { notify, notifyError } from '../../layout/Layout'
 import UserForm from '../../components/Form/UserForm'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
-import { DepoContainer } from '../../store/DepoContainer'
 import { getRoleList } from '../../services/RoleService'
 
 const UserCreateContainer = () => {
@@ -15,8 +16,8 @@ const UserCreateContainer = () => {
   const headers = useAuthHeader()
   const [auth, setAuth] = useState([])
   const [roles, setRoles] = useState([])
+  const [depoList, setDepoList] = useState([])
   const { account } = useContainer(DataStore)
-  const { depoList } = useContainer(DepoContainer)
 
   const fetchAllAuth = async () => {
     try {
@@ -36,14 +37,26 @@ const UserCreateContainer = () => {
     }
   }
 
-  const handleCreateUser = async (values) => {
+  const fetchDepoList = async () => {
     try {
-      const payload = {
-        ...values,
-        warehouses: (values.warehouses || []).map((id) => ({ id })),
+      const res = await getDepoListFromErp(headers)
+      setDepoList(res || [])
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
+
+  const handleCreateUser = async ({ depots, ...values }) => {
+    try {
+      const createdUser = await createUser(headers, values)
+      if (createdUser?.id && depots?.length > 0) {
+        const warehouseList = depots.map((code) => {
+          const depo = depoList.find((item) => item.code === code)
+          return { code, name: depo?.name, companyCode: String(account.companyCode) }
+        })
+        await assignUserDepos(headers, { warehouseList, userList: [{ id: createdUser.id }] })
       }
-      const res = await createUser(headers, payload)
-      res && notify('Oluşturuldu')
+      createdUser && notify('Oluşturuldu')
     } catch (error) {
       notifyError(error.message)
     }
@@ -52,6 +65,7 @@ const UserCreateContainer = () => {
   useEffect(() => {
     fetchAllAuth()
     fetchAllRoles()
+    fetchDepoList()
   }, [])
 
   return (
@@ -74,7 +88,7 @@ const UserCreateContainer = () => {
           email: '',
           authorities: [],
           roles: [],
-          warehouses: [],
+          depots: [],
         }}
         validationSchema={null}
         onSubmit={handleCreateUser}
@@ -82,7 +96,7 @@ const UserCreateContainer = () => {
         saveButtonLabel="Kaydet"
         authorities={auth}
         roles={roles}
-        warehouses={depoList}
+        depoList={depoList}
         userAuthorities={account.authorities || []}
       />
     </Box>
