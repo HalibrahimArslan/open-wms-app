@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Box, TextField } from '@mui/material'
 import SmartDriverSelect from './SmartDriverSelect'
-import AddDriverModal from '../Dialog/AddDriverDialog'
+import DriverDialog from '../Dialog/DriverDialog'
 import { notify } from '../../layout/Layout'
 
 export default function SmartDriver({ firmCode, onSelect, errorMessages = {}, value }) {
@@ -44,7 +44,7 @@ export default function SmartDriver({ firmCode, onSelect, errorMessages = {}, va
         </Box>
       )}
 
-      <AddDriverModal open={addModalOpen} onClose={() => setAddModalOpen(false)} onSave={handleDriverSave} />
+      <DriverDialog open={addModalOpen} onClose={() => setAddModalOpen(false)} onSave={handleDriverSave} />
     </Box>
   )
 }

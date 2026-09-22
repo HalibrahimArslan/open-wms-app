@@ -1,26 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { DataGrid } from '@mui/x-data-grid'
-import { Skeleton, Box, TextField, Button } from '@mui/material'
-import { deleteDriver, getFilterDrivers, updateDrivers } from '../../../services/DriverService'
+import { Box } from '@mui/material'
+import { deleteDriver, getFilterDrivers } from '../../../services/DriverService'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import { notify, notifyError } from '../../../layout/Layout'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import ActionHeader from '../../../shared/components/ActionHeader'
-import AddDriverModal from '../../../components/Dialog/AddDriverDialog'
-import AurDialog from '../../../shared/components/Dialog/AurDialog'
+import DriverDialog from '../../../components/Dialog/DriverDialog'
 import ConfirmDialog from '../../../components/Dialog/ConfirmDialog'
 import CustomToolbar from '../../../shared/components/DataGrid/CustomToolbar'
-
-const MAX_PLATE_LEN = 15
 
 const DriverDefinitionsContainer = () => {
   const [drivers, setDrivers] = useState([])
   const [loading, setLoading] = useState(false)
-  const [createDriver, setCreateDriver] = useState(false)
-  const [updateDriver, setUpdateDriver] = useState(false)
+  const [driverDialog, setDriverDialog] = useState(false)
   const [selectedDriver, setSelectedDriver] = useState(null)
-  const [editedDriver, setEditedDriver] = useState(null)
   const [isDelete, setIsDelete] = useState(false)
   const [filterModel, setFilterModel] = useState({
     items: [],
@@ -45,8 +40,7 @@ const DriverDefinitionsContainer = () => {
         <EditIcon
           onClick={() => {
             setSelectedDriver(params.row)
-            setEditedDriver({ ...params.row })
-            setUpdateDriver(true)
+            setDriverDialog(true)
           }}
           sx={{ color: 'primary.main', cursor: 'pointer' }}
         />
@@ -92,34 +86,10 @@ const DriverDefinitionsContainer = () => {
     getAllDrivers(query)
   }
 
-  const handleUpdateDriver = async () => {
-    if (!editedDriver || !editedDriver.id) return
-
-    const lp = (editedDriver.licensePlate || '').trim()
-    const tp = (editedDriver.trailerPlate || '').trim()
-    if (lp.length > MAX_PLATE_LEN) return notifyError('Plaka 15 haneden fazla olamaz.')
-    if (tp.length > MAX_PLATE_LEN) return notifyError('Dorse plaka 15 haneden fazla olamaz.')
-
-    const payload = {
-      id: editedDriver.id,
-      driverName: editedDriver.driverName,
-      phoneNumber: editedDriver.phoneNumber,
-      licensePlate: lp,
-      trailerPlate: tp,
-      identityNumber: editedDriver.identityNumber,
-      opType: editedDriver.opType,
-    }
-
-    try {
-      await updateDrivers(headers, editedDriver.id, payload)
-
-      setDrivers((prev) => prev.map((driver) => (driver.id === editedDriver.id ? { ...driver, ...editedDriver } : driver)))
-
-      setUpdateDriver(false)
-      notify('Şoför başarıyla güncellendi.')
-    } catch (error) {
-      notifyError(error.message)
-    }
+  const handleSaveDriver = (savedDriver) => {
+    const isEdit = Boolean(selectedDriver)
+    setDrivers((prev) => (isEdit ? prev.map((driver) => (driver.id === savedDriver.id ? savedDriver : driver)) : [...prev, savedDriver]))
+    notify(isEdit ? 'Şoför başarıyla güncellendi.' : 'Şoför başarıyla eklendi.')
   }
 
   const handleDeleteDriver = async () => {
@@ -138,7 +108,13 @@ const DriverDefinitionsContainer = () => {
 
   return (
     <Box>
-      <ActionHeader title={'Şoför Tanımlamaları'} handleClick={() => setCreateDriver(true)} />
+      <ActionHeader
+        title={'Şoför Tanımlamaları'}
+        handleClick={() => {
+          setSelectedDriver(null)
+          setDriverDialog(true)
+        }}
+      />
       <DataGrid
         autoHeight
         rows={drivers}
@@ -162,97 +138,7 @@ const DriverDefinitionsContainer = () => {
         showToolbar
       />
 
-      <AddDriverModal
-        open={createDriver}
-        onClose={() => setCreateDriver(false)}
-        onSave={(newDriver) => {
-          setDrivers((prev) => [...prev, newDriver])
-          setCreateDriver(false)
-          notify('Şoför başarıyla eklendi.')
-        }}
-      />
-
-      <AurDialog
-        open={updateDriver}
-        handleClose={() => setUpdateDriver(false)}
-        scroll="paper"
-        paperProps={{ sx: { width: '80%', maxHeight: '90vh' } }}
-        disabled={false}
-        children={
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              p: 2,
-            }}
-          >
-            {editedDriver && (
-              <>
-                <TextField
-                  label="Ad Soyad"
-                  value={editedDriver.driverName || ''}
-                  onChange={(e) => setEditedDriver((prev) => ({ ...prev, driverName: e.target.value }))}
-                  fullWidth
-                  size="small"
-                />
-
-                <TextField
-                  label="Telefon"
-                  value={editedDriver.phoneNumber || ''}
-                  onChange={(e) => setEditedDriver((prev) => ({ ...prev, phoneNumber: e.target.value }))}
-                  fullWidth
-                  size="small"
-                />
-
-                <TextField
-                  label="Plaka"
-                  value={editedDriver.licensePlate || ''}
-                  onChange={(e) => setEditedDriver((prev) => ({ ...prev, licensePlate: e.target.value }))}
-                  fullWidth
-                  size="small"
-                  helperText="Maksimum 15 karakter"
-                  slotProps={{
-                    htmlInput: { maxLength: MAX_PLATE_LEN },
-                  }}
-                />
-
-                {/* ✅ trailerPlate edit alanı */}
-                <TextField
-                  label="Dorse Plaka"
-                  value={editedDriver.trailerPlate || ''}
-                  onChange={(e) => setEditedDriver((prev) => ({ ...prev, trailerPlate: e.target.value }))}
-                  fullWidth
-                  size="small"
-                  helperText="Maksimum 15 karakter"
-                  slotProps={{
-                    htmlInput: { maxLength: MAX_PLATE_LEN },
-                  }}
-                />
-
-                <TextField
-                  label="TC Kimlik No"
-                  value={editedDriver.identityNumber || ''}
-                  onChange={(e) => setEditedDriver((prev) => ({ ...prev, identityNumber: e.target.value }))}
-                  fullWidth
-                  size="small"
-                />
-
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                  }}
-                >
-                  <Button size="small" variant="contained" color="primary" onClick={handleUpdateDriver}>
-                    Kaydet
-                  </Button>
-                </Box>
-              </>
-            )}
-          </Box>
-        }
-      />
+      <DriverDialog open={driverDialog} onClose={() => setDriverDialog(false)} driver={selectedDriver} onSave={handleSaveDriver} />
 
       <ConfirmDialog
         dialogStatus={isDelete}

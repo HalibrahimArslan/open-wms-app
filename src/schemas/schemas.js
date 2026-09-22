@@ -25,3 +25,18 @@ export const addressComponentSchema = (label, maxLength = ADDRESS_COMPONENT_CODE
       .required(`${label} boş bırakılamaz.`),
     description: yup.string().required('Açıklama boş bırakılamaz.'),
   })
+
+export const DRIVER_PLATE_MAX_LENGTH = 15
+
+export const driverSchema = yup.object({
+  driverName: yup.string().trim().min(3, 'Ad soyad en az 3 karakter olmalı.').required('Ad soyad boş bırakılamaz.'),
+  identityNumber: yup.string().length(11, 'T.C. No 11 haneli olmalı.').required('T.C. No boş bırakılamaz.'),
+  phoneNumber: yup.string().length(11, 'Telefon 11 haneli olmalı.').required('Telefon boş bırakılamaz.'),
+  licensePlate: yup
+    .string()
+    .trim()
+    .min(6, 'Plaka en az 6 karakter olmalı.')
+    .max(DRIVER_PLATE_MAX_LENGTH, `Plaka en fazla ${DRIVER_PLATE_MAX_LENGTH} karakter olabilir.`)
+    .required('Plaka boş bırakılamaz.'),
+  trailerPlate: yup.string().trim().max(DRIVER_PLATE_MAX_LENGTH, `Dorse plaka en fazla ${DRIVER_PLATE_MAX_LENGTH} karakter olabilir.`),
+})
