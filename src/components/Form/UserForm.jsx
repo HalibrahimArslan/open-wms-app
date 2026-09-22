@@ -120,14 +120,14 @@ const UserForm = ({
                       onBlur={handleBlur}
                       renderValue={(selected) =>
                         depoList
-                          .filter((depo) => (selected || []).includes(depo.code))
-                          .map((depo) => depo.name || depo.code)
+                          .filter((depo) => (selected || []).includes(String(depo.depoNo)))
+                          .map((depo) => depo.depoIsmi || depo.depoNo)
                           .join(', ')
                       }
                     >
                       {depoList.map((depo) => (
-                        <MenuItem key={depo.code} value={depo.code}>
-                          {depo.name || depo.code}
+                        <MenuItem key={depo.depoNo} value={String(depo.depoNo)}>
+                          {depo.depoIsmi || depo.depoNo}
                         </MenuItem>
                       ))}
                     </Select>

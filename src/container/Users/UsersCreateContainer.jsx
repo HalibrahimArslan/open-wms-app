@@ -50,9 +50,9 @@ const UserCreateContainer = () => {
     try {
       const createdUser = await createUser(headers, values)
       if (createdUser?.id && depots?.length > 0) {
-        const warehouseList = depots.map((code) => {
-          const depo = depoList.find((item) => item.code === code)
-          return { code, name: depo?.name, companyCode: String(account.companyCode) }
+        const warehouseList = depots.map((depoNo) => {
+          const depo = depoList.find((item) => String(item.depoNo) === depoNo)
+          return { code: depoNo, name: depo?.depoIsmi, companyCode: String(account.companyCode) }
         })
         await assignUserDepos(headers, { warehouseList, userList: [{ id: createdUser.id }] })
       }

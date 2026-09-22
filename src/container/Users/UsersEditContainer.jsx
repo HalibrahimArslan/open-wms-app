@@ -103,9 +103,9 @@ const UserEditContainer = () => {
       const removedRels = userDepoRels.filter((rel) => !selectedCodes.includes(rel.warehouse.code))
 
       if (addedCodes.length > 0) {
-        const warehouseList = addedCodes.map((code) => {
-          const depo = depoList.find((item) => item.code === code)
-          return { code, name: depo?.name, companyCode: String(account.companyCode) }
+        const warehouseList = addedCodes.map((depoNo) => {
+          const depo = depoList.find((item) => String(item.depoNo) === depoNo)
+          return { code: depoNo, name: depo?.depoIsmi, companyCode: String(account.companyCode) }
         })
         await assignUserDepos(headers, { warehouseList, userList: [{ id: currentUser.id }] })
       }
