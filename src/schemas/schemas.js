@@ -40,3 +40,37 @@ export const driverSchema = yup.object({
     .required('Plaka boş bırakılamaz.'),
   trailerPlate: yup.string().trim().max(DRIVER_PLATE_MAX_LENGTH, `Dorse plaka en fazla ${DRIVER_PLATE_MAX_LENGTH} karakter olabilir.`),
 })
+
+export const ERP_TYPES = [
+  { value: 'LOCAL', label: 'Yerel' },
+  { value: 'MIKRO_V16', label: 'Mikro v16' },
+  { value: 'MIKRO_V15', label: 'Mikro v15' },
+  { value: 'UYUMSOFT', label: 'Uyumsoft' },
+]
+
+export const companySchema = yup.object({
+  companyCode: yup
+    .number()
+    .typeError('Şirket kodu sayı olmalı.')
+    .integer('Şirket kodu tam sayı olmalı.')
+    .min(0, 'Şirket kodu negatif olamaz.')
+    .required('Şirket kodu boş bırakılamaz.'),
+  companyName: yup.string().trim().required('Şirket adı boş bırakılamaz.'),
+  erpType: yup
+    .string()
+    .oneOf(
+      ERP_TYPES.map((type) => type.value),
+      'Geçerli bir ERP tipi seçiniz.',
+    )
+    .required('ERP tipi seçiniz.'),
+  apiEndPoint: yup
+    .string()
+    .trim()
+    .when('erpApiActive', {
+      is: true,
+      then: (schema) => schema.required('ERP bağlantısı aktifken API adresi boş bırakılamaz.'),
+    }),
+  erpApiActive: yup.boolean(),
+  username: yup.string().trim(),
+  password: yup.string(),
+})

@@ -69,6 +69,7 @@ import UniqueBarcodeFirmsView from '../view/UniqueBarcode/UniqueBarcodeFirmsView
 import UniqueBarcodeFirmListDetail from '../container/UniqueBarcode/FirmadanMalKabul/UniqueBarcodeFirmListDetail'
 import UniqueBarcodeView from '../view/UniqueBarcode/UniqueBarcodeView.jsx'
 import LotProductDefinitionView from '../view/UniqueBarcode/LotProductDefinitionView.jsx'
+import CompanyView from '../view/Company/CompanyView.jsx'
 
 export default function AppWithState() {
   usePersistedToken()
@@ -85,6 +86,7 @@ export default function AppWithState() {
         </Route>
         <Route path="/:depo/feedbacks" element={<FeedbackManagementView />} />
         <Route path="/:depo/feedbacks/:id" element={<FeedbackDetailView />} />
+        <Route path="/:depo/companies" element={<CompanyView />} />
         <Route path="/:depo/users" element={<UsersView />} />
         <Route path="/:depo/users/new" element={<CreateUserView />} />
         <Route path="/:depo/users/edit" element={<EditUserView />} />
