@@ -23,7 +23,7 @@ export default function KontrolAdres() {
   const { allDepoList } = useContainer(DepoContainer)
   const transferDepoCode = getTransferDepoCode(depoCode, allDepoList)
 
-  const [data] = useFetch(`/api/aur-depo-kontrol-adres/${transferDepoCode}`)
+  const [data] = useFetch(transferDepoCode ? `/api/aur-depo-kontrol-adres/${transferDepoCode}` : null)
 
   const navigate = useNavigate()
 

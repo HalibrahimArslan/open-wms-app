@@ -13,9 +13,11 @@ const useFetch = (url) => {
   }
 
   useEffect(() => {
+    // Adres henuz hazir degilse (orn. depo kodu yuklenmediyse) istek atilmaz.
+    if (!url) return
     fetch(url, requestOptions)
-      .then((res) => res.json())
-      .then((data) => setData(data))
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => data !== null && setData(data))
   }, [url, location])
 
   return [data]

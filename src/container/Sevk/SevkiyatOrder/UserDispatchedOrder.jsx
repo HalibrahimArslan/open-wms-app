@@ -24,7 +24,7 @@ function DispatchingOrder() {
 
   const [searchText, setSearchText] = useState('')
   const [orders, setOrders] = useState([])
-  const [data] = useFetch(`/api/aur-tmp-detail/MSK/${transferDepoCode}`)
+  const [data] = useFetch(transferDepoCode ? `/api/aur-tmp-detail/MSK/${transferDepoCode}` : null)
 
   useEffect(() => {
     if (searchText === '') {
