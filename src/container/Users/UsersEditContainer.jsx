@@ -8,6 +8,7 @@ import { getAuthorities } from '../../services/AccountService'
 import UserForm from '../../components/Form/UserForm'
 import { userEditSchema } from '../../schemas/schemas'
 import { DataStore } from '../../store/DataStore'
+import { DepoContainer } from '../../store/DepoContainer'
 import { useContainer } from 'unstated-next'
 import { getRoleList } from '../../services/RoleService'
 
@@ -16,6 +17,7 @@ const UserEditContainer = () => {
   const login = searchParams.get('login')
   const headers = useAuthHeader()
   const { account } = useContainer(DataStore)
+  const { depoList } = useContainer(DepoContainer)
 
   const [user, setUser] = useState(null)
   const [auth, setAuth] = useState([])
@@ -61,6 +63,7 @@ const UserEditContainer = () => {
       const updatedUser = {
         ...(currentUser || {}),
         ...values,
+        warehouses: (values.warehouses || []).map((id) => ({ id })),
       }
       await updateUser(headers, updatedUser)
       notify('Güncellendi')
@@ -80,6 +83,7 @@ const UserEditContainer = () => {
             email: user.email || '',
             authorities: user.authorities || [],
             roles: user.roles || [],
+            warehouses: (user.warehouses || []).map((warehouse) => warehouse.id),
           }}
           validationSchema={userEditSchema}
           onSubmit={handleClickUpdateUser}
@@ -87,6 +91,7 @@ const UserEditContainer = () => {
           saveButtonLabel="Kaydet"
           authorities={auth}
           roles={roles}
+          warehouses={depoList}
           userAuthorities={account.authorities || []}
         />
       )}

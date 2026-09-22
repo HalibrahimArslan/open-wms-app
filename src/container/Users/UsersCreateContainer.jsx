@@ -7,6 +7,7 @@ import UserForm from '../../components/Form/UserForm'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
+import { DepoContainer } from '../../store/DepoContainer'
 import { getRoleList } from '../../services/RoleService'
 
 const UserCreateContainer = () => {
@@ -15,6 +16,7 @@ const UserCreateContainer = () => {
   const [auth, setAuth] = useState([])
   const [roles, setRoles] = useState([])
   const { account } = useContainer(DataStore)
+  const { depoList } = useContainer(DepoContainer)
 
   const fetchAllAuth = async () => {
     try {
@@ -36,7 +38,11 @@ const UserCreateContainer = () => {
 
   const handleCreateUser = async (values) => {
     try {
-      const res = await createUser(headers, values)
+      const payload = {
+        ...values,
+        warehouses: (values.warehouses || []).map((id) => ({ id })),
+      }
+      const res = await createUser(headers, payload)
       res && notify('Oluşturuldu')
     } catch (error) {
       notifyError(error.message)
@@ -68,6 +74,7 @@ const UserCreateContainer = () => {
           email: '',
           authorities: [],
           roles: [],
+          warehouses: [],
         }}
         validationSchema={null}
         onSubmit={handleCreateUser}
@@ -75,6 +82,7 @@ const UserCreateContainer = () => {
         saveButtonLabel="Kaydet"
         authorities={auth}
         roles={roles}
+        warehouses={depoList}
         userAuthorities={account.authorities || []}
       />
     </Box>

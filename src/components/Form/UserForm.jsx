@@ -15,12 +15,23 @@ let UserFormFields = {
   email: 'Email',
   authorities: 'Yetkiler',
   roles: 'Roller',
+  warehouses: 'Depolar',
   newPasswordConfirm: 'Parola Onayı',
   newPassword: 'Yeni Parola',
   currentPassword: 'Mevcut Parola',
 }
 
-const UserForm = ({ initialValues = {}, validationSchema, onSubmit, backButtonLabel, saveButtonLabel, authorities = [], roles = [], userAuthorities = [] }) => {
+const UserForm = ({
+  initialValues = {},
+  validationSchema,
+  onSubmit,
+  backButtonLabel,
+  saveButtonLabel,
+  authorities = [],
+  roles = [],
+  warehouses = [],
+  userAuthorities = [],
+}) => {
   const nav = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const toggleShowPassword = () => setShowPassword((p) => !p)
@@ -95,6 +106,34 @@ const UserForm = ({ initialValues = {}, validationSchema, onSubmit, backButtonLa
                       {touched.roles && errors.roles ? <FormHelperText>{errors.roles}</FormHelperText> : null}
                     </FormControl>
                   )
+                ) : fieldName === 'warehouses' ? (
+                  <FormControl fullWidth error={touched.warehouses && Boolean(errors.warehouses)}>
+                    <InputLabel id="warehouses-label">Depolar</InputLabel>
+                    <Select
+                      labelId="warehouses-label"
+                      id="warehouses"
+                      name="warehouses"
+                      multiple
+                      label="Depolar"
+                      value={values.warehouses || []}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      renderValue={(selected) =>
+                        warehouses
+                          .filter((warehouse) => (selected || []).includes(warehouse.id))
+                          .map((warehouse) => warehouse.name || warehouse.code)
+                          .join(', ')
+                      }
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse.id} value={warehouse.id}>
+                          {warehouse.name || warehouse.code}
+                        </MenuItem>
+                      ))}
+                    </Select>
+
+                    {touched.warehouses && errors.warehouses ? <FormHelperText>{errors.warehouses}</FormHelperText> : null}
+                  </FormControl>
                 ) : (
                   <TextField
                     fullWidth
