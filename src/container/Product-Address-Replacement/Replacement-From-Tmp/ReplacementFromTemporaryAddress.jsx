@@ -13,6 +13,7 @@ import StepperInput from '../../../components/Stepper/StepperInput'
 import { generatePayload, getTransferDepoCode } from '../../../utils/Utils'
 import { useContainer } from 'unstated-next'
 import { DepoContainer } from '../../../store/DepoContainer'
+import { DataStore } from '../../../store/DataStore'
 
 const steps = ['Adres Raf Barkodu', 'Ürün Barkodu', 'Miktar']
 
@@ -32,6 +33,7 @@ export default function ReplacementFromTemporaryAddress() {
 
   const depoCode = useDepoCode()
   const { allDepoList } = useContainer(DepoContainer)
+  const { account } = useContainer(DataStore)
   const transferCode = getTransferDepoCode(depoCode, allDepoList)
 
   const handleResponse = (res) => {
@@ -65,7 +67,7 @@ export default function ReplacementFromTemporaryAddress() {
       let payload = generatePayload({
         barkodTipi: 'RAF',
         barcode: barcode,
-        companyCode: '2',
+        companyCode: String(account?.companyCode),
         depoCode: transferCode,
         miktar: amount,
         orderNo: orderNo,
