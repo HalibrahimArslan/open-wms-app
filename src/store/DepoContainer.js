@@ -18,6 +18,7 @@ export const useStore = () => {
 
   const headers = useAuthHeader()
   const [depoList, setDepoList] = useState([])
+  const [depoListLoaded, setDepoListLoaded] = useState(false)
   const [depoCode, setDepoCode] = useState(1)
   const [depoName, setDepoName] = useState('')
   const [depoCombo, setDepoCombo] = useState(0)
@@ -113,6 +114,7 @@ export const useStore = () => {
   const fetchDepoData = async (companyCode) => {
     if (cache.get('depoList')) {
       setDepoList(cache.get('depoList'))
+      setDepoListLoaded(true)
     } else {
       try {
         const res = await getWarehouses(headers, `companyCode.equals=${companyCode}`)
@@ -121,6 +123,8 @@ export const useStore = () => {
       } catch (e) {
         // Sessizce yutulursa depo listesi bos kalir ve sebebi gorunmez
         console.error('Depo listesi alinamadi:', e)
+      } finally {
+        setDepoListLoaded(true)
       }
     }
   }
@@ -164,6 +168,7 @@ export const useStore = () => {
     companyInfo,
     handleCompanyInfo,
     depoList,
+    depoListLoaded,
     isPressedLeftDrawer,
     isDepoMenuOpen,
     handleIsPressedLeftDrawer,

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router'
 import { DepoContainer } from '../../store/DepoContainer'
 import DepoItem from '../../components/DepoItem'
 import LoadingSpinner from '../../components/Loading/LoadingSpinner'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 import useIsMobile from '../../hooks/useIsMobile'
 
 export default function DepoList() {
@@ -35,10 +36,12 @@ export default function DepoList() {
         </ListSubheader>
       }
     >
-      {depoList && depoList.length > 0 ? (
+      {!depoContainer.depoListLoaded ? (
+        <LoadingSpinner />
+      ) : depoList && depoList.length > 0 ? (
         depoList.map((todo) => <DepoItem key={todo.depoNo} todo={todo} depoCode={depoList.depoCode} handleListItemClick={handleListItemClick} />)
       ) : (
-        <LoadingSpinner />
+        <EmptyState title="Size tanımlı depo bulunamadı" dense />
       )}
     </List>
   )
