@@ -180,7 +180,7 @@ export default function OrderProgressSevkiyat() {
         )
       },
     },
-    { field: 'orderNo', headerName: 'Mikro Sipariş No', width: 120 },
+    { field: 'orderNo', headerName: 'ERP Sipariş No', width: 120 },
     { field: 'stokKodu', headerName: 'Stok Kodu', width: 120 },
     {
       field: 'sevkHazirMiktar',

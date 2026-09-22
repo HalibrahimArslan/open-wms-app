@@ -18,7 +18,7 @@ const PartialItemContainer = ({ loading, search, partialItemList, getPartialDeta
           <NotFound msg="Kayıt Bulunamadı" />
           {search && (
             <Button endIcon={<CompareArrowsIcon />} variant="contained" onClick={handleTransferFromMicro}>
-              Mikrodan Aktar
+              ERP'den Aktar
             </Button>
           )}
         </Box>

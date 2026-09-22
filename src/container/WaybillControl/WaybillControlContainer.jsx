@@ -64,7 +64,7 @@ const WaybillControlContainer = () => {
       minWidth: 130,
       renderCell: (params) => {
         const source = params.value
-        const label = source === 'ERP' ? 'Mikro' : source === 'DYS' ? 'DYS' : '-'
+        const label = source === 'ERP' ? 'ERP' : source === 'DYS' ? 'DYS' : '-'
         const color = source === 'ERP' ? 'warning' : source === 'DYS' ? 'primary' : 'default'
         return <Chip size="small" label={label} color={color} variant="outlined" />
       },
@@ -207,7 +207,7 @@ const WaybillControlContainer = () => {
       Cari: row.cariUnvan ?? '-',
       Tarih: row.tarih ?? '-',
       Kullanıcı: row.kullanici ?? '-',
-      Kaynak: row.kaynak === 'ERP' ? 'Mikro' : (row.kaynak ?? '-'),
+      Kaynak: row.kaynak === 'ERP' ? 'ERP' : (row.kaynak ?? '-'),
     }))
 
     const ws = XLSX.utils.json_to_sheet(sheetData.length ? sheetData : [{ 'İrsaliye No': '-', 'Sipariş No': '-', Cari: '-', Tarih: '-', Kullanıcı: '-', Kaynak: '-' }])
@@ -281,7 +281,7 @@ const WaybillControlContainer = () => {
                   >
                     <TextField select label="Kaynak" variant="standard" fullWidth value={filters.kaynak || ''} onChange={(e) => setFilter('kaynak', e.target.value)}>
                       <MenuItem value="DYS">Depo Yönetim Sistemi</MenuItem>
-                      <MenuItem value="ERP">Mikro</MenuItem>
+                      <MenuItem value="ERP">ERP</MenuItem>
                     </TextField>
                   </Grid>
                   <Grid

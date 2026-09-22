@@ -66,7 +66,7 @@ const PartailContainer = () => {
           },
         ])
       res && setSearch('')
-      notify('Mikrodan Aktarım Başarılı')
+      notify("ERP'den Aktarım Başarılı")
     } catch (error) {
       notifyError(error.message)
     } finally {

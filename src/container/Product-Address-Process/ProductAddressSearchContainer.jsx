@@ -47,7 +47,7 @@ export default function ProductAddressSearchContainer({ processType }) {
       }
       throw new Error('')
     } catch (e) {
-      notifyError('Mikro ürün bilgisi bulunamadı')
+      notifyError('ERP ürün bilgisi bulunamadı')
     }
   }
 

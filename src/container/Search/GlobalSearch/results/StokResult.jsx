@@ -205,7 +205,7 @@ function NotFoundWithProduce({ stokKodu, generating, generatedBarcode, onGenerat
             textAlign: 'center',
           }}
         >
-          {stokKodu ? `${stokKodu} koduna ait Mikro stok detayı yok.` : 'Aradığın stok koduna ait detay yok.'}
+          {stokKodu ? `${stokKodu} koduna ait ERP stok detayı yok.` : 'Aradığın stok koduna ait detay yok.'}
           <br />
           Yine de bu kod için yeni bir barkod oluşturabilirsin.
         </Typography>

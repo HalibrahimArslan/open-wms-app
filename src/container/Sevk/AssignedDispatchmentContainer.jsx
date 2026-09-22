@@ -184,7 +184,7 @@ function AssignedDispatchmentContainer() {
         })
       )
 
-      notify('Mikrodan Günceleme Başarılı')
+      notify("ERP'den Güncelleme Başarılı")
     } catch (e) {
       notifyError(e.toString())
     }
@@ -240,7 +240,7 @@ function AssignedDispatchmentContainer() {
 
     if (event.key === 'Enter') {
       if (amount > erpAmount) {
-        notifyError('Mikrodaki stok miktarı yetersiz')
+        notifyError("ERP'deki stok miktarı yetersiz")
         return
       }
       let filteredList = orderDetail.filter((detail) => detail.stokKodu === stockCode)

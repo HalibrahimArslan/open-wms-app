@@ -90,7 +90,7 @@ function ProductInfoCard({ productList, totalAmount, approvedUser }) {
                         fontSize: '10px',
                       }}
                     >
-                      {approvedUser ? 'Siparis' : 'Mikro'}
+                      {approvedUser ? 'Siparis' : 'ERP'}
                     </Typography>
                     <Typography
                       variant="h5"
