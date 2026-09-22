@@ -51,7 +51,7 @@ function OrderQuantityInput({ order, quantity, handleChange, handleKeyPress, erp
       >
         <Chip
           sx={{ display: erpAmount !== undefined && erpAmount !== null ? 'inherit' : 'none' }}
-          label={`Mikro Miktarı: ${erpAmount}`}
+          label={`ERP Miktarı: ${erpAmount}`}
           color="primary"
           variant="outlined"
           size="medium"

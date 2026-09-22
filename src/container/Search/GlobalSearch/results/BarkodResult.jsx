@@ -43,7 +43,7 @@ function MikroMiktarSection({ totalQty, description }) {
         >
           <NumbersRoundedIcon fontSize="small" />
           <Typography variant="body2" sx={{ fontWeight: 600 }}>
-            Mikro Miktar
+            ERP Miktarı
           </Typography>
         </Stack>
         <ResultChip color={qtyChipColor(totalQty)} label={totalQty ?? 0} />

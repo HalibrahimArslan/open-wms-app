@@ -185,8 +185,8 @@ function CompleteDispatchmentContainer() {
 
   const fetchDispatchOrder = async (payload) => {
     try {
-      const res = await dispatchOrder(payload)
-      res && notify('Güncelleme İşlemi Başarılı')
+      await dispatchOrder(payload)
+      notify('Sevkiyat İşlemi Başarılı')
       navigate(`/d:${depoCode}/${orderType}/orders-to-be-dispatched?controlAddressId=${controlAddressId}`)
     } catch (err) {
       setEnableIrsaliyeBtn(false)

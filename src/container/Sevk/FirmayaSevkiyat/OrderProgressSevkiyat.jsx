@@ -194,7 +194,7 @@ export default function OrderProgressSevkiyat() {
     },
     { field: 'teslimMiktar', headerName: 'Sevk Edilmiş Miktar', width: 150, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
     { field: 'siparisMiktar', headerName: 'Sipariş Miktarı', width: 120, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
-    { field: 'stokMiktar', headerName: 'Mikro Miktar', width: 120, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
+    { field: 'stokMiktar', headerName: 'ERP Miktarı', width: 120, type: 'number', align: 'right', headerAlign: 'right', cellClassName: 'numeric-cell' },
     { field: 'stokAdi', headerName: 'Stok Adı', flex: 1, minWidth: 400 },
     { field: 'barkod', headerName: 'Ürün Barkodu', width: 150 },
     {
