@@ -15,6 +15,7 @@ const UserRolesContainer = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [count, setCount] = useState(30)
+  const [loading, setLoading] = useState(false)
 
   const headers = useAuthHeader()
   const nav = useNavigate()
@@ -37,6 +38,7 @@ const UserRolesContainer = () => {
 
   const fetchUserRoles = async () => {
     try {
+      setLoading(true)
       let query = `page=${page}&size=${rowsPerPage}&sort=user.login`
       const response = await getUserRoleList(headers, query)
       if (response) {
@@ -45,6 +47,8 @@ const UserRolesContainer = () => {
       }
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -63,6 +67,7 @@ const UserRolesContainer = () => {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         count={count}
         colSpan={4}
+        loading={loading}
       />
       <Outlet />
     </React.Fragment>

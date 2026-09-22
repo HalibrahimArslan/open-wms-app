@@ -5,10 +5,10 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
 import { Chip } from '@mui/material'
-import { deleteAddressRoom, getAddressRooms, saveAddressRoom } from '../../../services/AddressComponentService'
+import { deleteAddressRoom, getAddressRooms, saveAddressRoom, updateAddressRoom } from '../../../services/AddressComponentService'
 import { generatePayload } from '../../../utils/Utils'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import useDepoCode from '../../../hooks/useDepoCode'
 import { DataStore } from '../../../store/DataStore'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
@@ -76,6 +76,7 @@ const AddressRoomContainer = () => {
     try {
       await deleteAddressRoom(id, headers)
       setRooms((prevRooms) => [...prevRooms.filter((room) => room.id !== id)])
+      notify('Oda başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -100,6 +101,7 @@ const AddressRoomContainer = () => {
       const res = await saveAddressRoom(payload)
       res && setRooms((prevRooms) => [...prevRooms, res])
       res && setOpen(false)
+      res && notify('Oda başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -121,6 +123,7 @@ const AddressRoomContainer = () => {
         )
       res && setSelectedRoom({})
       res && setOpen(false)
+      res && notify('Oda başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -128,10 +131,9 @@ const AddressRoomContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedRoom).length > 0) {
-      fetchUpdateRoom({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
-      return
+      return fetchUpdateRoom({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
     }
-    fetchSaveRoom(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveRoom(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
   }
 
   useEffect(() => {
@@ -140,7 +142,13 @@ const AddressRoomContainer = () => {
 
   return (
     <>
-      <ActionHeader title="Odalar" handleClick={() => setOpen(true)} />
+      <ActionHeader
+        title="Odalar"
+        handleClick={() => {
+          setSelectedRoom({})
+          setOpen(true)
+        }}
+      />
       <DynamicTable data={rooms} columns={columns} loading={loading} />
       <ExtendedDialog
         open={open}

@@ -10,7 +10,7 @@ import { Chip } from '@mui/material'
 import { deleteAddressType, getAddressTypes, saveAddressType, updateAddressType } from '../../../services/AddressComponentService'
 import { generatePayload } from '../../../utils/Utils'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 import ActionHeader from '../../../shared/components/ActionHeader'
@@ -76,6 +76,7 @@ const AddressTypeContainer = () => {
     try {
       await deleteAddressType(id, headers)
       setAddressTypes((prevAddressTypes) => [...prevAddressTypes.filter((addressType) => addressType.id !== id)])
+      notify('Adres tipi başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -100,6 +101,7 @@ const AddressTypeContainer = () => {
       const res = await saveAddressType(payload)
       res && setAddressTypes((prevAddressTypes) => [...prevAddressTypes, res])
       res && setOpen(false)
+      res && notify('Adres tipi başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -121,6 +123,7 @@ const AddressTypeContainer = () => {
         )
       res && setSelectedAddressType({})
       res && setOpen(false)
+      res && notify('Adres tipi başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -128,10 +131,9 @@ const AddressTypeContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedAddressType).length > 0) {
-      fetchUpdateAddressType({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
-      return
+      return fetchUpdateAddressType({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
     }
-    fetchSaveAddressType(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveAddressType(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
   }
 
   useEffect(() => {
@@ -140,7 +142,13 @@ const AddressTypeContainer = () => {
 
   return (
     <>
-      <ActionHeader title="Adres Tipleri" handleClick={() => setOpen(true)} />
+      <ActionHeader
+        title="Adres Tipleri"
+        handleClick={() => {
+          setSelectedAddressType({})
+          setOpen(true)
+        }}
+      />
       <DynamicTable data={addressTypes} columns={columns} loading={loading} />
       <ExtendedDialog
         open={open}

@@ -9,7 +9,7 @@ import Iconify from '../../../components/Iconify'
 import { Chip } from '@mui/material'
 import { deleteAddressFlat, getAddressFlats, saveAddressFlat, updateAddressFlat } from '../../../services/AddressComponentService'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { generatePayload } from '../../../utils/Utils'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
@@ -76,6 +76,7 @@ const AddressFlatContainer = () => {
     try {
       await deleteAddressFlat(id, headers)
       setFlats((prevFlats) => [...prevFlats.filter((flat) => flat.id !== id)])
+      notify('Kat başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -98,8 +99,9 @@ const AddressFlatContainer = () => {
   const fetchSaveFlat = async (payload) => {
     try {
       const res = await saveAddressFlat(payload)
-      res && setFlats((prevFlats) => [...flats, res])
+      res && setFlats((prevFlats) => [...prevFlats, res])
       res && setOpen(false)
+      res && notify('Kat başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -121,6 +123,7 @@ const AddressFlatContainer = () => {
         )
       res && setSelectedFlat({})
       res && setOpen(false)
+      res && notify('Kat başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -128,10 +131,9 @@ const AddressFlatContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedFlat).length > 0) {
-      fetchUpdateFlat({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
-      return
+      return fetchUpdateFlat({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
     }
-    fetchSaveFlat(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveFlat(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
   }
 
   useEffect(() => {
@@ -140,7 +142,13 @@ const AddressFlatContainer = () => {
 
   return (
     <>
-      <ActionHeader title="Katlar" handleClick={() => setOpen(true)} />
+      <ActionHeader
+        title="Katlar"
+        handleClick={() => {
+          setSelectedFlat({})
+          setOpen(true)
+        }}
+      />
       <DynamicTable data={flats} columns={columns} loading={loading} />
       <ExtendedDialog
         open={open}

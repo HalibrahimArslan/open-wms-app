@@ -10,6 +10,7 @@ import { getRoleList } from '../../../services/RoleService'
 import { generatePayload } from '../../../utils/Utils'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../../store/DataStore'
+import RepetableSkeleton from '../../../components/Loading/RepetableSkeleton'
 
 const MenuRoleRelationItem = ({ menuRoleList, roleList, hoveredCell, setHoveredCell, theme, menu, handleAddRole, handleDeleteRole }) => {
   return (
@@ -90,6 +91,7 @@ export default function RoleMenuRelationContainer() {
       const res = await getMenuList(headers, query)
       res && setMenuList(res)
     } catch (error) {
+      setMenuList([])
       notifyError(error.message)
     }
   }
@@ -99,6 +101,7 @@ export default function RoleMenuRelationContainer() {
       const res = await getRoleList(headers, `companyCode=${account.companyCode}`)
       res && setRoleList(res)
     } catch (error) {
+      setRoleList([])
       notifyError(error.message)
     }
   }
@@ -186,46 +189,50 @@ export default function RoleMenuRelationContainer() {
         </Typography>
       </Box>
       <Divider flexItem />
-      <Box
-        sx={{
-          flex: 1,
-          overflow: 'auto',
-          maxWidth: '100vw',
-        }}
-      >
-        <Table size="small" sx={{ padding: 1 }}>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ position: 'sticky', left: 0, bgcolor: theme.palette.secondary.main, zIndex: 2 }}>Menüler</TableCell>
-              {roleList &&
-                roleList.map((role) => (
-                  <TableCell align="center" key={role.id}>
-                    {role.roleName}
-                  </TableCell>
-                ))}
-            </TableRow>
-          </TableHead>
+      {!menuList || !roleList ? (
+        <RepetableSkeleton length={5} />
+      ) : (
+        <Box
+          sx={{
+            flex: 1,
+            overflow: 'auto',
+            maxWidth: '100vw',
+          }}
+        >
+          <Table size="small" sx={{ padding: 1 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ position: 'sticky', left: 0, bgcolor: theme.palette.secondary.main, zIndex: 2 }}>Menüler</TableCell>
+                {roleList &&
+                  roleList.map((role) => (
+                    <TableCell align="center" key={role.id}>
+                      {role.roleName}
+                    </TableCell>
+                  ))}
+              </TableRow>
+            </TableHead>
 
-          <TableBody sx={{ backgroundColor: theme.palette.action.hover }}>
-            {menuList &&
-              menuList.map((menu) => (
-                <TableRow key={menu.id}>
-                  <TableCell sx={{ position: 'sticky', left: 0, bgcolor: theme.palette.secondary.main, zIndex: 2 }}>{menu.menuName}</TableCell>
-                  <MenuRoleRelationItem
-                    menuRoleList={menuRoleList}
-                    roleList={roleList}
-                    hoveredCell={hoveredCell}
-                    setHoveredCell={setHoveredCell}
-                    theme={theme}
-                    menu={menu}
-                    handleAddRole={handleAddRole}
-                    handleDeleteRole={handleDeleteRole}
-                  />
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </Box>
+            <TableBody sx={{ backgroundColor: theme.palette.action.hover }}>
+              {menuList &&
+                menuList.map((menu) => (
+                  <TableRow key={menu.id}>
+                    <TableCell sx={{ position: 'sticky', left: 0, bgcolor: theme.palette.secondary.main, zIndex: 2 }}>{menu.menuName}</TableCell>
+                    <MenuRoleRelationItem
+                      menuRoleList={menuRoleList}
+                      roleList={roleList}
+                      hoveredCell={hoveredCell}
+                      setHoveredCell={setHoveredCell}
+                      theme={theme}
+                      menu={menu}
+                      handleAddRole={handleAddRole}
+                      handleDeleteRole={handleDeleteRole}
+                    />
+                  </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </Box>
+      )}
     </Box>
   )
 }

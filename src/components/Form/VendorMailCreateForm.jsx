@@ -16,9 +16,7 @@ const VendorMailCreateForm = ({ handleCreateEmail }) => {
       mail: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleCreateEmail(values)
-    },
+    onSubmit: (values) => handleCreateEmail(values),
   })
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -74,7 +72,7 @@ const VendorMailCreateForm = ({ handleCreateEmail }) => {
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
           Oluştur
         </Button>
       </Box>

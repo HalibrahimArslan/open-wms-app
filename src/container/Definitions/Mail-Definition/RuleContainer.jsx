@@ -3,7 +3,7 @@ import { getRules, updateRule } from '../../../services/RuleService'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import RuleForm from '../../../components/Form/RuleForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 
@@ -11,11 +11,12 @@ const RuleContainer = () => {
   const [rules, setRules] = useState([])
   const [selectedRule, setSelectedRule] = useState(null)
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const headers = useAuthHeader()
 
   const handleRule = (rule) => {
     let payload = { ruleName: rule.ruleName, ruleContent: rule.ruleContent }
-    fetchUpdateRule(selectedRule.id, payload)
+    return fetchUpdateRule(selectedRule.id, payload)
   }
 
   const handleOpen = (row) => {
@@ -50,10 +51,13 @@ const RuleContainer = () => {
 
   const fetchRules = async () => {
     try {
+      setLoading(true)
       const response = await getRules(headers)
       setRules(response)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -62,6 +66,7 @@ const RuleContainer = () => {
       const response = await updateRule(id, headers, payload)
       setRules((prevRules) => prevRules.map((rule) => (rule.id === response.id ? response : rule)))
       handleClose()
+      notify('Kural başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -73,7 +78,7 @@ const RuleContainer = () => {
 
   return (
     <>
-      <DynamicTable data={rules} columns={columns} tableSx={{ height: 600 }} />
+      <DynamicTable data={rules} columns={columns} loading={loading} tableSx={{ height: 600 }} />
       <ExtendedDialog dialogHeader={'Kural Düzenle'} open={open} handleClose={handleClose} dialogContent={<RuleForm rule={selectedRule} handleRule={handleRule} />} />
     </>
   )

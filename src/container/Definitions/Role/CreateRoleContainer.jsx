@@ -10,16 +10,22 @@ import { DataStore } from '../../../store/DataStore'
 
 const CreateRoleContainer = () => {
   const [roleName, setRoleName] = useState('')
+  const [saving, setSaving] = useState(false)
   const { account } = useContainer(DataStore)
   const payload = usePayload({ roleName, companyCode: account?.companyCode })
   const nav = useNavigate()
 
   const fetchSaveRole = async () => {
     try {
+      setSaving(true)
       const res = await saveRole(payload)
-      res && notify('Rol başarıyla oluşturuldu')
+      if (!res) return
+      notify('Rol başarıyla oluşturuldu.')
+      handleClose()
     } catch (err) {
       notifyError(err.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -38,6 +44,7 @@ const CreateRoleContainer = () => {
       handleSave={handleSave}
       dialogHeader={'Rol Tanımlama'}
       actionButtonName={'Kaydet'}
+      actionButtonDisaled={saving || !roleName.trim()}
       dialogContent={<TextField value={roleName} onChange={(e) => setRoleName(e.target.value)} placeholder="Rol Adı" fullWidth />}
     />
   )

@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from 'react-router'
 import TableWithPagination from '../../../components/Table/TableWithPagination'
 import useAuthHeader from '../../../hooks/useAuthHeader'
 import CreateNewDefinition from '../../../components/Definitions/CreateNewDefinition'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { deleteMenu, getCountOfMenuList, getMenuList, updateMenu } from '../../../services/MenuService'
 import MenuTable from '../../../components/Table/MenuTable'
 import { produce } from 'immer'
@@ -26,6 +26,7 @@ const MenuDefinitionContainer = () => {
   const [selectedMenu, setSelectedMenu] = useState(null)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [selectedDeleteId, setSelectedDeleteId] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const headers = useAuthHeader()
   const nav = useNavigate()
@@ -53,6 +54,7 @@ const MenuDefinitionContainer = () => {
       setMenus((prev) => prev.filter((menu) => menu.id !== id))
       setMenuList((prev) => prev.filter((menu) => menu.id !== id))
       setCount((prev) => Math.max(prev - 1, 0))
+      notify('Menü başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -80,7 +82,7 @@ const MenuDefinitionContainer = () => {
   }
 
   const handleUpdateMenu = (values) => {
-    fetchUpdateMenu(values)
+    return fetchUpdateMenu(values)
   }
 
   const handleClick = () => {
@@ -109,11 +111,14 @@ const MenuDefinitionContainer = () => {
 
   const fetchMenuListByPage = async () => {
     try {
+      setLoading(true)
       let query = `page=${page}&size=${rowsPerPage}&sort=id,asc`
       const res = await getMenuList(headers, query)
       res && setMenus(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -144,6 +149,7 @@ const MenuDefinitionContainer = () => {
           })
         )
       res && handleUpdateDialogClose()
+      res && notify('Menü başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -170,6 +176,7 @@ const MenuDefinitionContainer = () => {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         count={count}
         colSpan={6}
+        loading={loading}
       />
       <ExtendedDialog
         open={updateDialog}

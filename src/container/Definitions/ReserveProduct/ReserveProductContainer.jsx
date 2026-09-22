@@ -26,6 +26,7 @@ const renderStatusChip = (status) => {
 
 const ReserveProductContainer = () => {
   const [reserveProducts, setReserveProducts] = useState([])
+  const [loading, setLoading] = useState(false)
   const headers = useAuthHeader()
   const { account } = useContainer(DataStore)
 
@@ -97,10 +98,13 @@ const ReserveProductContainer = () => {
 
   const getReserveProducts = async () => {
     try {
+      setLoading(true)
       const response = await getResereveProducts(headers, account?.companyCode)
       if (response) setReserveProducts(response)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -115,6 +119,7 @@ const ReserveProductContainer = () => {
         autoHeight
         rows={reserveProducts}
         columns={columns}
+        loading={loading}
         pageSize={20}
         rowsPerPageOptions={[20, 50, 100]}
         getRowId={(row) => row.id || `${row.orderNo}-${row.productCode}`}

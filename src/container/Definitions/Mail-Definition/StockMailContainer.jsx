@@ -4,7 +4,7 @@ import { Box, Button } from '@mui/material'
 import { generatePayload } from '../../../utils/Utils'
 import { getGroupMailAddress, createGroupMailAddress, deleteGroupMailAddress } from '../../../services/GroupMailAddressService'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import StockGroupMailCreateForm from '../../../components/Form/StockGroupMailCreateForm'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
@@ -12,6 +12,7 @@ import DynamicTable from '../../../shared/components/Table/DynamicTable'
 const StockMailContainer = () => {
   const [mails, setMails] = useState([])
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const headers = useAuthHeader()
 
@@ -25,13 +26,14 @@ const StockMailContainer = () => {
 
   const handleCreateEmail = (values) => {
     let payload = generatePayload({ ...values })
-    fetchCreateGroupMail(payload)
+    return fetchCreateGroupMail(payload)
   }
 
   const fetchDeleteGroupMail = async (id) => {
     try {
       await deleteGroupMailAddress(id, headers)
       setMails((prevMails) => prevMails.filter((mail) => mail.id !== id))
+      notify('Alıcı başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -40,8 +42,9 @@ const StockMailContainer = () => {
   const fetchCreateGroupMail = async (payload) => {
     try {
       const res = await createGroupMailAddress(payload)
-      res && setMails([...mails, res])
+      res && setMails((prevMails) => [...prevMails, res])
       res && handleClose()
+      res && notify('Alıcı başarıyla eklendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -49,10 +52,13 @@ const StockMailContainer = () => {
 
   const fetchStockGroupMails = async () => {
     try {
+      setLoading(true)
       const res = await getGroupMailAddress(headers)
       res && setMails(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -94,8 +100,8 @@ const StockMailContainer = () => {
           Ekle
         </Button>
       </Box>
-      <DynamicTable data={mails} columns={columns} tableSx={{ height: 500 }} />
-      <ExtendedDialog dialogHeader={'Genel Alıcı Ekle'} open={open} handleClose={handleClose} dialogContent={<StockGroupMailCreateForm handleCreateEmail={handleCreateEmail} />} />
+      <DynamicTable data={mails} columns={columns} loading={loading} tableSx={{ height: 500 }} />
+      <ExtendedDialog dialogHeader={'Stok Alıcısı Ekle'} open={open} handleClose={handleClose} dialogContent={<StockGroupMailCreateForm handleCreateEmail={handleCreateEmail} />} />
     </Box>
   )
 }

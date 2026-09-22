@@ -10,7 +10,7 @@ import { Chip } from '@mui/material'
 import { deleteAddressHall, getAddressHalls, saveAddressHall, updateAddressHall } from '../../../services/AddressComponentService'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
 import { generatePayload } from '../../../utils/Utils'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 import ActionHeader from '../../../shared/components/ActionHeader'
@@ -75,6 +75,7 @@ const AddressHallContainer = () => {
     try {
       await deleteAddressHall(id, headers)
       setHalls((prevHalls) => [...prevHalls.filter((hall) => hall.id !== id)])
+      notify('Koridor başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -99,6 +100,7 @@ const AddressHallContainer = () => {
       const res = await saveAddressHall(payload)
       res && setHalls((prevHalls) => [...prevHalls, res])
       res && setOpen(false)
+      res && notify('Koridor başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -120,6 +122,7 @@ const AddressHallContainer = () => {
         )
       res && setSelectedHall({})
       res && setOpen(false)
+      res && notify('Koridor başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -127,10 +130,9 @@ const AddressHallContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedHall).length > 0) {
-      fetchUpdateHall({ ...values, depoCode, companyCode: account?.companyCode })
-      return
+      return fetchUpdateHall({ ...values, depoCode, companyCode: account?.companyCode })
     }
-    fetchSaveHall(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveHall(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
   }
 
   useEffect(() => {
@@ -139,7 +141,13 @@ const AddressHallContainer = () => {
 
   return (
     <>
-      <ActionHeader title="Koridorlar" handleClick={() => setOpen(true)} />
+      <ActionHeader
+        title="Koridorlar"
+        handleClick={() => {
+          setSelectedHall({})
+          setOpen(true)
+        }}
+      />
       <DynamicTable data={halls} columns={columns} loading={loading} />
       <ExtendedDialog
         open={open}

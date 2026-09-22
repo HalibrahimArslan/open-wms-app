@@ -2,6 +2,7 @@ import * as React from 'react'
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableFooter from '@mui/material/TableFooter'
@@ -13,6 +14,7 @@ import FirstPageIcon from '@mui/icons-material/FirstPage'
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft'
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
 import LastPageIcon from '@mui/icons-material/LastPage'
+import RepetableSkeleton from '../Loading/RepetableSkeleton'
 
 function TablePaginationActions(props) {
   const theme = useTheme()
@@ -52,13 +54,23 @@ function TablePaginationActions(props) {
   )
 }
 
-export default function TableWithPagination({ children, count, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, colSpan }) {
+export default function TableWithPagination({ children, count, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage, colSpan, loading }) {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - count) : 0
 
   return (
     <TableContainer component={Paper}>
       <Table aria-label="custom pagination table">
-        {children}
+        {loading ? (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={colSpan}>
+                <RepetableSkeleton length={5} />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        ) : (
+          children
+        )}
         {emptyRows > 0 && (
           <TableRow style={{ height: 53 * emptyRows }}>
             <TableCell colSpan={colSpan} />

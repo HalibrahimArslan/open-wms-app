@@ -16,9 +16,7 @@ const RuleForm = ({ rule, handleRule }) => {
       ruleContent: rule ? rule.ruleContent : '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleRule(values)
-    },
+    onSubmit: (values) => handleRule(values),
   })
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -65,8 +63,8 @@ const RuleForm = ({ rule, handleRule }) => {
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
-          Oluştur
+        <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
+          Güncelle
         </Button>
       </Box>
     </form>

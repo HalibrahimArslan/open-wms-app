@@ -19,9 +19,7 @@ const CreateMenuForm = ({ menuItem, menuList, companyList, handleCreateMenu }) =
       companyCode: menuItem ? menuItem.companyCode : null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleCreateMenu(values)
-    },
+    onSubmit: (values) => handleCreateMenu(values),
   })
 
   return (
@@ -125,7 +123,7 @@ const CreateMenuForm = ({ menuItem, menuList, companyList, handleCreateMenu }) =
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
           {menuItem ? 'Güncelle' : 'Oluştur'}
         </Button>
       </Box>

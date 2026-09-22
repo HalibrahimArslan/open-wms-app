@@ -7,13 +7,14 @@ import useAuthHeader from '../../../hooks/useAuthHeader'
 import { generatePayload } from '../../../utils/Utils'
 import PublicMailCreateForm from '../../../components/Form/PublicMailCreateForm'
 import { createPublicMail, deletePublicMail, getPublicMails } from '../../../services/AurMailAddToService'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 
 const PublicMailContainer = () => {
   const [mails, setMails] = useState([])
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const { account } = useContainer(DataStore)
   const headers = useAuthHeader()
 
@@ -27,23 +28,27 @@ const PublicMailContainer = () => {
 
   const handleCreateEmail = (values) => {
     let payload = generatePayload({ ...values, companyCode: account.companyCode })
-    fetchCreatePublicMail(payload)
+    return fetchCreatePublicMail(payload)
   }
 
   const fetchPublicMails = async (companyCode) => {
     try {
+      setLoading(true)
       const res = await getPublicMails(companyCode, headers)
       res && setMails(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   const fetchCreatePublicMail = async (payload) => {
     try {
       const res = await createPublicMail(payload)
-      res && setMails([...mails, res])
+      res && setMails((prevMails) => [...prevMails, res])
       res && handleClose()
+      res && notify('Alıcı başarıyla eklendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -53,6 +58,7 @@ const PublicMailContainer = () => {
     try {
       await deletePublicMail(row.id, headers)
       setMails((prevMails) => prevMails.filter((mail) => mail.id !== row.id))
+      notify('Alıcı başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -97,7 +103,7 @@ const PublicMailContainer = () => {
           Ekle
         </Button>
       </Box>
-      <DynamicTable data={mails} columns={columns} tableSx={{ height: 500 }} />
+      <DynamicTable data={mails} columns={columns} loading={loading} tableSx={{ height: 500 }} />
       <ExtendedDialog dialogHeader={'Genel Alıcı Ekle'} open={open} handleClose={handleClose} dialogContent={<PublicMailCreateForm handleCreateEmail={handleCreateEmail} />} />
     </Box>
   )

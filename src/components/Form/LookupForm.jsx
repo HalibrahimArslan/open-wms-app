@@ -18,9 +18,7 @@ const LookupForm = ({ initialLookup, handleLookup }) => {
       lookupDescription: initialLookup ? initialLookup.lookupDescription : null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleLookup(values)
-    },
+    onSubmit: (values) => handleLookup(values),
   })
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -69,7 +67,7 @@ const LookupForm = ({ initialLookup, handleLookup }) => {
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
           {initialLookup ? 'Güncelle' : 'Oluştur'}
         </Button>
       </Box>

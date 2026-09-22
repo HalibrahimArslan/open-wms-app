@@ -21,6 +21,7 @@ const MailSettingsContainer = () => {
   const [open, setOpen] = useState(false)
   const [settingDialog, setSettingDialog] = useState(false)
   const [selectedLookup, setSelectedLookup] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const theme = useTheme()
   const headers = useAuthHeader()
@@ -84,15 +85,18 @@ const MailSettingsContainer = () => {
   const handleLookup = (values) => {
     const payload = generatePayload(values)
     const isEdit = Boolean(values?.id || selectedLookup?.id)
-    fetchCreateLookup(payload, isEdit)
+    return fetchCreateLookup(payload, isEdit)
   }
 
   const fetchLookups = async () => {
     try {
+      setLoading(true)
       const res = await getLookupsByLookupNames(generatePayload(mailKeys))
       res && setMails(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -110,6 +114,7 @@ const MailSettingsContainer = () => {
       const res = await createOrUpdateLookup(payload)
       res &&
         setMailSettings((prevMailSettings) => prevMailSettings.map((mailSetting) => (mailSetting.id === res.id ? { ...mailSetting, lookupCode: res.lookupCode } : mailSetting)))
+      res && notify('Mail ayarı güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -157,10 +162,10 @@ const MailSettingsContainer = () => {
         </Button>
       </Box>
 
-      <DynamicTable data={mails} columns={columns} tableSx={{ height: 500 }} size={'small'} />
+      <DynamicTable data={mails} columns={columns} loading={loading} tableSx={{ height: 500 }} size={'small'} />
 
       <ExtendedDialog
-        dialogHeader={'Mail Key Ekle'}
+        dialogHeader={selectedLookup ? 'Mail Key Düzenle' : 'Mail Key Ekle'}
         open={open}
         handleClose={handleClose}
         dialogContent={<LookupForm initialLookup={selectedLookup} handleLookup={handleLookup} />}

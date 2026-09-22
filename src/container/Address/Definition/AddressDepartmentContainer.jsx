@@ -9,7 +9,7 @@ import Iconify from '../../../components/Iconify'
 import { Chip } from '@mui/material'
 import { deleteAddressDepartment, getAddressDepartments, saveAddressDepartment, updateAddressDepartment } from '../../../services/AddressComponentService'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { generatePayload } from '../../../utils/Utils'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
@@ -76,6 +76,7 @@ const AddressDepartmentContainer = () => {
     try {
       await deleteAddressDepartment(id, headers)
       setDepartments((prevDepartments) => [...prevDepartments.filter((department) => department.id !== id)])
+      notify('Bölüm başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -100,6 +101,7 @@ const AddressDepartmentContainer = () => {
       const res = await saveAddressDepartment(payload)
       res && setDepartments((prevDepartments) => [...prevDepartments, res])
       res && setOpen(false)
+      res && notify('Bölüm başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -121,6 +123,7 @@ const AddressDepartmentContainer = () => {
         )
       res && setSelectedDepartment({})
       res && setOpen(false)
+      res && notify('Bölüm başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -128,10 +131,9 @@ const AddressDepartmentContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedDepartment).length > 0) {
-      fetchUpdateDepartment({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
-      return
+      return fetchUpdateDepartment({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
     }
-    fetchSaveDepartment(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
+    return fetchSaveDepartment(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
   }
 
   useEffect(() => {

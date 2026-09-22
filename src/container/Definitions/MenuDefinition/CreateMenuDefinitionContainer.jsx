@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router'
 import { useEffect, useState } from 'react'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import CreateMenuForm from '../../../components/Form/CreateMenuForm'
 import { createMenu, getMenuList } from '../../../services/MenuService'
 import useAuthHeader from '../../../hooks/useAuthHeader'
@@ -41,6 +41,7 @@ const CreateMenuDefinitionContainer = () => {
     try {
       const res = await createMenu(payload)
       res && handleClose()
+      res && notify('Menü başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -51,7 +52,7 @@ const CreateMenuDefinitionContainer = () => {
       ...values,
       companyCode: account.companyCode,
     })
-    fetchCreateMenu(payload)
+    return fetchCreateMenu(payload)
   }
 
   const handleClose = () => {

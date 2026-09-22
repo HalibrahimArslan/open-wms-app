@@ -9,7 +9,7 @@ import { Chip } from '@mui/material'
 import { deleteAddressUnit, getAddressUnits, saveAddressUnit, updateAddressUnit } from '../../../services/AddressComponentService'
 import { generatePayload } from '../../../utils/Utils'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { DataStore } from '../../../store/DataStore'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
@@ -76,6 +76,7 @@ const AddressUnitContainer = () => {
     try {
       await deleteAddressUnit(id, headers)
       setUnits((prevUnits) => [...prevUnits.filter((unit) => unit.id !== id)])
+      notify('Ünite başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -100,6 +101,7 @@ const AddressUnitContainer = () => {
       const res = await saveAddressUnit(payload)
       res && setUnits((prevUnits) => [...prevUnits, res])
       res && setOpen(false)
+      res && notify('Ünite başarıyla oluşturuldu.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -121,6 +123,7 @@ const AddressUnitContainer = () => {
         )
       res && setSelectedUnit({})
       res && setOpen(false)
+      res && notify('Ünite başarıyla güncellendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -128,10 +131,9 @@ const AddressUnitContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedUnit).length > 0) {
-      fetchUpdateUnit({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
-      return
+      return fetchUpdateUnit({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
     }
-    fetchSaveUnit(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
+    return fetchSaveUnit(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
   }
 
   useEffect(() => {
@@ -140,7 +142,13 @@ const AddressUnitContainer = () => {
 
   return (
     <>
-      <ActionHeader title="Üniteler" handleClick={() => setOpen(true)} />
+      <ActionHeader
+        title="Üniteler"
+        handleClick={() => {
+          setSelectedUnit({})
+          setOpen(true)
+        }}
+      />
       <DynamicTable data={units} columns={columns} loading={loading} />
       <ExtendedDialog
         open={open}

@@ -17,6 +17,7 @@ const RoleContainer = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5)
   const [count, setCount] = useState(30)
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const headers = useAuthHeader()
   const nav = useNavigate()
@@ -34,7 +35,7 @@ const RoleContainer = () => {
   const handleDelete = async (id) => {
     try {
       await deleteRole(headers, id)
-      setRoles(roles.filter((role) => role.id !== id))
+      setRoles((prevRoles) => prevRoles.filter((role) => role.id !== id))
       notify('Rol başarıyla silindi')
     } catch (error) {
       notifyError(error.message)
@@ -48,10 +49,13 @@ const RoleContainer = () => {
 
   const fetchRoles = async () => {
     try {
+      setLoading(true)
       const res = await getRoleList(headers, `companyCode=${account.companyCode}`)
       res && setRoles(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -70,6 +74,7 @@ const RoleContainer = () => {
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         count={count}
         colSpan={2}
+        loading={loading}
       />
       <Outlet />
     </React.Fragment>

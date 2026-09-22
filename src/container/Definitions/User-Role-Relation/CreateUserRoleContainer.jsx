@@ -28,6 +28,7 @@ export default function CreateUserRoleContainer() {
   const [roleList, setRoleList] = useState([])
   const [roleComboList, setRoleComboList] = useState([])
   const [userComboList, setUserComboList] = useState([])
+  const [saving, setSaving] = useState(false)
 
   const handleClose = () => {
     nav(-1)
@@ -35,6 +36,7 @@ export default function CreateUserRoleContainer() {
 
   const fetchSaveUserRoleRelation = async () => {
     try {
+      setSaving(true)
       let requestList = []
       roleComboList.map((role) => {
         userComboList.map((user) => {
@@ -47,10 +49,13 @@ export default function CreateUserRoleContainer() {
       })
 
       const response = await saveUserRoleBulk(generatePayload(requestList))
-      response && notify('Kayıt işlemi tamamlandı.')
-      nav(-1)
+      if (!response) return
+      notify('Kullanıcı rolleri başarıyla kaydedildi.')
+      handleClose()
     } catch (e) {
       notifyError(e.message)
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -64,8 +69,12 @@ export default function CreateUserRoleContainer() {
   }
 
   const fetchUserList = async () => {
-    const response = await getUsers(headers)
-    response && setUserList(response)
+    try {
+      const response = await getUsers(headers)
+      response && setUserList(response)
+    } catch (e) {
+      notifyError(e.message)
+    }
   }
 
   const handleChangeRoleList = (e, value) => {
@@ -92,6 +101,7 @@ export default function CreateUserRoleContainer() {
       handleSave={handleSave}
       dialogHeader={'Kullanıcı Rol İlişkilendirme'}
       actionButtonName={'Kaydet'}
+      actionButtonDisaled={saving || roleComboList.length === 0 || userComboList.length === 0}
       dialogContent={
         <Grid
           container

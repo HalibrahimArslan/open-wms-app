@@ -6,9 +6,7 @@ const AddressComponentForm = ({ initialValues, validationSchema, handleSubmit })
   const formik = useFormik({
     initialValues: Object.keys(initialValues).length > 0 ? initialValues : { ...initialValues, status: true },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      handleSubmit(values)
-    },
+    onSubmit: (values) => handleSubmit(values),
   })
 
   return (
@@ -69,7 +67,7 @@ const AddressComponentForm = ({ initialValues, validationSchema, handleSubmit })
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
           {Object.keys(initialValues).length > 0 ? 'Güncelle' : 'Kaydet'}
         </Button>
       </Box>

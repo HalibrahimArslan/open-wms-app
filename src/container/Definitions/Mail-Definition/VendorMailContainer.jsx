@@ -5,7 +5,7 @@ import useAuthHeader from '../../../hooks/useAuthHeader'
 import { generatePayload } from '../../../utils/Utils'
 import { createVendorMail, deleteVendorMail, getVendorMails } from '../../../services/VendorMailAddressService'
 import VendorMailCreateForm from '../../../components/Form/VendorMailCreateForm'
-import { notifyError } from '../../../layout/Layout'
+import { notify, notifyError } from '../../../layout/Layout'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../../store/DataStore'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
@@ -14,6 +14,7 @@ import DynamicTable from '../../../shared/components/Table/DynamicTable'
 const VendorMailContainer = () => {
   const [mails, setMails] = useState([])
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   const headers = useAuthHeader()
   const { account } = useContainer(DataStore)
@@ -28,13 +29,14 @@ const VendorMailContainer = () => {
 
   const handleCreateEmail = (values) => {
     let payload = generatePayload({ ...values, companyCode: account.companyCode, connectionType: 'VENDOR' })
-    fetchCreateVendorMail(payload)
+    return fetchCreateVendorMail(payload)
   }
 
   const fetchDeleteVendorMail = async (id) => {
     try {
       await deleteVendorMail(id, headers)
       setMails((prevMails) => prevMails.filter((mail) => mail.id !== id))
+      notify('Bayi alıcısı başarıyla silindi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -43,8 +45,9 @@ const VendorMailContainer = () => {
   const fetchCreateVendorMail = async (payload) => {
     try {
       const res = await createVendorMail(payload)
-      res && setMails([...mails, res])
-      handleClose()
+      res && setMails((prevMails) => [...prevMails, res])
+      res && handleClose()
+      res && notify('Bayi alıcısı başarıyla eklendi.')
     } catch (error) {
       notifyError(error.message)
     }
@@ -52,10 +55,13 @@ const VendorMailContainer = () => {
 
   const fetchVendorMails = async (companyCode) => {
     try {
+      setLoading(true)
       const res = await getVendorMails(headers, companyCode)
       res && setMails(res)
     } catch (error) {
       notifyError(error.message)
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -100,8 +106,8 @@ const VendorMailContainer = () => {
           Ekle
         </Button>
       </Box>
-      <DynamicTable data={mails} columns={columns} tableSx={{ height: 500 }} />
-      <ExtendedDialog dialogHeader={'Genel Alıcı Ekle'} open={open} handleClose={handleClose} dialogContent={<VendorMailCreateForm handleCreateEmail={handleCreateEmail} />} />
+      <DynamicTable data={mails} columns={columns} loading={loading} tableSx={{ height: 500 }} />
+      <ExtendedDialog dialogHeader={'Bayi Alıcısı Ekle'} open={open} handleClose={handleClose} dialogContent={<VendorMailCreateForm handleCreateEmail={handleCreateEmail} />} />
     </Box>
   )
 }
