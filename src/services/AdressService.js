@@ -98,19 +98,6 @@ export async function getDepoUrunAddresses(address, depoCode, headers) {
   return addressId
 }
 
-export async function getAddressPlacementHistory(payload) {
-  const response = await fetch('/api/aur-address-placement-history', payload)
-
-  if (!response.ok) {
-    const error = await response.json()
-    throw new Error(getErrorMessage(response.status, error))
-  }
-
-  const stockAddressList = await response.json()
-
-  return stockAddressList
-}
-
 export async function getCountAddressList(headers, query) {
   const response = await fetch(`/api/address-list/count?${query}`, {
     headers: headers,

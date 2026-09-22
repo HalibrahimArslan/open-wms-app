@@ -3,9 +3,8 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import SearchProductAtTemporaryAddress from './SearchProductAtTemporaryAddress'
 import AddressBarcode from '../../../components/Address/AddressBarcode'
-import { Button, Stack, TextField } from '@mui/material'
-import useAuthHeader from '../../../hooks/useAuthHeader'
-import { getAddressPlacementHistory, saveProductAddress } from '../../../services/AdressService'
+import { Button } from '@mui/material'
+import { saveProductAddress } from '../../../services/AdressService'
 import HorizontalLinearStepper from '../../../components/Stepper/HorizontalLinearStepper'
 import useDepoCode from '../../../hooks/useDepoCode'
 import { notify, notifyError } from '../../../layout/Layout'
@@ -19,7 +18,6 @@ const steps = ['Adres Raf Barkodu', 'Ürün Barkodu', 'Miktar']
 
 export default function ReplacementFromTemporaryAddress() {
   const [searchProductAddress, setSearchProductAddress] = useState({})
-  const [addressId, setAddressId] = useState(0)
   const [address, setAddress] = useState('')
   const [amount, setAmount] = useState('')
   const [activeStep, setActiveStep] = useState(0)
@@ -46,8 +44,7 @@ export default function ReplacementFromTemporaryAddress() {
     setBarcode(event.target.value)
   }
 
-  const handleAddressProcess = (res) => {
-    setAddressId(res)
+  const handleAddressProcess = () => {
     setDisableSituation({ ...disableSituation, address: true, product: false })
     setActiveStep((prev) => prev + 1)
   }
@@ -77,15 +74,6 @@ export default function ReplacementFromTemporaryAddress() {
         stokAdi: 'system',
       })
       await saveProductAddress(payload)
-      let transactionPayload = generatePayload({
-        barcode: barcode,
-        changeAmount: amount,
-        depoCode: transferCode,
-        originAddressId: searchProductAddress.urunAdresId,
-        placementAddressId: addressId,
-        stokKodu: searchProductAddress.stokKod,
-      })
-      await getAddressPlacementHistory(transactionPayload)
       notify('Adrese yerleştirme tamamlandı')
     } catch (e) {
       notifyError(e.message)
