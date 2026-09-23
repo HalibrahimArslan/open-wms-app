@@ -36,6 +36,7 @@ const DynamicTable = ({
   data,
   columns,
   sx,
+  rootSx,
   tableSx,
   tableHeadSx,
   loading,
@@ -233,6 +234,7 @@ const DynamicTable = ({
         borderTopRightRadius: theme.shape.borderRadius,
         border: `2px solid ${theme.palette.action.hover}`,
         boxSizing: 'border-box',
+        ...rootSx,
       }}
     >
       {/* Header */}
@@ -293,12 +295,7 @@ const DynamicTable = ({
                 {tableColumns.map(
                   (column) =>
                     column.visible !== false && (
-                      <TableCell
-                        align="center"
-                        key={column.field}
-                        sx={{ ...tableHeadSx, cursor: 'pointer', position: 'relative' }}
-                        onClick={() => column.type !== 'boolean' && handleSort(column)}
-                      >
+                      <TableCell align="center" key={column.field} sx={{ ...tableHeadSx, cursor: 'pointer' }} onClick={() => column.type !== 'boolean' && handleSort(column)}>
                         {column.type === 'boolean' ? (
                           <Box
                             sx={{
@@ -315,10 +312,6 @@ const DynamicTable = ({
                               indeterminate={sortedData.some((row) => getValue(row, column.field)) && !sortedData.every((row) => getValue(row, column.field))}
                               onChange={(e) => handleChangeColumn && handleChangeColumn(column.field, e.target.checked)}
                               onClick={(e) => e.stopPropagation()}
-                              sx={{
-                                position: 'sticky',
-                                top: 0,
-                              }}
                             />
                           </Box>
                         ) : (

@@ -1,4 +1,4 @@
-import { Box, Button, Chip, Paper, TablePagination, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, Chip, Paper, TablePagination, useTheme } from '@mui/material'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'
 import { useContainer } from 'unstated-next'
@@ -25,16 +25,14 @@ import AddIcon from '@mui/icons-material/Add'
 import { produce } from 'immer'
 import { DepoContainer } from '../../store/DepoContainer'
 import ReadOnlyCheckbox from '../../shared/components/ReadOnlyCheckbox'
+import useFillHeight from '../../hooks/useFillHeight'
 export default function AddressContainer() {
   const depoCode = useDepoCode()
   const { allDepoList } = useContainer(DepoContainer)
   const headers = useAuthHeader()
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'))
   const { account } = useContainer(DataStore)
   const transferDepoCode = getTransferDepoCode(depoCode, allDepoList)
-
-  let gridHeight = isMobile ? 'calc(100dvh)' : 'calc(100dvh - 550px)'
 
   const [open, setOpen] = useState(false)
   const [searchParams, setSearchParams] = useSearchParams()
@@ -69,6 +67,8 @@ export default function AddressContainer() {
 
   const { data, error, isLoading, mutate } = useSWR([`/api/address-list?${query}`, headers])
 
+  const tablePaperRef = useRef(null)
+  const tablePaperHeight = useFillHeight(tablePaperRef, 320)
   const prevData = useRef([])
   const firstUpdate = useRef(true)
 
@@ -407,13 +407,14 @@ export default function AddressContainer() {
           sx={{ display: modifiedData.length > 0 ? 'flex' : 'none' }}
         />
       </Box>
-      <Paper>
+      <Paper ref={tablePaperRef} sx={{ height: tablePaperHeight, display: 'flex', flexDirection: 'column' }}>
         <DynamicTable
           data={data}
           columns={columns}
           loading={isLoading}
           handleChangeColumn={handleChangeColumn}
-          tableSx={{ height: gridHeight }}
+          rootSx={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
+          tableSx={{ flex: 1, minHeight: 0 }}
           search={search}
           handleChangeSearch={handleChangeSearch}
         />
