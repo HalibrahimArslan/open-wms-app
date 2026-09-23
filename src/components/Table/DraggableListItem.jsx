@@ -1,8 +1,9 @@
 import { Box, Checkbox, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 import { useState } from 'react'
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator'
+import ReadOnlyCheckbox from '../../shared/components/ReadOnlyCheckbox'
 
-export const DraggableListItem = ({ text, index, moveListItem, checked, disabled, draggable, handleChecked }) => {
+export const DraggableListItem = ({ text, index, moveListItem, checked, disabled, draggable, locked, handleChecked }) => {
   const [isOver, setIsOver] = useState(false)
 
   const handleDragStart = (event) => {
@@ -36,7 +37,7 @@ export const DraggableListItem = ({ text, index, moveListItem, checked, disabled
 
   return (
     <Box {...dragProps} sx={{ cursor: draggable ? 'grab' : 'default', borderRadius: 1, bgcolor: isOver ? 'action.hover' : 'transparent' }}>
-      <ListItem sx={{ py: 1 }} secondaryAction={<Checkbox checked={checked} onChange={handleChecked} disabled={disabled} />}>
+      <ListItem sx={{ py: 1 }} secondaryAction={locked ? <ReadOnlyCheckbox checked /> : <Checkbox checked={checked} onChange={handleChecked} disabled={disabled} />}>
         <ListItemIcon>
           <DragIndicatorIcon />
         </ListItemIcon>

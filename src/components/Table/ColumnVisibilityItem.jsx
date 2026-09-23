@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { DraggableListItem } from './DraggableListItem'
 
-const ColumnVisibilityItem = ({ column, handleChangeVisibility, index, moveListItem, disabled, draggable }) => {
+const ColumnVisibilityItem = ({ column, handleChangeVisibility, index, moveListItem, disabled, draggable, locked }) => {
   const [checked, setChecked] = useState(column.visible)
 
   const handleChecked = (event) => {
@@ -17,6 +17,7 @@ const ColumnVisibilityItem = ({ column, handleChangeVisibility, index, moveListI
       handleChecked={handleChecked}
       disabled={disabled}
       draggable={draggable}
+      locked={locked}
     />
   )
 }

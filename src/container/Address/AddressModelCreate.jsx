@@ -18,9 +18,20 @@ const AddressModelCreate = ({ addressModel, setAddressModel }) => {
 
   return (
     <List>
-      {addressModel.map((model, index) => (
-        <ColumnVisibilityItem key={model.field} column={model} handleChangeVisibility={handleChangeVisibility} index={index} moveListItem={moveListItem} draggable />
-      ))}
+      {addressModel.map((model, index) => {
+        const locked = model.field === 'HALL'
+        return (
+          <ColumnVisibilityItem
+            key={model.field}
+            column={model}
+            handleChangeVisibility={handleChangeVisibility}
+            index={index}
+            moveListItem={moveListItem}
+            locked={locked}
+            draggable={!locked}
+          />
+        )
+      })}
     </List>
   )
 }
