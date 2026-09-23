@@ -293,6 +293,20 @@ Bileşen `title`, `description`, `icon`, `action` alır. Metin kullanıcıya ne
 yapacağını söyler ("Filtreleri temizleyerek tekrar deneyin"), yalnızca "Kayıt
 bulunamadı" demez.
 
+### Salt okunur onay kutuları
+
+Tablo hücresinde ya da listede düzenlenemeyen bir evet/hayır değeri
+[ReadOnlyCheckbox](src/shared/components/ReadOnlyCheckbox.jsx) ile gösterilir.
+İşaretli kutu seçili durum rengini (`primary.main`) alır, işaretsiz kutu soluk
+kalır; böylece iki durum bir bakışta ayrılır. Düz bir `disabled` kutu
+kullanılmaz: MUI işaretli kutuyu da griye çevirdiği için işaretli ile
+işaretsiz neredeyse aynı görünür. Bu kural tema geneline konmamıştır, çünkü
+formlarda geçici olarak pasifleşen kutuların pasif görünmesi gerekir.
+
+Tablo başlığındaki toplu seçim kutularına zemin rengi verilmez; kutu başlık
+hücresinin zemini üzerinde durur. Sabit bir renk (`'white'` gibi) başlık
+satırının renginden ayrışır ve karanlık temada kutunun etrafında leke bırakır.
+
 ### Sık kullanılan bileşenler
 
 | Bileşen                                                                           | Ne zaman                                            |
@@ -305,6 +319,7 @@ bulunamadı" demez.
 | [SearchBox](src/components/SearchBox.jsx)                                         | Mobil listelerde kendi satırında duran arama kutusu |
 | [ImageViewer](src/shared/components/ImageViewer/ImageViewer.jsx)                  | Görsel önizleme                                     |
 | [SwipeableDrawerWrapper](src/shared/components/Slider/SwipeableDrawerWrapper.jsx) | Mobilde alttan açılan panel                         |
+| [ReadOnlyCheckbox](src/shared/components/ReadOnlyCheckbox.jsx)                    | Düzenlenemeyen evet/hayır değeri                    |
 
 Yeni bir düğme ya da kutu yazmadan önce bu listeye bakılır. Aynı işi yapan
 ikinci bir bileşen eklendiğinde iki ekran birbirinden ayrışır.

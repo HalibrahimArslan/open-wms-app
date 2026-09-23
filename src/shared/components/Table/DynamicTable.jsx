@@ -318,7 +318,6 @@ const DynamicTable = ({
                               sx={{
                                 position: 'sticky',
                                 top: 0,
-                                backgroundColor: 'white',
                               }}
                             />
                           </Box>

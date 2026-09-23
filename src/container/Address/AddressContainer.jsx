@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Chip, Paper, TablePagination, useMediaQuery, useTheme } from '@mui/material'
+import { Box, Button, Chip, Paper, TablePagination, useMediaQuery, useTheme } from '@mui/material'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'
 import { useContainer } from 'unstated-next'
@@ -24,6 +24,7 @@ import AddressFilterContainer from './AddressFilterContainer'
 import AddIcon from '@mui/icons-material/Add'
 import { produce } from 'immer'
 import { DepoContainer } from '../../store/DepoContainer'
+import ReadOnlyCheckbox from '../../shared/components/ReadOnlyCheckbox'
 export default function AddressContainer() {
   const depoCode = useDepoCode()
   const { allDepoList } = useContainer(DepoContainer)
@@ -129,35 +130,35 @@ export default function AddressContainer() {
       headerName: 'Geçici Adres',
       visible: true,
       type: 'boolean',
-      render: (value, row) => <Checkbox checked={value} disabled sx={{ color: value ? 'success.main' : 'action.disabled' }} />,
+      render: (value) => <ReadOnlyCheckbox checked={value} />,
     },
     {
       field: 'toplamaGozu',
       headerName: 'Toplama Gözü',
       visible: true,
       type: 'boolean',
-      render: (value, row) => <Checkbox checked={value} disabled sx={{ color: value ? 'success.main' : 'action.disabled' }} />,
+      render: (value) => <ReadOnlyCheckbox checked={value} />,
     },
     {
       field: 'kontrolAdres',
       headerName: 'Kontrol Adres',
       visible: true,
       type: 'boolean',
-      render: (value, row) => <Checkbox checked={value} disabled sx={{ color: value ? 'success.main' : 'action.disabled' }} />,
+      render: (value) => <ReadOnlyCheckbox checked={value} />,
     },
     {
       field: 'status',
       headerName: 'Aktif',
       visible: true,
       type: 'boolean',
-      render: (value, row) => <Checkbox checked={value} disabled sx={{ color: value ? 'success.main' : 'action.disabled' }} />,
+      render: (value) => <ReadOnlyCheckbox checked={value} />,
     },
     {
       field: 'countable',
       headerName: 'Sayım Aktif',
       visible: true,
       type: 'boolean',
-      render: (value, row) => <Checkbox checked={value} disabled sx={{ color: value ? 'success.main' : 'action.disabled' }} />,
+      render: (value) => <ReadOnlyCheckbox checked={value} />,
     },
     {
       field: 'actions',

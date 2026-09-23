@@ -3,10 +3,11 @@ import { getEmptyAddressList } from '../../services/AdressService'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import useDepoCode from '../../hooks/useDepoCode'
 import { notifyError } from '../../layout/Layout'
-import { Box, Checkbox, Paper, Skeleton } from '@mui/material'
+import { Box, Paper, Skeleton } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import CustomToolbar from '../../shared/components/DataGrid/CustomToolbar'
 import useIsMobile from '../../hooks/useIsMobile'
+import ReadOnlyCheckbox from '../../shared/components/ReadOnlyCheckbox'
 
 const EmptyAddressContainer = () => {
   const [loading, setLoading] = useState(false)
@@ -33,7 +34,7 @@ const EmptyAddressContainer = () => {
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params) => <Checkbox checked={!!params.value} disabled />,
+      renderCell: (params) => <ReadOnlyCheckbox checked={params.value} />,
     },
     {
       field: 'toplamaGozu',
@@ -42,7 +43,7 @@ const EmptyAddressContainer = () => {
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params) => <Checkbox checked={!!params.value} disabled />,
+      renderCell: (params) => <ReadOnlyCheckbox checked={params.value} />,
     },
     {
       field: 'kontrolAdres',
@@ -51,7 +52,7 @@ const EmptyAddressContainer = () => {
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params) => <Checkbox checked={!!params.value} disabled />,
+      renderCell: (params) => <ReadOnlyCheckbox checked={params.value} />,
     },
     {
       field: 'status',
@@ -60,7 +61,7 @@ const EmptyAddressContainer = () => {
       minWidth: 100,
       align: 'center',
       headerAlign: 'center',
-      renderCell: (params) => <Checkbox checked={!!params.value} disabled />,
+      renderCell: (params) => <ReadOnlyCheckbox checked={params.value} />,
     },
   ]
 
