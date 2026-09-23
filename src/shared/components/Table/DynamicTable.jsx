@@ -453,7 +453,7 @@ const DynamicTable = ({
       <SwipeableDrawerWrapper anchor={anchor} state={state} toggleDrawer={toggleDrawer}>
         <List>
           {tableColumns.map((column, index) => (
-            <ColumnVisibilityItem key={column.field} column={column} handleChangeVisibility={handleChangeVisibility} index={index} moveListItem={moveListItem} />
+            <ColumnVisibilityItem key={column.field} column={column} handleChangeVisibility={handleChangeVisibility} index={index} moveListItem={moveListItem} disabled />
           ))}
         </List>
       </SwipeableDrawerWrapper>

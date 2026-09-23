@@ -67,7 +67,7 @@ const AddressCreateContainer = ({ createDialog, addressModel, setAddressModel, d
                 Oluştur
               </Button>
             ) : (
-              <Button variant="outlined" onClick={() => setActiveStep(1)} endIcon={<KeyboardArrowRightIcon />}>
+              <Button variant="outlined" onClick={() => setActiveStep(1)} disabled={!addressModel.some((model) => model.visible)} endIcon={<KeyboardArrowRightIcon />}>
                 İlerle
               </Button>
             )}

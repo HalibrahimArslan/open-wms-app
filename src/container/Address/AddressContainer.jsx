@@ -42,7 +42,7 @@ export default function AddressContainer() {
   const [count, setCount] = useState(0)
   const [selectedAddress, setSelectedAddress] = useState({})
   const [createDialog, setCreateDialog] = useState(false)
-  const [addressModel, setAddressModel] = useState(enumToCustomList(AddressFieldType))
+  const [addressModel, setAddressModel] = useState(() => enumToCustomList(AddressFieldType).map((model) => (model.field === 'ROOM' ? { ...model, visible: false } : model)))
   const [componentsLoading, setComponentsLoading] = useState(false)
   const [modifiedData, setModifiedData] = useState([])
   const [bulkUpdateResponse, setBulkUpdateResponse] = useState({})
@@ -294,9 +294,13 @@ export default function AddressContainer() {
   const fetchCreateAddressBulk = async (payload) => {
     try {
       const res = await createAddressBulk(payload)
-      res && handleCloseCreateDialog()
+      if (res) {
+        notify(`${res.length} adres oluşturuldu`)
+        handleCloseCreateDialog()
+        mutate()
+      }
     } catch (error) {
-      notifyError(error)
+      notifyError(error.message)
     }
   }
 

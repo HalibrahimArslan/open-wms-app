@@ -1,17 +1,25 @@
-import React, { useCallback } from 'react'
-import { List, useTheme } from '@mui/material'
+import React from 'react'
+import { List } from '@mui/material'
 import ColumnVisibilityItem from '../../components/Table/ColumnVisibilityItem'
 
 const AddressModelCreate = ({ addressModel, setAddressModel }) => {
-  const theme = useTheme()
   const handleChangeVisibility = (field, newValue) => {
     setAddressModel((prev) => prev.map((column) => (column.field === field ? { ...column, visible: newValue } : column)))
+  }
+
+  const moveListItem = (dragIndex, hoverIndex) => {
+    setAddressModel((prev) => {
+      const next = [...prev]
+      const [movedItem] = next.splice(dragIndex, 1)
+      next.splice(hoverIndex, 0, movedItem)
+      return next
+    })
   }
 
   return (
     <List>
       {addressModel.map((model, index) => (
-        <ColumnVisibilityItem key={model.field} column={model} handleChangeVisibility={handleChangeVisibility} index={index} moveListItem={() => {}} />
+        <ColumnVisibilityItem key={model.field} column={model} handleChangeVisibility={handleChangeVisibility} index={index} moveListItem={moveListItem} draggable />
       ))}
     </List>
   )
