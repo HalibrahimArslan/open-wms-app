@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, FormControlLabel, MenuItem, Switch, TextField } from '@mui/material'
+import { Box, Button, FormControlLabel, MenuItem, Switch, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import { ERP_TYPES, companySchema } from '../../schemas/schemas'
 
@@ -13,7 +13,6 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
       erpType: initialCompany?.erpType ?? 'LOCAL',
       apiEndPoint: initialCompany?.apiEndPoint ?? '',
       erpApiActive: apiParameters?.erpApiActive ?? false,
-      depoNo: apiParameters?.depoNo ?? [],
       username: apiParameters?.username ?? '',
       password: '',
     },
@@ -27,7 +26,6 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
         apiEndPoint: values.apiEndPoint.trim() || null,
         apiParameters: {
           erpApiActive: values.erpApiActive,
-          depoNo: values.depoNo,
           username: values.username.trim() || null,
           password: values.password || null,
         },
@@ -48,11 +46,6 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
     }
   }
 
-  const handleDepoNoChange = (_, values) => {
-    const depoNo = values.map((value) => String(value).trim()).filter((value) => /^\d+$/.test(value))
-    formik.setFieldValue('depoNo', [...new Set(depoNo.map(Number))])
-  }
-
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -70,22 +63,8 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
           control={<Switch id="erpApiActive" name="erpApiActive" checked={formik.values.erpApiActive} onChange={formik.handleChange} />}
         />
         <TextField {...fieldProps('apiEndPoint')} label="API Adresi" />
-        <Autocomplete
-          multiple
-          freeSolo
-          options={[]}
-          value={formik.values.depoNo}
-          onChange={handleDepoNoChange}
-          renderInput={(params) => <TextField {...params} label="Depo Numaraları" helperText="Numarayı yazıp Enter'a basın" />}
-        />
         <TextField {...fieldProps('username')} label="Kullanıcı Adı" autoComplete="off" />
-        <TextField
-          {...fieldProps('password')}
-          type="password"
-          label="Şifre"
-          autoComplete="new-password"
-          helperText={isEdit ? 'Boş bırakılırsa mevcut şifre korunur' : undefined}
-        />
+        <TextField {...fieldProps('password')} type="password" label="Şifre" autoComplete="new-password" helperText={isEdit ? 'Boş bırakılırsa mevcut şifre korunur' : undefined} />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mt: 2 }}>
         <Button type="submit" variant="contained" disabled={formik.isSubmitting}>
