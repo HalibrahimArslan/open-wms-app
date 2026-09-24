@@ -143,6 +143,12 @@ export const useStore = () => {
     }
   }
 
+  const refreshWarehouseLists = async () => {
+    cache.delete('depoList')
+    cache.delete('depoListWithTypes')
+    await Promise.all([fetchDepoData(companyCode), fetchAllDepoData(companyCode), fetchWarehouses(companyCode)])
+  }
+
   useEffect(() => {
     if (token.length > 0 && companyCode !== 0) {
       fetchDepoData(companyCode)
@@ -180,6 +186,7 @@ export const useStore = () => {
     userList,
     userAuthorityList,
     warehouseList,
+    refreshWarehouseLists,
   }
 }
 

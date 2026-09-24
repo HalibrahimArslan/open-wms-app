@@ -70,6 +70,7 @@ import UniqueBarcodeFirmListDetail from '../container/UniqueBarcode/FirmadanMalK
 import UniqueBarcodeView from '../view/UniqueBarcode/UniqueBarcodeView.jsx'
 import LotProductDefinitionView from '../view/UniqueBarcode/LotProductDefinitionView.jsx'
 import CompanyView from '../view/Company/CompanyView.jsx'
+import WarehouseView from '../view/Definitions/Warehouse/WarehouseView.jsx'
 
 export default function AppWithState() {
   usePersistedToken()
@@ -105,6 +106,7 @@ export default function AppWithState() {
           </Route>
           <Route path="role-menu-definitions" element={<MenuRoleRelationView />} />
           <Route path="driver-definitions" element={<DriverDefinitionView />} />
+          <Route path="warehouses" element={<WarehouseView />} />
           <Route path="reserve-products" element={<ReserveProductDefinitionView />} />
         </Route>
         <Route path="/:depo/address-tanim" element={<AddressDefinitionView />}>
