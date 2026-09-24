@@ -3,6 +3,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { tr as trLocale } from 'date-fns/locale/tr'
+import FilterAltOffOutlinedIcon from '@mui/icons-material/FilterAltOffOutlined'
 import { FeedbackTitle } from '../../utils/Utils'
 
 const dateFieldProps = { textField: { variant: 'standard', fullWidth: true }, field: { clearable: true } }
@@ -46,8 +47,8 @@ const FeedbackFilterContainer = ({ checkedFilter, setCheckedFilter, startDate, h
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button size="small" onClick={handleClear} disabled={!hasFilter}>
-                Filtreleri temizle
+              <Button variant="outlined" onClick={handleClear} disabled={!hasFilter} startIcon={<FilterAltOffOutlinedIcon />}>
+                Filtreleri Temizle
               </Button>
             </Box>
           </Grid>

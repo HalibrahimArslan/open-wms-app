@@ -5,7 +5,8 @@ import { FeedbackTitle, getPreviousDate, modifyStatus } from '../../utils/Utils'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getFeedbacks, updateFeedback } from '../../services/FeedbackService'
 import { notify, notifyError } from '../../layout/Layout'
-import { Box, CircularProgress, Collapse } from '@mui/material'
+import { Box, CircularProgress, Collapse, IconButton, Tooltip } from '@mui/material'
+import RefreshIcon from '@mui/icons-material/Refresh'
 import SupportAgentIcon from '@mui/icons-material/SupportAgent'
 import FeedbackFilterContainer from './FeedbackFilterContainer'
 import FeedbackStatusBlock from '../../components/Card/FeedbackStatusBlock'
@@ -40,6 +41,7 @@ const BOARD_HEIGHT = 'calc(100dvh - 150px)'
 function FeedbackManagementContainer() {
   const [feedbacks, setFeedbacks] = useState([])
   const [loading, setLoading] = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
   const [filtersOpen, setFiltersOpen] = useState(false)
   const [draggedFeedback, setDraggedFeedback] = useState(null)
   const [checkedFilter, setCheckedFilter] = useState([])
@@ -65,9 +67,10 @@ function FeedbackManagementContainer() {
     return query
   }, [startDate, endDate, checkedFilter])
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = async ({ silent = false } = {}) => {
+    const setBusy = silent ? setRefreshing : setLoading
     try {
-      setLoading(true)
+      setBusy(true)
       let scopedQuery = query
       if (!authorities?.includes('ROLE_ADMIN')) {
         scopedQuery = `${scopedQuery}&createdBy.equals=${account?.login}`
@@ -77,7 +80,7 @@ function FeedbackManagementContainer() {
     } catch (error) {
       notifyError(error.message)
     } finally {
-      setLoading(false)
+      setBusy(false)
     }
   }
 
@@ -188,7 +191,18 @@ function FeedbackManagementContainer() {
           title={'Geri Bildirimler'}
           subtitle={filterSummary}
           hide={true}
-          actions={<FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />}
+          actions={
+            <>
+              <Tooltip title="Yenile">
+                <span>
+                  <IconButton size="small" onClick={() => fetchFeedbacks({ silent: true })} disabled={loading || refreshing} aria-label="Yenile">
+                    {refreshing ? <CircularProgress size={20} /> : <RefreshIcon />}
+                  </IconButton>
+                </span>
+              </Tooltip>
+              <FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />
+            </>
+          }
         />
         <Collapse in={filtersOpen} timeout="auto" unmountOnExit>
           <Box sx={{ paddingBottom: 2 }}>
