@@ -11,7 +11,7 @@ import { useTheme } from '@mui/material/styles'
 import OrderTracingDrawer from '../../components/Drawer/OrderTracingDrawer'
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf'
 import { useLocation, useNavigate, useParams } from 'react-router'
-import { DepoContainer } from '../../store/DepoContainer'
+import { DataStore } from '../../store/DataStore'
 import useDepoCode from '../../hooks/useDepoCode'
 import EditIcon from '@mui/icons-material/Edit'
 import { notifyError } from '../../layout/Layout'
@@ -34,12 +34,15 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
+const NON_EDITABLE_STATUSES = ['DONE', 'SUSPENDED']
+
 export default function OrderTracingContainer() {
   const PAGE_SIZE = 1000
   const theme = useTheme()
   const navigate = useNavigate()
   const isMobile = useIsMobile()
-  const { authorityList } = useContainer(DepoContainer)
+  const { account } = useContainer(DataStore)
+  const isAdmin = Boolean(account?.authorities?.includes('ROLE_ADMIN'))
   const headers = useAuthHeader()
   const depoCode = useDepoCode()
   const location = useLocation()
@@ -347,7 +350,8 @@ export default function OrderTracingContainer() {
   function getSiparisDurumuTr(params) {
     const s = params?.row?.status
 
-    if (s === 'OPEN' || s === 'IN_PROGRESS') return 'Yeni Atanmış Sipariş'
+    if (s === 'OPEN') return 'Yeni Atanmış Sipariş'
+    if (s === 'IN_PROGRESS') return 'Devam Eden Sipariş'
     if (s === 'OUT_PROGRESS') return 'Sevk İçin Beklemede'
     if (s === 'DONE') return 'Bitti'
     if (s === 'SUSPENDED') return 'İptal Edildi'
@@ -493,7 +497,7 @@ export default function OrderTracingContainer() {
         getActions: (params) => [
           <GridActionsCellItem
             key="duzenle"
-            disabled={!(params.row.status === 'DONE' || authorityList.includes('SUPERUSER'))}
+            disabled={!isAdmin || NON_EDITABLE_STATUSES.includes(params.row.status)}
             icon={<EditIcon />}
             label="Düzenle"
             onClick={() =>
@@ -521,7 +525,7 @@ export default function OrderTracingContainer() {
     }
 
     return cols
-  }, [hasAltCari, authorityList, depoCode, navigate, data])
+  }, [hasAltCari, isAdmin, depoCode, navigate, data])
 
   return (
     <>
@@ -640,7 +644,8 @@ export default function OrderTracingContainer() {
                         onChange={(e) => setFilter('status.in', e.target.value)}
                       >
                         <MenuItem value="">Hepsi</MenuItem>
-                        <MenuItem value="OPEN,IN_PROGRESS">Yeni Atanmış Sipariş</MenuItem>
+                        <MenuItem value="OPEN">Yeni Atanmış Sipariş</MenuItem>
+                        <MenuItem value="IN_PROGRESS">Devam Eden Sipariş</MenuItem>
                         <MenuItem value="OUT_PROGRESS">Sevk İçin Beklemede</MenuItem>
                         <MenuItem value="DONE">Bitti</MenuItem>
                         <MenuItem value="SUSPENDED">İptal Edildi</MenuItem>
