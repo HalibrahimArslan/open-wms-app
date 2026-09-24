@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useContainer } from 'unstated-next'
-import { DataStore } from '../../../store/DataStore'
 import useDepoCode from '../../../hooks/useDepoCode'
+import useDepoScope from '../../../hooks/useDepoScope'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
@@ -21,8 +20,8 @@ const validationSchema = addressComponentSchema('Bölüm')
 const AddressDepartmentContainer = () => {
   const [departments, setDepartments] = useState([])
   const headers = useAuthHeader()
-  const { account } = useContainer(DataStore)
   const depoCode = useDepoCode()
+  const { companyCode, withDepoScope } = useDepoScope()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -85,8 +84,8 @@ const AddressDepartmentContainer = () => {
   const fetchDepartments = async () => {
     try {
       setLoading(true)
-      if (account && depoCode) {
-        const res = await getAddressDepartments(headers, account.companyCode, depoCode)
+      if (companyCode != null && depoCode) {
+        const res = await getAddressDepartments(headers, companyCode, depoCode)
         res && setDepartments(res)
       }
     } catch (error) {
@@ -131,14 +130,14 @@ const AddressDepartmentContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedDepartment).length > 0) {
-      return fetchUpdateDepartment({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return fetchUpdateDepartment(withDepoScope(values))
     }
-    return fetchSaveDepartment(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
+    return fetchSaveDepartment(generatePayload(withDepoScope(values)))
   }
 
   useEffect(() => {
     fetchDepartments()
-  }, [account, depoCode])
+  }, [companyCode, depoCode])
 
   return (
     <>

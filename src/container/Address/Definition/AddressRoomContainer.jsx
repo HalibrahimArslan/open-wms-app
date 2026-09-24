@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useContainer } from 'unstated-next'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
@@ -10,7 +9,7 @@ import { generatePayload } from '../../../utils/Utils'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
 import { notify, notifyError } from '../../../layout/Layout'
 import useDepoCode from '../../../hooks/useDepoCode'
-import { DataStore } from '../../../store/DataStore'
+import useDepoScope from '../../../hooks/useDepoScope'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 import ActionHeader from '../../../shared/components/ActionHeader'
@@ -21,8 +20,8 @@ const validationSchema = addressComponentSchema('Oda')
 const AddressRoomContainer = () => {
   const [rooms, setRooms] = useState([])
   const headers = useAuthHeader()
-  const { account } = useContainer(DataStore)
   const depoCode = useDepoCode()
+  const { companyCode, withDepoScope } = useDepoScope()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -84,9 +83,9 @@ const AddressRoomContainer = () => {
 
   const fetchRooms = async () => {
     try {
-      if (account && depoCode) {
+      if (companyCode != null && depoCode) {
         setLoading(true)
-        const res = await getAddressRooms(headers, account.companyCode, depoCode)
+        const res = await getAddressRooms(headers, companyCode, depoCode)
         res && setRooms(res)
       }
     } catch (error) {
@@ -131,14 +130,14 @@ const AddressRoomContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedRoom).length > 0) {
-      return fetchUpdateRoom({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return fetchUpdateRoom(withDepoScope(values))
     }
-    return fetchSaveRoom(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveRoom(generatePayload(withDepoScope(values)))
   }
 
   useEffect(() => {
     fetchRooms()
-  }, [account, depoCode])
+  }, [companyCode, depoCode])
 
   return (
     <>

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useContainer } from 'unstated-next'
-import { DataStore } from '../../../store/DataStore'
 import useDepoCode from '../../../hooks/useDepoCode'
+import useDepoScope from '../../../hooks/useDepoScope'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
@@ -21,8 +20,8 @@ const validationSchema = addressComponentSchema('Adres Tipi', ADDRESS_TYPE_CODE_
 const AddressTypeContainer = () => {
   const [addressTypes, setAddressTypes] = useState([])
   const headers = useAuthHeader()
-  const { account } = useContainer(DataStore)
   const depoCode = useDepoCode()
+  const { companyCode, withDepoScope } = useDepoScope()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
 
@@ -85,8 +84,8 @@ const AddressTypeContainer = () => {
   const fetchAddressTypes = async () => {
     try {
       setLoading(true)
-      if (account && depoCode) {
-        const res = await getAddressTypes(headers, account.companyCode, depoCode)
+      if (companyCode != null && depoCode) {
+        const res = await getAddressTypes(headers, companyCode, depoCode)
         res && setAddressTypes(res)
       }
     } catch (error) {
@@ -131,14 +130,14 @@ const AddressTypeContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedAddressType).length > 0) {
-      return fetchUpdateAddressType({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return fetchUpdateAddressType(withDepoScope(values))
     }
-    return fetchSaveAddressType(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveAddressType(generatePayload(withDepoScope(values)))
   }
 
   useEffect(() => {
     fetchAddressTypes()
-  }, [account, depoCode])
+  }, [companyCode, depoCode])
 
   return (
     <>

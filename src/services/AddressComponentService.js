@@ -1,7 +1,7 @@
 import { getErrorMessage } from '../utils/Utils'
 
 export async function getAddressDepartments(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/departments/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/departments/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()
@@ -14,7 +14,7 @@ export async function getAddressDepartments(headers, companyCode, depoCode) {
 }
 
 export async function getAddressHalls(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/halls/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/halls/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()
@@ -27,7 +27,7 @@ export async function getAddressHalls(headers, companyCode, depoCode) {
 }
 
 export async function getAddressUnits(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/units/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/units/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()
@@ -40,7 +40,7 @@ export async function getAddressUnits(headers, companyCode, depoCode) {
 }
 
 export async function getAddressFlats(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/flats/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/flats/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()
@@ -53,7 +53,7 @@ export async function getAddressFlats(headers, companyCode, depoCode) {
 }
 
 export async function getAddressRooms(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/rooms/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/rooms/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()
@@ -66,7 +66,7 @@ export async function getAddressRooms(headers, companyCode, depoCode) {
 }
 
 export async function getAddressTypes(headers, companyCode, depoCode) {
-  const response = await fetch(`/api/address-types/${companyCode}/${Number(depoCode)}`, { headers })
+  const response = await fetch(`/api/address-types/${companyCode}/${encodeURIComponent(depoCode)}`, { headers })
 
   if (!response.ok) {
     const error = await response.json()

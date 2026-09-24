@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useContainer } from 'unstated-next'
-import { DataStore } from '../../../store/DataStore'
 import useDepoCode from '../../../hooks/useDepoCode'
+import useDepoScope from '../../../hooks/useDepoScope'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
@@ -21,8 +20,8 @@ const validationSchema = addressComponentSchema('Kat')
 const AddressFlatContainer = () => {
   const [flats, setFlats] = useState([])
   const headers = useAuthHeader()
-  const { account } = useContainer(DataStore)
   const depoCode = useDepoCode()
+  const { companyCode, withDepoScope } = useDepoScope()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -84,9 +83,9 @@ const AddressFlatContainer = () => {
 
   const fetchFlats = async () => {
     try {
-      if (account && depoCode) {
+      if (companyCode != null && depoCode) {
         setLoading(true)
-        const res = await getAddressFlats(headers, account.companyCode, depoCode)
+        const res = await getAddressFlats(headers, companyCode, depoCode)
         res && setFlats(res)
       }
     } catch (error) {
@@ -131,14 +130,14 @@ const AddressFlatContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedFlat).length > 0) {
-      return fetchUpdateFlat({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return fetchUpdateFlat(withDepoScope(values))
     }
-    return fetchSaveFlat(generatePayload({ ...values, depoCode, companyCode: account?.companyCode }))
+    return fetchSaveFlat(generatePayload(withDepoScope(values)))
   }
 
   useEffect(() => {
     fetchFlats()
-  }, [depoCode, account])
+  }, [companyCode, depoCode])
 
   return (
     <>

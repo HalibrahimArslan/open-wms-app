@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useContainer } from 'unstated-next'
 import useDepoCode from '../../../hooks/useDepoCode'
+import useDepoScope from '../../../hooks/useDepoScope'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined'
 import { produce } from 'immer'
 import Iconify from '../../../components/Iconify'
@@ -10,7 +10,6 @@ import { deleteAddressUnit, getAddressUnits, saveAddressUnit, updateAddressUnit 
 import { generatePayload } from '../../../utils/Utils'
 import AddressComponentForm from '../../../components/Form/AddressComponentForm'
 import { notify, notifyError } from '../../../layout/Layout'
-import { DataStore } from '../../../store/DataStore'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import DynamicTable from '../../../shared/components/Table/DynamicTable'
 import ActionHeader from '../../../shared/components/ActionHeader'
@@ -21,8 +20,8 @@ const validationSchema = addressComponentSchema('Ünite')
 const AddressUnitContainer = () => {
   const [units, setUnits] = useState([])
   const headers = useAuthHeader()
-  const { account } = useContainer(DataStore)
   const depoCode = useDepoCode()
+  const { companyCode, withDepoScope } = useDepoScope()
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -84,9 +83,9 @@ const AddressUnitContainer = () => {
 
   const fetchUnits = async () => {
     try {
-      if (account && depoCode) {
+      if (companyCode != null && depoCode) {
         setLoading(true)
-        const res = await getAddressUnits(headers, account.companyCode, depoCode)
+        const res = await getAddressUnits(headers, companyCode, depoCode)
         res && setUnits(res)
       }
     } catch (error) {
@@ -131,14 +130,14 @@ const AddressUnitContainer = () => {
 
   const handleSubmit = (values) => {
     if (Object.keys(selectedUnit).length > 0) {
-      return fetchUpdateUnit({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode })
+      return fetchUpdateUnit(withDepoScope(values))
     }
-    return fetchSaveUnit(generatePayload({ ...values, depoCode: Number(depoCode), companyCode: account?.companyCode }))
+    return fetchSaveUnit(generatePayload(withDepoScope(values)))
   }
 
   useEffect(() => {
     fetchUnits()
-  }, [account, depoCode])
+  }, [companyCode, depoCode])
 
   return (
     <>
