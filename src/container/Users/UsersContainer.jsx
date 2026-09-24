@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Box, Button, CircularProgress, Divider, TextField, Typography, useTheme } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add'
+import { Box, CircularProgress } from '@mui/material'
+import PersonSearchOutlinedIcon from '@mui/icons-material/PersonSearchOutlined'
 import { useNavigate } from 'react-router'
 import { notify, notifyError } from '../../layout/Layout'
 import { updateUser, getUsers, getAdminUsers } from '../../services/UserService'
 import useAuthHeader from '../../hooks/useAuthHeader'
-import NotFound from '../../shared/components/NotFound/NotFound'
+import ActionHeader from '../../shared/components/ActionHeader'
+import TableSearchField from '../../shared/components/Table/TableSearchField'
+import EmptyState from '../../shared/components/EmptyState/EmptyState'
 import UserList from '../../components/List/UserList'
 
 function UsersContainer() {
@@ -15,7 +17,6 @@ function UsersContainer() {
   const [loading, setLoading] = useState(true)
 
   const headers = useAuthHeader()
-  const theme = useTheme()
   const nav = useNavigate()
 
   const fetchUsers = async () => {
@@ -71,135 +72,21 @@ function UsersContainer() {
   }, [])
 
   const filteredUsers = useMemo(() => {
-    if (name === '') return users
-    return users.filter((user) => user.login.toLowerCase().includes(name.toLowerCase()))
+    const query = name.trim().toLowerCase()
+    if (query === '') return users
+    return users.filter((user) => user.login.toLowerCase().includes(query))
   }, [users, name])
 
+  const isSearching = name.trim() !== ''
+
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: 'start',
-            fontWeight: theme.typography.fontWeightMedium,
-
-            fontSize: {
-              xs: '18px',
-              sm: '20px',
-              md: '24px',
-              lg: '30px',
-              xl: '36px',
-            },
-          }}
-        >
-          Kullanıcılar
-        </Typography>
-
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<AddIcon />}
-            onClick={handleCreateUser}
-            sx={{
-              minWidth: {
-                xs: '100px',
-                sm: '180px',
-                md: '200px',
-                lg: '220px',
-                xl: '240px',
-              },
-              fontSize: {
-                xs: '12px',
-                sm: '12px',
-                md: '12px',
-                lg: '14px',
-                xl: '14px',
-              },
-            }}
-          >
-            Kullanıcı Oluştur
-          </Button>
-        </Box>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          p: 2,
-          background: theme.palette.action.hover,
-          borderRadius: theme.shape.borderRadius,
-        }}
-      >
-        <TextField
-          placeholder="Ara..."
-          value={name}
-          size="small"
-          onChange={handleChange}
-          sx={{
-            width: {
-              xs: '100px',
-              sm: '125px',
-              md: '150px',
-              lg: '200px',
-              xl: '300px',
-            },
-            maxWidth: '100%',
-            fontSize: {
-              xs: '14px',
-              sm: '16px',
-              md: '18px',
-              lg: '20px',
-              xl: '22px',
-            },
-          }}
-        />
-
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            borderRadius: theme.shape.borderRadius,
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: '12px',
-                sm: '16px',
-                md: '16px',
-                lg: '20px',
-                xl: '24px',
-              },
-            }}
-          >
-            {users.length} Kullanıcı Bulundu
-          </Typography>
-        </Box>
-      </Box>
-      <Divider />
+    <Box>
+      <ActionHeader
+        title="Kullanıcılar"
+        subtitle={isSearching ? `${users.length} kullanıcıdan ${filteredUsers.length} tanesi gösteriliyor` : `${users.length} kullanıcı`}
+        actions={<TableSearchField placeholder="Kullanıcı adı ara" value={name} onChange={handleChange} />}
+        handleClick={handleCreateUser}
+      />
 
       {loading ? (
         <Box
@@ -213,7 +100,15 @@ function UsersContainer() {
           <CircularProgress />
         </Box>
       ) : filteredUsers.length === 0 ? (
-        <NotFound msg="Kullanıcı Bulunamadı" />
+        <EmptyState
+          icon={<PersonSearchOutlinedIcon />}
+          title="Kullanıcı bulunamadı"
+          description={
+            isSearching
+              ? `"${name.trim()}" ile eşleşen bir kullanıcı adı yok. Aramayı değiştirerek tekrar deneyin.`
+              : 'Henüz kullanıcı eklenmemiş. Sağ üstteki ekle düğmesiyle ilk kullanıcıyı oluşturabilirsiniz.'
+          }
+        />
       ) : (
         <UserList onEdit={handleEditUser} users={filteredUsers} onClick={handleUpdateUser} onResetPassword={handleResetPassword} />
       )}

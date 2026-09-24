@@ -10,6 +10,47 @@ import ToggleOffIcon from '@mui/icons-material/ToggleOff'
 import SplitButton from '../Button/SplitButton'
 import { alpha } from '@mui/material/styles'
 
+function UserStatus({ activated }) {
+  const theme = useTheme()
+  const statusColor = activated ? theme.palette.success.main : theme.palette.error.main
+  return (
+    <Box
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: 0.75,
+        px: 1,
+        py: 0.25,
+        borderRadius: theme.radius.control,
+        bgcolor: alpha(statusColor, 0.16),
+        color: 'text.primary',
+        typography: 'caption',
+        fontWeight: theme.typography.fontWeightMedium,
+        width: 'fit-content',
+      }}
+    >
+      <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: statusColor }} />
+      {activated ? 'Aktif' : 'Pasif'}
+    </Box>
+  )
+}
+
+function UserAvatar({ user }) {
+  const theme = useTheme()
+  return (
+    <Avatar
+      sx={{
+        width: 40,
+        height: 40,
+        bgcolor: user.activated ? theme.palette.primary.main : theme.palette.action.disabled,
+        color: theme.palette.primary.contrastText,
+      }}
+    >
+      {user.login.charAt(0).toUpperCase()}
+    </Avatar>
+  )
+}
+
 export default function UserList({ onEdit, users, onClick, onResetPassword }) {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
@@ -44,53 +85,21 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
                 p: 2,
                 display: 'flex',
                 flexDirection: 'column',
-                backgroundColor: theme.palette.background.paper,
+                backgroundColor: theme.palette.surface.card,
                 gap: 1.5,
-                borderRadius: theme.shape.borderRadius * 2,
-                boxShadow: 3,
-                border: `1px solid ${theme.palette.divider}`,
+                borderRadius: theme.radius.card,
+                border: `1px solid ${theme.palette.border.subtle}`,
                 height: 260,
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1 }}>
                 <Box sx={{ display: 'flex', gap: 1.25, alignItems: 'center', minWidth: 0 }}>
-                  <Avatar
-                    sx={{
-                      width: '40px',
-                      height: '40px',
-                      background: theme.palette.primary.main,
-                    }}
-                  >
-                    {user.login.charAt(0).toLocaleUpperCase()}
-                  </Avatar>
-                  <Box sx={{ minWidth: 0 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: theme.typography.fontWeightMedium }}>
+                  <UserAvatar user={user} />
+                  <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                    <Typography variant="subtitle2" noWrap sx={{ fontWeight: theme.typography.fontWeightMedium }}>
                       {user.login}
                     </Typography>
-                    {(() => {
-                      const statusColor = user.activated ? theme.palette.success.main : theme.palette.error.main
-                      return (
-                        <Box
-                          sx={{
-                            mt: 0.5,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: 0.75,
-                            px: 1,
-                            py: '2px',
-                            borderRadius: 999,
-                            bgcolor: alpha(statusColor, 0.16),
-                            color: statusColor,
-                            fontSize: '11px',
-                            fontWeight: theme.typography.fontWeightMedium,
-                            width: 'fit-content',
-                          }}
-                        >
-                          <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: statusColor }} />
-                          {user.activated ? 'Aktif' : 'Pasif'}
-                        </Box>
-                      )
-                    })()}
+                    <UserStatus activated={user.activated} />
                   </Box>
                 </Box>
 
@@ -139,28 +148,23 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
 
               <Box
                 sx={{
-                  background: theme.palette.action.hover,
-                  borderRadius: theme.shape.borderRadius,
+                  backgroundColor: theme.palette.surface.subtle,
+                  borderRadius: theme.radius.control,
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 1,
+                  minWidth: 0,
                   p: 1.5,
                   flex: 1,
                   textAlign: 'left',
                 }}
               >
-                <Typography
-                  variant="body2"
-                  sx={{
-                    color: theme.palette.text.primary,
-                  }}
-                >
-                  {user.email}
+                <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
+                  {user.email || '-'}
                 </Typography>
 
                 <Box
                   sx={{
-                    mt: 1,
                     flex: 1,
                     display: 'flex',
                     flexWrap: 'wrap',
@@ -175,7 +179,7 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
                 >
                   {(Array.isArray(user.authorities) ? user.authorities : []).map((authority) => (
                     <Tooltip title={authority} key={authority}>
-                      <Chip size="small" label={authority} color="default" sx={{ borderRadius: 1, fontSize: '10px' }} />
+                      <Chip size="small" label={authority} color="default" />
                     </Tooltip>
                   ))}
                 </Box>
@@ -188,58 +192,48 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
   }
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
       {users.map((user) => (
         <Box
           sx={{
-            background: theme.palette.action.hover,
+            backgroundColor: theme.palette.surface.subtle,
             display: 'flex',
             alignItems: 'center',
-            borderRadius: theme.shape.borderRadius,
-            flex: 1,
-            p: 1,
+            gap: 2,
+            borderRadius: theme.radius.card,
             px: 2,
-            flexDirection: { xs: 'column', md: 'row' },
+            py: 1.5,
+            transition: theme.transitions.create('background-color', { duration: theme.transitions.duration.shortest }),
+            '&:hover': { backgroundColor: theme.palette.surface.hover },
           }}
           key={user.id}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 2,
-              flex: 0.5,
-            }}
-          >
-            <Avatar
-              sx={{
-                width: '50px',
-                height: '50px',
-                background: theme.palette.primary.main,
-              }}
-            >
-              {user.login.charAt(0).toUpperCase()}
-            </Avatar>
-            <Typography variant="subtitle2"> {user.login} </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, flex: 1, minWidth: 0 }}>
+            <UserAvatar user={user} />
+            <Box sx={{ minWidth: 0, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+              <Typography variant="subtitle2" noWrap sx={{ fontWeight: theme.typography.fontWeightMedium }}>
+                {user.login}
+              </Typography>
+              <UserStatus activated={user.activated} />
+            </Box>
           </Box>
 
-          <Box
-            sx={{
-              flex: 1,
-            }}
-          >
-            <Typography variant="subtitle2"> {user.email} </Typography>
+          <Box sx={{ flex: 1.25, minWidth: 0 }}>
+            <Tooltip title={user.email || ''}>
+              <Typography variant="body2" noWrap sx={{ color: 'text.secondary' }}>
+                {user.email || '-'}
+              </Typography>
+            </Tooltip>
           </Box>
 
           <Box
             sx={{
               display: 'flex',
-              flexDirection: 'row',
               gap: 0.5,
-              flex: 0.25,
+              flex: 1.5,
+              minWidth: 0,
               flexWrap: 'wrap',
-              justifyContent: 'flex-start',
-              alignItems: 'flex-start',
+              alignItems: 'center',
             }}
           >
             {(Array.isArray(user.authorities) ? user.authorities : []).map((authority) => (
@@ -249,16 +243,7 @@ export default function UserList({ onEdit, users, onClick, onResetPassword }) {
             ))}
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 1,
-              flex: 1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', flexShrink: 0 }}>
             <SplitButton
               ariaLabel="kullanıcı işlemleri"
               variant="outlined"
