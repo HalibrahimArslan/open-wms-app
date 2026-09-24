@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
-import { getPreviousDate, modifyStatus } from '../../utils/Utils'
+import { FeedbackTitle, getPreviousDate, modifyStatus } from '../../utils/Utils'
 import useAuthHeader from '../../hooks/useAuthHeader'
 import { getFeedbacks, updateFeedback } from '../../services/FeedbackService'
 import { notify, notifyError } from '../../layout/Layout'
@@ -15,6 +15,16 @@ import EmptyState from '../../shared/components/EmptyState/EmptyState'
 import { produce } from 'immer'
 
 const STATUS_ORDER = ['CREATED', 'IN_PROGRESS', 'COMPLETED']
+
+const canMove = (fromStatus, toStatus) => STATUS_ORDER.indexOf(toStatus) > STATUS_ORDER.indexOf(fromStatus)
+
+const isValidDate = (date) => date instanceof Date && !Number.isNaN(date.getTime())
+
+const atTime = (date, hours, minutes, seconds, ms) => {
+  const result = new Date(date)
+  result.setHours(hours, minutes, seconds, ms)
+  return result
+}
 
 /**
  * Pano yuksekligi.
@@ -31,6 +41,7 @@ function FeedbackManagementContainer() {
   const [feedbacks, setFeedbacks] = useState([])
   const [loading, setLoading] = useState(true)
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [draggedFeedback, setDraggedFeedback] = useState(null)
   const [checkedFilter, setCheckedFilter] = useState([])
   const [startDate, setStartDate] = useState(getPreviousDate(30))
   const [endDate, setEndDate] = useState(new Date())
@@ -41,11 +52,11 @@ function FeedbackManagementContainer() {
 
   let query = useMemo(() => {
     let query = ''
-    if (startDate != null) {
-      query = query + `createdDate.greaterThanOrEqual=${startDate?.toISOString()}&`
+    if (isValidDate(startDate)) {
+      query = query + `createdDate.greaterThanOrEqual=${atTime(startDate, 0, 0, 0, 0).toISOString()}&`
     }
-    if (endDate != null) {
-      query = query + `createdDate.lessThanOrEqual=${endDate?.toISOString()}&`
+    if (isValidDate(endDate)) {
+      query = query + `createdDate.lessThanOrEqual=${atTime(endDate, 23, 59, 59, 999).toISOString()}&`
     }
     if (checkedFilter.length > 0) {
       query = query + `title.in=${checkedFilter.join(',')}&`
@@ -78,37 +89,55 @@ function FeedbackManagementContainer() {
     setEndDate(date)
   }
 
-  const handleForward = async (id, status) => {
+  const setFeedbackStatus = (id, status) => {
+    setFeedbacks(
+      produce((draft) => {
+        const searchFeedback = draft.find((feedback) => feedback.id === id)
+        if (searchFeedback) {
+          searchFeedback.status = status
+        }
+      })
+    )
+  }
+
+  const handleMove = async (id, fromStatus, toStatus) => {
+    if (!canMove(fromStatus, toStatus)) return
+    setFeedbackStatus(id, toStatus)
     try {
-      let desiredStatus = modifyStatus(status)
-      const updatePayload = {
+      const res = await updateFeedback({
         method: 'PUT',
         headers: headers,
-        body: JSON.stringify({
-          id,
-          status: desiredStatus,
-        }),
-      }
-
-      const res = await updateFeedback(updatePayload)
+        body: JSON.stringify({ id, status: toStatus }),
+      })
       res && notify('Güncelleme Başarılı')
-      setFeedbacks(
-        produce((draft) => {
-          let searchFeedback = draft.find((feedback) => feedback.id === id)
-          if (searchFeedback) {
-            searchFeedback.status = desiredStatus
-          }
-        })
-      )
     } catch (e) {
+      setFeedbackStatus(id, fromStatus)
       notifyError(e.message)
-    } finally {
+    }
+  }
+
+  const handleForward = (id, status) => handleMove(id, status, modifyStatus(status))
+
+  const handleDrop = (status) => {
+    if (draggedFeedback) {
+      handleMove(draggedFeedback.id, draggedFeedback.status, status)
     }
   }
 
   useEffect(() => {
+    if (!account?.login) return
     fetchFeedbacks()
-  }, [query])
+  }, [query, account?.login])
+
+  const filterSummary = [
+    isValidDate(startDate) || isValidDate(endDate)
+      ? `${isValidDate(startDate) ? startDate.toLocaleDateString('tr-TR') : '…'} – ${isValidDate(endDate) ? endDate.toLocaleDateString('tr-TR') : '…'}`
+      : 'Tüm tarihler',
+    checkedFilter.length > 0 ? checkedFilter.map((title) => FeedbackTitle[title] ?? title).join(', ') : 'Tüm tipler',
+    loading ? null : `${feedbacks.length} talep`,
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
   const renderBoard = () => {
     if (loading) {
@@ -133,7 +162,18 @@ function FeedbackManagementContainer() {
     return (
       <Box sx={{ flexGrow: 1, minHeight: 0, display: 'flex', gap: 2, overflowX: 'auto', paddingBottom: 0.5 }}>
         {STATUS_ORDER.map((status) => (
-          <FeedbackStatusBlock key={status} status={status} feedbacks={feedbacks.filter((feedback) => feedback.status === status)} handleForward={handleForward} />
+          <FeedbackStatusBlock
+            key={status}
+            status={status}
+            feedbacks={feedbacks.filter((feedback) => feedback.status === status)}
+            handleForward={handleForward}
+            isDragging={draggedFeedback != null}
+            canDrop={draggedFeedback != null && canMove(draggedFeedback.status, status)}
+            draggedId={draggedFeedback?.id}
+            onDragStartFeedback={setDraggedFeedback}
+            onDragEndFeedback={() => setDraggedFeedback(null)}
+            onDropFeedback={() => handleDrop(status)}
+          />
         ))}
       </Box>
     )
@@ -144,7 +184,12 @@ function FeedbackManagementContainer() {
   return (
     <Box sx={{ height: BOARD_HEIGHT, minHeight: 420, display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
       <Box sx={{ flexShrink: 0 }}>
-        <ActionHeader title={'Geri Bildirimler'} hide={true} actions={<FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />} />
+        <ActionHeader
+          title={'Geri Bildirimler'}
+          subtitle={filterSummary}
+          hide={true}
+          actions={<FilterToggleButton open={filtersOpen} onToggle={() => setFiltersOpen((prev) => !prev)} />}
+        />
         <Collapse in={filtersOpen} timeout="auto" unmountOnExit>
           <Box sx={{ paddingBottom: 2 }}>
             <FeedbackFilterContainer

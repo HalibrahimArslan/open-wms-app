@@ -1,4 +1,4 @@
-import { Box, Card, CardActionArea, Chip, Stack, Typography, useTheme } from '@mui/material'
+import { Box, Card, CardActionArea, Chip, Stack, Tooltip, Typography, useTheme } from '@mui/material'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
@@ -19,16 +19,29 @@ import { FeedbackTitle } from '../../utils/Utils'
  * Kartin govdesi tiklanabilir ve detaya gider. Onceden detaya gitmenin tek
  * yolu ucnokta menusunu acmakti.
  */
-const FeedbackCard = ({ feedback, handleForward }) => {
+const FeedbackCard = ({ feedback, handleForward, isDragged, onDragStart, onDragEnd }) => {
   const theme = useTheme()
   const nav = useNavigate()
 
   const isError = feedback.title === 'ERROR'
   const attachmentCount = feedback.uploads?.length ?? 0
   const createdDate = feedback.createdDate ? dayjs(feedback.createdDate).format('DD.MM.YYYY') : null
+  const formatDateTime = (date) => (date ? dayjs(date).format('DD.MM.YYYY HH:mm') : '')
+  const draggable = feedback.status !== 'COMPLETED'
+
+  const handleDragStart = (e) => {
+    e.dataTransfer.effectAllowed = 'move'
+    e.dataTransfer.setData('text/plain', String(feedback.id))
+    onDragStart(feedback)
+  }
 
   return (
-    <Box sx={{ position: 'relative', width: '100%' }}>
+    <Box
+      draggable={draggable}
+      onDragStart={draggable ? handleDragStart : undefined}
+      onDragEnd={onDragEnd}
+      sx={{ position: 'relative', width: '100%', opacity: isDragged ? 0.4 : 1, cursor: draggable ? 'grab' : 'default' }}
+    >
       <Card
         variant="outlined"
         sx={{
@@ -37,7 +50,12 @@ const FeedbackCard = ({ feedback, handleForward }) => {
           backgroundColor: 'background.paper',
         }}
       >
-        <CardActionArea onClick={() => nav(`${feedback.id}`)} sx={{ display: 'block', padding: 1.5, borderRadius: theme.radius.card }}>
+        <CardActionArea
+          component="div"
+          role="button"
+          onClick={() => nav(`${feedback.id}`)}
+          sx={{ display: 'block', padding: 1.5, borderRadius: theme.radius.card, cursor: 'inherit' }}
+        >
           <Typography variant="subtitle2" sx={{ fontWeight: 700, paddingRight: 4 }}>
             {BRAND.ticketPrefix}-{feedback.id}
           </Typography>
@@ -58,6 +76,21 @@ const FeedbackCard = ({ feedback, handleForward }) => {
           >
             {feedback.description}
           </Typography>
+
+          <Stack direction="row" spacing={1.5} sx={{ marginTop: 1, color: 'text.secondary', minWidth: 0 }}>
+            <Tooltip title={formatDateTime(feedback.createdDate)}>
+              <Typography variant="caption" noWrap>
+                Açan: <b>{feedback.createdBy || '-'}</b>
+              </Typography>
+            </Tooltip>
+            {feedback.lastModifiedBy && (
+              <Tooltip title={formatDateTime(feedback.lastModifiedDate)}>
+                <Typography variant="caption" noWrap>
+                  Son güncelleyen: <b>{feedback.lastModifiedBy}</b>
+                </Typography>
+              </Tooltip>
+            )}
+          </Stack>
 
           <Stack direction="row" spacing={1} sx={{ alignItems: 'center', marginTop: 1.5 }}>
             <Chip

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Box, Chip, Stack, Typography, useTheme } from '@mui/material'
 import InboxRoundedIcon from '@mui/icons-material/InboxRounded'
 import FeedbackCard from './FeedbackCard'
@@ -24,11 +25,36 @@ const STATUS_COLOR = {
   COMPLETED: 'success.main',
 }
 
-const FeedbackStatusBlock = ({ status, feedbacks, handleForward }) => {
+const FeedbackStatusBlock = ({ status, feedbacks, handleForward, isDragging, canDrop, draggedId, onDragStartFeedback, onDragEndFeedback, onDropFeedback }) => {
   const theme = useTheme()
+  const [isOver, setIsOver] = useState(false)
+
+  const handleDragOver = (e) => {
+    if (!canDrop) return
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+    setIsOver(true)
+  }
+
+  const handleDragLeave = (e) => {
+    if (!e.currentTarget.contains(e.relatedTarget)) {
+      setIsOver(false)
+    }
+  }
+
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setIsOver(false)
+    if (canDrop) {
+      onDropFeedback()
+    }
+  }
 
   return (
     <Box
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
       sx={{
         flex: '1 1 0',
         minWidth: 320,
@@ -37,8 +63,10 @@ const FeedbackStatusBlock = ({ status, feedbacks, handleForward }) => {
         display: 'flex',
         flexDirection: 'column',
         borderRadius: theme.radius.section,
-        backgroundColor: theme.palette.surface.subtle,
-        border: `1px solid ${theme.palette.border.subtle}`,
+        backgroundColor: isOver ? theme.palette.surface.hover : theme.palette.surface.subtle,
+        border: `1px ${canDrop ? 'dashed' : 'solid'} ${canDrop ? (isOver ? theme.palette.border.focus : theme.palette.border.hover) : theme.palette.border.subtle}`,
+        opacity: isDragging && !canDrop && !feedbacks.some((feedback) => feedback.id === draggedId) ? 0.6 : 1,
+        transition: theme.transitions.create(['background-color', 'border-color', 'opacity'], { duration: theme.transitions.duration.shortest }),
         overflow: 'hidden',
       }}
     >
@@ -75,7 +103,16 @@ const FeedbackStatusBlock = ({ status, feedbacks, handleForward }) => {
         {feedbacks.length === 0 ? (
           <EmptyState dense icon={<InboxRoundedIcon />} title="Kayıt yok" description="Bu durumda bekleyen geri bildirim bulunmuyor." />
         ) : (
-          feedbacks.map((feedback) => <FeedbackCard key={feedback.id} feedback={feedback} handleForward={handleForward} />)
+          feedbacks.map((feedback) => (
+            <FeedbackCard
+              key={feedback.id}
+              feedback={feedback}
+              handleForward={handleForward}
+              isDragged={feedback.id === draggedId}
+              onDragStart={onDragStartFeedback}
+              onDragEnd={onDragEndFeedback}
+            />
+          ))
         )}
       </Box>
     </Box>

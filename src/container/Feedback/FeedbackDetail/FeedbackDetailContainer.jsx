@@ -1,4 +1,5 @@
-import { Box, Button, Chip, CircularProgress, Divider, Grid, IconButton, Typography, useTheme } from '@mui/material'
+import { Box, Button, Chip, CircularProgress, Divider, Grid, IconButton, Stack, Typography, useTheme } from '@mui/material'
+import dayjs from 'dayjs'
 import useSWR from 'swr'
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace'
 import ImageViewer from '../../../shared/components/ImageViewer/ImageViewer'
@@ -262,8 +263,22 @@ const FeedbackDetailContainer = () => {
             >
               {data?.title ? FeedbackTitle[data.title] : ''}
             </Typography>
-            <Chip label={data?.status ? FeedbackStatus[data.status] : ''} color={data?.status === 'Tamamlandı' ? 'success' : 'warning'} />
+            <Chip label={data?.status ? FeedbackStatus[data.status] : ''} color={data?.status === 'COMPLETED' ? 'success' : 'warning'} />
           </Box>
+          {data && (
+            <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', rowGap: 0.5, color: 'text.secondary' }}>
+              <Typography variant="body2">
+                Açan: <b>{data.createdBy || '-'}</b>
+                {data.createdDate && ` · ${dayjs(data.createdDate).format('DD.MM.YYYY HH:mm')}`}
+              </Typography>
+              {data.lastModifiedBy && (
+                <Typography variant="body2">
+                  Son güncelleyen: <b>{data.lastModifiedBy}</b>
+                  {data.lastModifiedDate && ` · ${dayjs(data.lastModifiedDate).format('DD.MM.YYYY HH:mm')}`}
+                </Typography>
+              )}
+            </Stack>
+          )}
         </Grid>
         <Grid
           sx={{
