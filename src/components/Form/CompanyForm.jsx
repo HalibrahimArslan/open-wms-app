@@ -20,7 +20,7 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
     onSubmit: (values) =>
       handleCompany({
         id: initialCompany?.id ?? null,
-        companyCode: Number(values.companyCode),
+        companyCode: isEdit ? initialCompany.companyCode : Number(values.companyCode),
         companyName: values.companyName.trim(),
         erpType: values.erpType,
         apiEndPoint: values.apiEndPoint.trim() || null,
@@ -49,7 +49,13 @@ const CompanyForm = ({ initialCompany, handleCompany }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <TextField {...fieldProps('companyCode')} label="Şirket Kodu" slotProps={{ htmlInput: { inputMode: 'numeric' } }} />
+        <TextField
+          {...fieldProps('companyCode')}
+          label="Şirket Kodu"
+          disabled={isEdit}
+          helperText={isEdit ? 'Kullanıcılar ve depolar bu koda bağlı olduğu için değiştirilemez' : fieldProps('companyCode').helperText}
+          slotProps={{ htmlInput: { inputMode: 'numeric' } }}
+        />
         <TextField {...fieldProps('companyName')} label="Şirket Adı" />
         <TextField {...fieldProps('erpType')} select label="ERP Tipi">
           {ERP_TYPES.map((type) => (

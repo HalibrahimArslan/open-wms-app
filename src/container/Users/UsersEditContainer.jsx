@@ -12,6 +12,7 @@ import { userEditSchema } from '../../schemas/schemas'
 import { DataStore } from '../../store/DataStore'
 import { useContainer } from 'unstated-next'
 import { getRoleList } from '../../services/RoleService'
+import { getCompanies } from '../../services/CompanyService'
 
 const UserEditContainer = () => {
   const [searchParams] = useSearchParams()
@@ -23,6 +24,7 @@ const UserEditContainer = () => {
   const [auth, setAuth] = useState([])
   const [roles, setRoles] = useState([])
   const [depoList, setDepoList] = useState([])
+  const [companies, setCompanies] = useState([])
   const [userDepoRels, setUserDepoRels] = useState([])
   const [depoRelsLoaded, setDepoRelsLoaded] = useState(false)
 
@@ -46,18 +48,28 @@ const UserEditContainer = () => {
   }, [headers])
 
   const fetchAllRoles = useCallback(async () => {
+    if (account.companyCode == null) return
     try {
       const res = await getRoleList(headers, `companyCode=${account.companyCode}`)
       setRoles(res || [])
     } catch (error) {
       notifyError(error)
     }
-  }, [headers])
+  }, [headers, account.companyCode])
 
   const fetchDepoList = useCallback(async () => {
     try {
       const res = await getDepoListFromErp(headers)
       setDepoList(res || [])
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }, [headers])
+
+  const fetchCompanies = useCallback(async () => {
+    try {
+      const res = await getCompanies(headers)
+      setCompanies(res || [])
     } catch (error) {
       notifyError(error.message)
     }
@@ -74,7 +86,7 @@ const UserEditContainer = () => {
         setDepoRelsLoaded(true)
       }
     },
-    [headers],
+    [headers]
   )
 
   useEffect(() => {
@@ -82,20 +94,28 @@ const UserEditContainer = () => {
     fetchAllRoles()
     fetchAllAuth()
     fetchDepoList()
-  }, [fetchUserByLogin, fetchAllRoles, fetchAllAuth, fetchDepoList])
+    fetchCompanies()
+  }, [fetchUserByLogin, fetchAllRoles, fetchAllAuth, fetchDepoList, fetchCompanies])
 
   useEffect(() => {
     if (user?.id) fetchUserDepoRels(user.id)
   }, [user?.id, fetchUserDepoRels])
 
-  const handleClickUpdateUser = async ({ depots, ...values }) => {
+  const handleClickUpdateUser = async ({ depots, companyCode, ...values }) => {
     try {
       const currentUser = user
       const updatedUser = {
         ...(currentUser || {}),
         ...values,
+        companyCode: companyCode === '' ? null : companyCode,
       }
       await updateUser(headers, updatedUser)
+      setUser(updatedUser)
+
+      if (companyCode !== '' && companyCode !== account.companyCode) {
+        notify('Güncellendi')
+        return
+      }
 
       const selectedCodes = depots || []
       const existingCodes = userDepoRels.map((rel) => rel.warehouse.code)
@@ -127,6 +147,7 @@ const UserEditContainer = () => {
             firstName: user.firstName || '',
             lastName: user.lastName || '',
             email: user.email || '',
+            companyCode: user.companyCode ?? '',
             authorities: user.authorities || [],
             roles: user.roles || [],
             depots: userDepoRels.map((rel) => rel.warehouse.code),
@@ -138,6 +159,8 @@ const UserEditContainer = () => {
           authorities={auth}
           roles={roles}
           depoList={depoList}
+          companies={companies}
+          adminCompanyCode={account.companyCode}
           userAuthorities={account.authorities || []}
         />
       )}

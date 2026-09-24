@@ -10,6 +10,7 @@ import useAuthHeader from '../../hooks/useAuthHeader'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../store/DataStore'
 import { getRoleList } from '../../services/RoleService'
+import { getCompanies } from '../../services/CompanyService'
 
 const UserCreateContainer = () => {
   const theme = useTheme()
@@ -17,6 +18,7 @@ const UserCreateContainer = () => {
   const [auth, setAuth] = useState([])
   const [roles, setRoles] = useState([])
   const [depoList, setDepoList] = useState([])
+  const [companies, setCompanies] = useState([])
   const { account } = useContainer(DataStore)
 
   const fetchAllAuth = async () => {
@@ -29,6 +31,7 @@ const UserCreateContainer = () => {
   }
 
   const fetchAllRoles = async () => {
+    if (account.companyCode == null) return
     try {
       const res = await getRoleList(headers, `companyCode=${account.companyCode}`)
       res && setRoles(res)
@@ -46,10 +49,20 @@ const UserCreateContainer = () => {
     }
   }
 
-  const handleCreateUser = async ({ depots, ...values }) => {
+  const fetchCompanies = async () => {
     try {
-      const createdUser = await createUser(headers, values)
-      if (createdUser?.id && depots?.length > 0) {
+      const res = await getCompanies(headers)
+      setCompanies(res || [])
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
+
+  const handleCreateUser = async ({ depots, companyCode, ...values }) => {
+    try {
+      const createdUser = await createUser(headers, { ...values, companyCode: companyCode === '' ? null : companyCode })
+      const ownCompany = companyCode === '' || companyCode === account.companyCode
+      if (createdUser?.id && ownCompany && depots?.length > 0) {
         const warehouseList = depots.map((depoNo) => {
           const depo = depoList.find((item) => String(item.depoNo) === depoNo)
           return { code: depoNo, name: depo?.depoIsmi, companyCode: String(account.companyCode) }
@@ -64,9 +77,13 @@ const UserCreateContainer = () => {
 
   useEffect(() => {
     fetchAllAuth()
-    fetchAllRoles()
     fetchDepoList()
+    fetchCompanies()
   }, [])
+
+  useEffect(() => {
+    fetchAllRoles()
+  }, [account.companyCode])
 
   return (
     <Box>
@@ -80,25 +97,30 @@ const UserCreateContainer = () => {
         Kullanıcı Oluştur
       </Typography>
       <Divider />
-      <UserForm
-        initialValues={{
-          login: '',
-          firstName: '',
-          lastName: '',
-          email: '',
-          authorities: [],
-          roles: [],
-          depots: [],
-        }}
-        validationSchema={null}
-        onSubmit={handleCreateUser}
-        backButtonLabel="Geri"
-        saveButtonLabel="Kaydet"
-        authorities={auth}
-        roles={roles}
-        depoList={depoList}
-        userAuthorities={account.authorities || []}
-      />
+      {account.login && (
+        <UserForm
+          initialValues={{
+            login: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            companyCode: account.companyCode ?? '',
+            authorities: [],
+            roles: [],
+            depots: [],
+          }}
+          validationSchema={null}
+          onSubmit={handleCreateUser}
+          backButtonLabel="Geri"
+          saveButtonLabel="Kaydet"
+          authorities={auth}
+          roles={roles}
+          depoList={depoList}
+          companies={companies}
+          adminCompanyCode={account.companyCode}
+          userAuthorities={account.authorities || []}
+        />
+      )}
     </Box>
   )
 }

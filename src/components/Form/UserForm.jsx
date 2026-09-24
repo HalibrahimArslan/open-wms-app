@@ -30,11 +30,15 @@ const UserForm = ({
   authorities = [],
   roles = [],
   depoList = [],
+  companies = [],
+  adminCompanyCode,
   userAuthorities = [],
 }) => {
   const nav = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
   const toggleShowPassword = () => setShowPassword((p) => !p)
+
+  const isOtherCompany = (values) => values.companyCode != null && values.companyCode !== '' && adminCompanyCode != null && values.companyCode !== adminCompanyCode
 
   const handleSubmit = async (values) => {
     try {
@@ -106,8 +110,30 @@ const UserForm = ({
                       {touched.roles && errors.roles ? <FormHelperText>{errors.roles}</FormHelperText> : null}
                     </FormControl>
                   )
+                ) : fieldName === 'companyCode' ? (
+                  userAuthorities.includes('ROLE_ADMIN') && (
+                    <FormControl fullWidth error={touched.companyCode && Boolean(errors.companyCode)}>
+                      <InputLabel id="companyCode-label">Şirket</InputLabel>
+                      <Select
+                        labelId="companyCode-label"
+                        id="companyCode"
+                        name="companyCode"
+                        label="Şirket"
+                        value={values.companyCode ?? ''}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                      >
+                        {companies.map((company) => (
+                          <MenuItem key={company.companyCode} value={company.companyCode}>
+                            {company.companyCode} - {company.companyName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                      {touched.companyCode && errors.companyCode ? <FormHelperText>{errors.companyCode}</FormHelperText> : null}
+                    </FormControl>
+                  )
                 ) : fieldName === 'depots' ? (
-                  <FormControl fullWidth error={touched.depots && Boolean(errors.depots)}>
+                  <FormControl fullWidth error={touched.depots && Boolean(errors.depots)} disabled={isOtherCompany(values)}>
                     <InputLabel id="depots-label">Depolar</InputLabel>
                     <Select
                       labelId="depots-label"
@@ -132,7 +158,11 @@ const UserForm = ({
                       ))}
                     </Select>
 
-                    {touched.depots && errors.depots ? <FormHelperText>{errors.depots}</FormHelperText> : null}
+                    {touched.depots && errors.depots ? (
+                      <FormHelperText>{errors.depots}</FormHelperText>
+                    ) : isOtherCompany(values) ? (
+                      <FormHelperText>Depolar yalnızca kendi şirketinizdeki kullanıcılara atanabilir</FormHelperText>
+                    ) : null}
                   </FormControl>
                 ) : (
                   <TextField
