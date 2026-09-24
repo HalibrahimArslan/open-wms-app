@@ -60,6 +60,7 @@ export default function CreateUserRoleContainer() {
   }
 
   const fetchRoleList = async () => {
+    if (account?.companyCode == null) return
     try {
       const response = await getRoleList(headers, `companyCode=${account.companyCode}`)
       response && setRoleList(response)
@@ -90,9 +91,12 @@ export default function CreateUserRoleContainer() {
   }
 
   useEffect(() => {
-    fetchRoleList()
     fetchUserList()
   }, [])
+
+  useEffect(() => {
+    fetchRoleList()
+  }, [account?.companyCode])
 
   return (
     <ExtendedDialog

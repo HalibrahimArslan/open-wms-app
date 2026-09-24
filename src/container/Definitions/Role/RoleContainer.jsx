@@ -48,6 +48,7 @@ const RoleContainer = () => {
   }
 
   const fetchRoles = async () => {
+    if (account?.companyCode == null) return
     try {
       setLoading(true)
       const res = await getRoleList(headers, `companyCode=${account.companyCode}`)
@@ -61,7 +62,7 @@ const RoleContainer = () => {
 
   useEffect(() => {
     fetchRoles()
-  }, [nav])
+  }, [account?.companyCode])
 
   return (
     <React.Fragment>
