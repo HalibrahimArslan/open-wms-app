@@ -1,68 +1,58 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Button, CircularProgress, Typography } from '@mui/material'
+import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
+import DownloadIcon from '@mui/icons-material/Download'
 
-const FeedbackAttachment = ({ upload, theme, index }) => {
+const FeedbackAttachment = ({ attachment, onPreview }) => {
+  const { name, isImage, src, error } = attachment
+
   return (
     <Box
-      key={index}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
-        gap: 2,
-        padding: 2,
-        bgcolor: theme.palette.action.hover,
-        mb: 2,
-        borderRadius: theme.shape.borderRadius,
-      }}
+        gap: 1.5,
+        p: 1.5,
+        mb: 1.5,
+        borderRadius: theme.radius.card,
+        border: `1px solid ${theme.palette.border.subtle}`,
+        backgroundColor: theme.palette.surface.card,
+      })}
     >
-      <Typography
-        align="left"
-        variant="h6"
-        sx={{
-          fontWeight: theme.typography.fontWeightBold,
-        }}
-      >
-        {`Dosya ${index + 1}`}
-      </Typography>
-      {upload.url.includes('png') ? (
-        <img
-          src={upload.url}
-          alt={upload.url}
-          width={'25%'}
-          style={{
-            borderRadius: 8,
-            boxShadow: theme.shadows[1],
-            border: `1px solid ${theme.palette.divider}`,
-            marginBottom: theme.spacing(1),
-            margin: 'auto',
-          }}
-        />
-      ) : (
-        <iframe
-          src={upload.url}
-          title={upload.url}
-          width={'100%'}
-          height={200}
-          frameBorder={0}
-          allowFullScreen={true}
-          allow={'autoplay; fullscreen; picture-in-picture'}
-          style={{
-            borderRadius: 8,
-            boxShadow: theme.shadows[1],
-            border: `1px solid ${theme.palette.divider}`,
-            marginBottom: theme.spacing(1),
-          }}
+      {isImage && src && (
+        <Box
+          component="img"
+          src={src}
+          alt={name}
+          onClick={onPreview}
+          sx={(theme) => ({
+            width: '100%',
+            maxHeight: 180,
+            objectFit: 'contain',
+            cursor: 'zoom-in',
+            borderRadius: theme.radius.control,
+            backgroundColor: theme.palette.surface.subtle,
+          })}
         />
       )}
 
-      <Typography
-        align="left"
-        variant="body1"
-        sx={{
-          fontWeight: theme.typography.fontWeightMedium,
-        }}
-      >
-        {upload.name}
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <InsertDriveFileOutlinedIcon color="primary" fontSize="small" />
+        <Typography variant="body2" sx={{ flex: 1, minWidth: 0, textAlign: 'left', wordBreak: 'break-all' }}>
+          {name}
+        </Typography>
+        {!src && !error && <CircularProgress size={16} />}
+        {src && (
+          <Button size="small" variant="outlined" component="a" href={src} download={name} startIcon={<DownloadIcon />}>
+            İndir
+          </Button>
+        )}
+      </Box>
+
+      {error && (
+        <Typography variant="caption" color="error" sx={{ textAlign: 'left' }}>
+          {error}
+        </Typography>
+      )}
     </Box>
   )
 }

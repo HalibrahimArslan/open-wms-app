@@ -307,6 +307,23 @@ const buildComponents = (theme) => {
       },
     },
 
+    MuiToggleButtonGroup: {
+      styleOverrides: {
+        root: {
+          borderRadius: control,
+        },
+      },
+    },
+
+    MuiToggleButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: control,
+          textTransform: 'capitalize',
+        },
+      },
+    },
+
     MuiTablePagination: {
       defaultProps: {
         labelRowsPerPage: 'Sayfa Başına Satır',

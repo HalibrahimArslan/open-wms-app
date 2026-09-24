@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import useIsMobile from '../../../hooks/useIsMobile'
 
-export default function ExtendedDialog({ open, handleClose, dialogContent, dialogHeader, subHeader, handleSave, actionButtonDisaled, actionButtonName, fullScreen }) {
+export default function ExtendedDialog({ open, handleClose, dialogContent, dialogHeader, subHeader, handleSave, actionButtonDisaled, actionButtonName, fullScreen, fullWidth }) {
   const [enable, setEnable] = useState(true)
 
   const isMobile = useIsMobile()
@@ -34,6 +34,7 @@ export default function ExtendedDialog({ open, handleClose, dialogContent, dialo
   return (
     <Dialog
       fullScreen={fullScreen || isMobile}
+      fullWidth={fullWidth}
       open={open && enable}
       onClose={handleClose}
       scroll={'paper'}

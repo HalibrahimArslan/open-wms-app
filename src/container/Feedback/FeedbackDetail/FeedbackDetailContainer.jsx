@@ -15,10 +15,12 @@ import FeedbackComment from '../../../components/Feedback/FeedbackComment'
 import FeedbackAttachment from './FeedbackAttachment'
 import NotFound from '../../../shared/components/NotFound/NotFound'
 import FeedbackCommentField from '../../../components/Feedback/FeedbackCommentField'
+import useFeedbackAttachments from '../../../hooks/useFeedbackAttachments'
 
 const FeedbackDetailContainer = () => {
   const [comment, setComment] = useState('')
   const [open, setOpen] = useState(false)
+  const [previewIndex, setPreviewIndex] = useState(0)
   const inputRef = useRef(null)
   const isMobile = useIsMobile()
 
@@ -34,6 +36,8 @@ const FeedbackDetailContainer = () => {
   })
 
   const { data, error, isLoading, mutate } = useSWR(`/api/feedback/${id}`, () => getFeedbacksById(headers, Number(id)))
+  const attachments = useFeedbackAttachments(data?.uploads)
+  const imageSlides = attachments.filter((attachment) => attachment.isImage && attachment.src)
   const leafComments = useMemo(() => data?.comments && data?.comments.filter((comment) => comment.leaf === false), [data])
 
   const handleChangeComment = (e) => {
@@ -345,28 +349,44 @@ const FeedbackDetailContainer = () => {
             >
               Ekler
             </Typography>
-            <Button onClick={() => setOpen(true)} sx={{ fontSize: 10, borderRadius: 10 }} endIcon={<OpenInFullIcon />} variant="outlined">
-              Tüm Ekleri Gör
-            </Button>
+            {imageSlides.length > 0 && (
+              <Button
+                onClick={() => {
+                  setPreviewIndex(0)
+                  setOpen(true)
+                }}
+                size="small"
+                endIcon={<OpenInFullIcon />}
+                variant="outlined"
+              >
+                Görselleri Aç
+              </Button>
+            )}
           </Box>
           {data?.uploads.length === 0 ? (
             <NotFound msg={'Ek bulunmadı'} />
           ) : (
-            data?.uploads.map((upload, index) => <FeedbackAttachment key={index} upload={upload} theme={theme} index={index} />)
+            attachments.map((attachment) => (
+              <FeedbackAttachment
+                key={attachment.id}
+                attachment={attachment}
+                onPreview={() => {
+                  setPreviewIndex(imageSlides.indexOf(attachment))
+                  setOpen(true)
+                }}
+              />
+            ))
           )}
         </Grid>
       )}
       <ImageViewer
         open={open}
         onClose={() => setOpen(false)}
-        slides={
-          data
-            ? data.uploads.map((upload) => ({
-                src: upload.url,
-                caption: upload.name,
-              }))
-            : []
-        }
+        startIndex={previewIndex}
+        slides={imageSlides.map((attachment) => ({
+          src: attachment.src,
+          caption: attachment.name,
+        }))}
       />
     </Grid>
   )
