@@ -8,7 +8,7 @@ import useFetch from '../../../hooks/useFetch'
 
 export default function SevkiyatPerson({ person, handlePerson }) {
   const [receivingPerson, setReceivigPerson] = useState([])
-  const [data] = useFetch('/api/users/2')
+  const [data] = useFetch('/api/users/by-role/ROLE_SEVKIYAT')
 
   const handleChange = (event) => {
     handlePerson(event.target.value)

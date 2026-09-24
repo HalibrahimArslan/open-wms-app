@@ -8,7 +8,7 @@ import useFetch from '../../../hooks/useFetch'
 
 export default function ReceivingPerson({ person, handlePerson }) {
   const [receivingPerson, setReceivigPerson] = useState([])
-  const [data] = useFetch('/api/users/1')
+  const [data] = useFetch('/api/users/by-role/ROLE_KABUL')
 
   const handleChange = (event) => {
     handlePerson(event.target.value)
