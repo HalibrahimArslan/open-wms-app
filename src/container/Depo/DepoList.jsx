@@ -38,6 +38,8 @@ export default function DepoList() {
     >
       {!depoContainer.depoListLoaded ? (
         <LoadingSpinner />
+      ) : depoContainer.companyMissing ? (
+        <EmptyState title="Kullanıcıya şirket tanımlı değil" description="Şirket ataması için yöneticinize başvurun." dense />
       ) : depoList && depoList.length > 0 ? (
         depoList.map((todo) => <DepoItem key={todo.depoNo} todo={todo} depoCode={depoList.depoCode} handleListItemClick={handleListItemClick} />)
       ) : (

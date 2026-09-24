@@ -24,6 +24,7 @@ export const useStore = () => {
   const [depoCombo, setDepoCombo] = useState(0)
   const [companyInfo, setCompanyInfo] = useState('')
   const [companyCode, setCompanyCode] = useState(0)
+  const [companyMissing, setCompanyMissing] = useState(false)
   const [isPressedLeftDrawer, setIsPressedLeftDrawer] = useState(false)
   const [isDepoMenuOpen, setDepoMenuOpen] = useState(false)
   const [authorityList, setAuthorityList] = useState([])
@@ -65,15 +66,33 @@ export const useStore = () => {
   }
 
   const fetchCompanyData = async () => {
-    const res = await getUserCompanyInfo(headers)
-    res && handleCompanyInfo(res)
+    try {
+      const res = await getUserCompanyInfo(headers)
+      res && handleCompanyInfo(res)
+    } catch (e) {
+      console.error('Şirket bilgisi alınamadı:', e)
+    }
   }
 
   const fetchCompanyCode = async () => {
-    const res = await getUserCompanyCode(headers)
-    if (res) {
-      setCompanyCode(res)
+    let res
+    try {
+      res = await getUserCompanyCode(headers)
+    } catch (e) {
+      console.error('Şirket kodu alınamadı:', e)
+    }
+
+    if (!res) {
+      setCompanyMissing(true)
+      setDepoListLoaded(true)
+      return
+    }
+
+    setCompanyCode(res)
+    try {
       await fetchWarehouses(res)
+    } catch (e) {
+      console.error('Depo listesi alınamadı:', e)
     }
   }
 
@@ -180,6 +199,7 @@ export const useStore = () => {
     handleIsPressedLeftDrawer,
     handleDepoMenu,
     companyCode,
+    companyMissing,
     authorityList,
     allDepoList,
     handleDepoAllList,
