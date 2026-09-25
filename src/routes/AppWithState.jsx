@@ -24,6 +24,7 @@ import EditUserView from '../view/Users/EditUserView.jsx'
 import DefinitionView from '../view/Definitions/DefinitionView.jsx'
 import RoleView from '../view/Definitions/Role-Definition/RoleView.jsx'
 import CreateRoleView from '../view/Definitions/Role-Definition/CreateRoleView.jsx'
+import AuthorityView from '../view/Definitions/Authority-Definition/AuthorityView.jsx'
 import UserRolesView from '../view/Definitions/User-Role-Relation/UserRolesView.jsx'
 import CreateUserRoleView from '../view/Definitions/User-Role-Relation/CreateUsersRoleView.jsx'
 import MenuRoleRelationView from '../view/Definitions/Role-Menu-Relation/MenuRoleRelationView.jsx'
@@ -88,6 +89,8 @@ export default function AppWithState() {
         <Route path="/:depo/feedbacks" element={<FeedbackManagementView />} />
         <Route path="/:depo/feedbacks/:id" element={<FeedbackDetailView />} />
         <Route path="/:depo/companies" element={<CompanyView />} />
+        <Route path="/:depo/warehouses" element={<WarehouseView />} />
+        <Route path="/:depo/authorities" element={<AuthorityView />} />
         <Route path="/:depo/users" element={<UsersView />} />
         <Route path="/:depo/users/new" element={<CreateUserView />} />
         <Route path="/:depo/users/edit" element={<EditUserView />} />
@@ -106,7 +109,6 @@ export default function AppWithState() {
           </Route>
           <Route path="role-menu-definitions" element={<MenuRoleRelationView />} />
           <Route path="driver-definitions" element={<DriverDefinitionView />} />
-          <Route path="warehouses" element={<WarehouseView />} />
           <Route path="reserve-products" element={<ReserveProductDefinitionView />} />
         </Route>
         <Route path="/:depo/address-tanim" element={<AddressDefinitionView />}>
