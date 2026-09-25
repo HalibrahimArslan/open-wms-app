@@ -51,6 +51,7 @@ const WarehouseContainer = () => {
       valueGetter: (value) => (value?.trim() ? [value.trim(), warehouseName(value)].filter(Boolean).join(' - ') : ''),
     },
     booleanColumn('countable', 'Sayılabilir'),
+    booleanColumn('real', 'Gerçek Depo'),
     booleanColumn('autoScan', 'Otomatik Arttırma'),
     booleanColumn('uniquePickingAddress', 'Toplama Gözü Tekil'),
     {

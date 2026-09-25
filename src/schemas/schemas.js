@@ -79,5 +79,5 @@ export const warehouseSchema = yup.object({
   code: yup.string().trim().required('Depo kodu boş bırakılamaz.'),
   name: yup.string().trim().required('Depo adı boş bırakılamaz.'),
   receivingCode: yup.string().trim().required('Mal kabul depo kodu boş bırakılamaz.'),
-  transferCode: yup.string().trim(),
+  transferCode: yup.string().trim().required('Transfer depo kodu boş bırakılamaz.'),
 })

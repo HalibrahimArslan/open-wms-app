@@ -13,6 +13,8 @@ const WarehouseForm = ({ initialWarehouse, warehouses, handleWarehouse }) => {
       transferCode: initialWarehouse?.transferCode?.trim() ?? '',
       autoScan: initialWarehouse?.autoScan ?? false,
       uniquePickingAddress: initialWarehouse?.uniquePickingAddress ?? false,
+      countable: isEdit ? Boolean(initialWarehouse.countable) : true,
+      real: isEdit ? Boolean(initialWarehouse.real) : true,
     },
     validationSchema: warehouseSchema,
     onSubmit: (values) =>
@@ -20,9 +22,11 @@ const WarehouseForm = ({ initialWarehouse, warehouses, handleWarehouse }) => {
         code: values.code.trim(),
         name: values.name.trim(),
         receivingCode: values.receivingCode.trim(),
-        transferCode: values.transferCode.trim() || null,
+        transferCode: values.transferCode.trim(),
         autoScan: values.autoScan,
         uniquePickingAddress: values.uniquePickingAddress,
+        countable: values.countable,
+        real: values.real,
       }),
   })
 
@@ -83,6 +87,8 @@ const WarehouseForm = ({ initialWarehouse, warehouses, handleWarehouse }) => {
           label="Toplama Gözü Tekil"
           control={<Switch id="uniquePickingAddress" name="uniquePickingAddress" checked={formik.values.uniquePickingAddress} onChange={formik.handleChange} />}
         />
+        <FormControlLabel label="Sayılabilir" control={<Switch id="countable" name="countable" checked={formik.values.countable} onChange={formik.handleChange} />} />
+        <FormControlLabel label="Gerçek Depo" control={<Switch id="real" name="real" checked={formik.values.real} onChange={formik.handleChange} />} />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', mt: 2 }}>
         <Button type="submit" variant="contained" disabled={formik.isSubmitting}>

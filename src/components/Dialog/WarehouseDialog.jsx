@@ -19,6 +19,8 @@ export default function WarehouseDialog({ open, onClose, warehouse, warehouses, 
             transferCode: values.transferCode ?? '',
             autoScan: values.autoScan,
             uniquePickingAddress: values.uniquePickingAddress,
+            countable: values.countable,
+            real: values.real,
           })
         : await createWarehouse(headers, { ...values, companyCode: String(account.companyCode) })
       onSave(savedWarehouse)
