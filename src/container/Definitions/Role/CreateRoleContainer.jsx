@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material'
-import { useNavigate } from 'react-router'
+import { useNavigate, useOutletContext } from 'react-router'
 import { useState } from 'react'
 import { notify, notifyError } from '../../../layout/Layout'
 import { saveRole } from '../../../services/RoleService'
@@ -14,6 +14,7 @@ const CreateRoleContainer = () => {
   const { account } = useContainer(DataStore)
   const payload = usePayload({ roleName, companyCode: account?.companyCode })
   const nav = useNavigate()
+  const { onSaved } = useOutletContext()
 
   const fetchSaveRole = async () => {
     try {
@@ -21,6 +22,7 @@ const CreateRoleContainer = () => {
       const res = await saveRole(payload)
       if (!res) return
       notify('Rol başarıyla oluşturuldu.')
+      onSaved()
       handleClose()
     } catch (err) {
       notifyError(err.message)

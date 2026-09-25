@@ -10,7 +10,7 @@ import { generatePayload } from '../../../utils/Utils'
 import { saveUserRoleBulk } from '../../../services/UserRoleService'
 import { getRoleList } from '../../../services/RoleService'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { useNavigate } from 'react-router'
+import { useNavigate, useOutletContext } from 'react-router'
 import ExtendedDialog from '../../../shared/components/Dialog/ExtendedDialog'
 import { useContainer } from 'unstated-next'
 import { DataStore } from '../../../store/DataStore'
@@ -22,6 +22,7 @@ const checkedIcon = <CheckBoxIcon fontSize="small" />
 export default function CreateUserRoleContainer() {
   const headers = useAuthHeader()
   const nav = useNavigate()
+  const { onSaved } = useOutletContext()
   const { account } = useContainer(DataStore)
 
   const [userList, setUserList] = useState([])
@@ -51,6 +52,7 @@ export default function CreateUserRoleContainer() {
       const response = await saveUserRoleBulk(generatePayload(requestList))
       if (!response) return
       notify('Kullanıcı rolleri başarıyla kaydedildi.')
+      onSaved()
       handleClose()
     } catch (e) {
       notifyError(e.message)

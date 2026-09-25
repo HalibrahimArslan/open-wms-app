@@ -29,3 +29,17 @@ export async function saveUserRoleBulk(payload) {
 
   return userRoles
 }
+
+export async function deleteUserRole(headers, userId, roleId) {
+  const response = await fetch(`/api/user-role?userId=${userId}&roleId=${roleId}`, {
+    headers: headers,
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    const error = await response.json()
+    throw new Error(getErrorMessage(response.status, error))
+  }
+
+  return response.status
+}

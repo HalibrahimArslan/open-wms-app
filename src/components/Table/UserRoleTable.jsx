@@ -14,14 +14,14 @@ function UserRoleTable({ data, handleDelete }) {
       <TableBody>
         {data.length > 0 &&
           data.map((row) => (
-            <TableRow>
+            <TableRow key={`${row.user.id}-${row.role.id}`}>
               <TableCell component="th" scope="row">
                 {row.user.login}
               </TableCell>
               <TableCell align="center">{row.role.roleName}</TableCell>
 
               <TableCell align="center">
-                <IconButton onClick={() => {}}>
+                <IconButton onClick={() => handleDelete(row)}>
                   <DeleteIcon />
                 </IconButton>
               </TableCell>

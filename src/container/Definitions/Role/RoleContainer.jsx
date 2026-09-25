@@ -77,7 +77,7 @@ const RoleContainer = () => {
         colSpan={2}
         loading={loading}
       />
-      <Outlet />
+      <Outlet context={{ onSaved: fetchRoles }} />
     </React.Fragment>
   )
 }

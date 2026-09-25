@@ -3,8 +3,8 @@ import CreateNewDefinition from '../../../components/Definitions/CreateNewDefini
 import TableWithPagination from '../../../components/Table/TableWithPagination'
 import { Outlet, useNavigate } from 'react-router'
 import useAuthHeader from '../../../hooks/useAuthHeader'
-import { getUserRoleList } from '../../../services/UserRoleService'
-import { notifyError } from '../../../layout/Layout'
+import { deleteUserRole, getUserRoleList } from '../../../services/UserRoleService'
+import { notify, notifyError } from '../../../layout/Layout'
 import UserRoleTable from '../../../components/Table/UserRoleTable'
 
 const title = 'Kullanıcı Rollerini Düzenleme'
@@ -20,7 +20,19 @@ const UserRolesContainer = () => {
   const headers = useAuthHeader()
   const nav = useNavigate()
 
-  const handleDelete = () => {}
+  const handleDelete = async (row) => {
+    try {
+      await deleteUserRole(headers, row.user.id, row.role.id)
+      notify('Kullanıcı rolü başarıyla silindi')
+      if (userRoles.length === 1 && page > 0) {
+        setPage(page - 1)
+      } else {
+        fetchUserRoles()
+      }
+    } catch (error) {
+      notifyError(error.message)
+    }
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage)
@@ -54,7 +66,7 @@ const UserRolesContainer = () => {
 
   useEffect(() => {
     fetchUserRoles()
-  }, [nav, page, rowsPerPage])
+  }, [page, rowsPerPage])
 
   return (
     <React.Fragment>
@@ -69,7 +81,7 @@ const UserRolesContainer = () => {
         colSpan={4}
         loading={loading}
       />
-      <Outlet />
+      <Outlet context={{ onSaved: fetchUserRoles }} />
     </React.Fragment>
   )
 }
