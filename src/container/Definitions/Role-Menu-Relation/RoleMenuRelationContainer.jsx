@@ -275,6 +275,7 @@ export default function RoleMenuRelationContainer() {
     <Box>
       <ActionHeader
         title="Menü Rol Yönetimi"
+        hide
         subtitle={menuList && roleList ? `${menuTree.roots.length} ana menü altında ${menuList.length} menü, ${roleList.length} rol` : undefined}
         divider={false}
         actions={
